@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using EInvoiceUtils;
 using System.Text.Json;
+using EInvoiceUtils.Models;
 
 IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json")
                                                       .Build();
@@ -15,13 +16,36 @@ EInvoiceAPI client = new EInvoiceAPI(
                             apiUrl: config["SANDBOX_URL"]
                          );
 
-Console.WriteLine(JsonSerializer.Serialize(await client.LoginAsTaxpayer()));
+LoginAsTaxpayerResponse loginAsTaxpayerResponse = await client.LoginAsTaxpayer();
+Console.WriteLine(JsonSerializer.Serialize(loginAsTaxpayerResponse));
 #endregion
 
 #region Login as Intermediary System
 //EInvoiceAPI client = new EInvoiceAPI(secrets["SBS_CLIENT_ID"], secrets["SBS_CLIENT_SECRET"], config["PROD_URL"]);
 
 //Console.WriteLine(JsonSerializer.Serialize(await client.LoginAsIntermediary(config["ON_BEHALF_OF"])));
+#endregion
+
+#region Submit Documents
+SubmitDocumentsResponse submitDocumentsResponse = await client.SubmitDocuments(
+                                                    accessToken: loginAsTaxpayerResponse.AccessToken,
+                                                    format: SubmitDocumentFormat.XML,
+                                                    documents: new Dictionary<string, string>()
+                                                    {
+                                                        { "INV00001", File.ReadAllText(config["SAMPLE_EINVOICE_DOC_PATH"]) }
+                                                    }
+                                                  );
+Console.WriteLine(JsonSerializer.Serialize(submitDocumentsResponse));
+#endregion
+
+#region Validate Taxpayer TIN
+ValidateTaxpayerTINResponse validateTaxpayerTINResponse = await client.ValidateTaxpayerTIN(
+                                                            accessToken: loginAsTaxpayerResponse.AccessToken,
+                                                            tin: secrets["TIN"],
+                                                            idType: TaxpayerType.NRIC,
+                                                            idValue: secrets["ID"]
+                                                          );
+Console.WriteLine(JsonSerializer.Serialize(validateTaxpayerTINResponse));
 #endregion
 
 Console.ReadLine(); 
