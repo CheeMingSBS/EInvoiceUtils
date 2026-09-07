@@ -19,6 +19,7 @@ namespace EInvoiceUtils
         private readonly string apiUrl;
         private readonly HttpClient client;
 
+        #region Constructor
         /// <summary>
         ///     Constructs an object that exposes <see href="https://sdk.myinvois.hasil.gov.my/api/">LHDN Platform and EInvoice APIs</see>.
         ///     <example>
@@ -63,7 +64,9 @@ namespace EInvoiceUtils
             builder.Port = 443;
             client.BaseAddress = builder.Uri;
         }
+        #endregion
 
+        #region Login As Taxpayer
         /// <summary>
         ///     Login as a specific taxpayer based on the supplied client ID and secret when constructing the object.
         ///     <br/>
@@ -95,7 +98,9 @@ namespace EInvoiceUtils
             }
             return response;
         }
+        #endregion
 
+        #region Login As Intermediary
         /// <summary>
         ///     Login on behalf of a specific taxpayer based on the given TIN.
         ///     <br/>
@@ -136,13 +141,15 @@ namespace EInvoiceUtils
             }
             return response;
         }
+        #endregion
 
+        #region Submit Documents
         /// <summary>
         ///     Submit well-formed EInvoice document(s) to LHDN.
         ///     <br/>
         ///     See <see href="https://sdk.myinvois.hasil.gov.my/einvoicingapi/02-submit-documents/">Submit Documents</see>.
         /// </summary>
-        /// <param name="accessToken">Acess token from one of the Login APIs.</param>
+        /// <param name="accessToken">Access token from one of the Login APIs.</param>
         /// <param name="format">Format of the documents to be submitted.</param>
         /// <param name="documents">A dictionary of invoice code numbers each mapped to a well-formed EInvoice document following the format specified.</param>
         /// <returns>
@@ -210,13 +217,15 @@ namespace EInvoiceUtils
             }
             return response;
         }
+        #endregion
 
+        #region Validate Taxpayer TIN
         /// <summary>
         ///     Validate the given combination of TIN and ID.
         ///     <br/>
         ///     See <see href="https://sdk.myinvois.hasil.gov.my/einvoicingapi/01-validate-taxpayer-tin/"/>.
         /// </summary>
-        /// <param name="accessToken">Acess token from one of the Login APIs.</param>
+        /// <param name="accessToken">Access token from one of the Login APIs.</param>
         /// <param name="tin">TIN of taxpayer to be validated.</param>
         /// <param name="idType">Identity type of taxpayer to be validated.</param>
         /// <param name="idValue">Identification number of taxpayer to be validated.</param>
@@ -257,8 +266,10 @@ namespace EInvoiceUtils
 
                 HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
 
-                response = new ValidateTaxpayerTINResponse();
-                response.statusCode = (int)responseMessage.StatusCode;
+                response = new ValidateTaxpayerTINResponse()
+                {
+                    StatusCode = (int)responseMessage.StatusCode
+                };
             }
             return response;
         }
@@ -271,5 +282,64 @@ namespace EInvoiceUtils
                 sb.Append(b.ToString("X2"));
             return sb.ToString();
         }
+        #endregion
+
+        #region Get Submission
+        /// <summary>
+        ///     Get the submission status/summary for a list of EInvoice documents associated with the submission UID.
+        ///     <br/>
+        ///     See <see href="https://sdk.myinvois.hasil.gov.my/einvoicingapi/06-get-submission/"/>.
+        /// </summary>
+        /// <param name="accessToken">Access token from one of the Login APIs.</param>
+        /// <param name="submissionUid">Submission UID obtained from a successful Submit Documents API call.</param>
+        /// <param name="pageNo">Page number of the list of documents to return.</param>
+        /// <param name="pageSize">Number of documents to return.</param>
+        /// <returns>
+        ///     <see cref="GetSubmissionResponse"/>
+        /// </returns>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="ArgumentException"/>
+        /// <exception cref="ArgumentOutOfRangeException"/>
+        public async Task<GetSubmissionResponse> GetSubmission(
+            string accessToken,
+            string submissionUid,
+            int pageNo = 1,
+            int pageSize = 100
+        )
+        {
+            if (accessToken == null)
+                throw new ArgumentNullException($"{nameof(accessToken)} cannot be NULL.", nameof(accessToken));
+            else if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ArgumentException($"{nameof(accessToken)} cannot be empty.", nameof(accessToken));
+
+            if (submissionUid == null)
+                throw new ArgumentNullException($"{nameof(submissionUid)} cannot be NULL.", nameof(submissionUid));
+            else if (string.IsNullOrWhiteSpace(submissionUid))
+                throw new ArgumentException($"{nameof(submissionUid)} cannot be empty.", nameof(submissionUid));
+
+            if (pageNo <= 0)
+                throw new ArgumentException($"{nameof(pageNo)} is invalid.", nameof(pageNo));
+
+            if (pageSize <= 0)
+                throw new ArgumentException($"{nameof(pageSize)} is invalid.", nameof(pageSize));
+            else if (pageSize > 100)
+                throw new ArgumentOutOfRangeException($"{nameof(pageSize)} has a limit of 100.", nameof(pageSize));
+
+            GetSubmissionResponse response;
+
+            using (HttpRequestMessage requestMessage =  new HttpRequestMessage())
+            {
+                requestMessage.Method = HttpMethod.Get;
+                requestMessage.RequestUri = new Uri($"/api/v1.0/documentsubmissions/{submissionUid}?pageNo={pageNo}&pageSize={pageSize}", UriKind.Relative);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+
+                response = JsonSerializer.Deserialize<GetSubmissionResponse>(await responseMessage.Content.ReadAsStringAsync());
+                response.StatusCode = (int)responseMessage.StatusCode;
+            }
+            return response;
+        }
+        #endregion
     }
 }

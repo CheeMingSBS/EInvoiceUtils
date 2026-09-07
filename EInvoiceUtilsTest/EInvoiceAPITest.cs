@@ -12,6 +12,7 @@ namespace EInvoiceUtilsTest
 
         static EInvoiceAPI client;
         string accessToken;
+        string submissionUid;
 
         [ClassInitialize]
         public static void Init(TestContext context)
@@ -22,7 +23,7 @@ namespace EInvoiceUtilsTest
 
             Assert.IsFalse(string.IsNullOrEmpty(secrets[CLIENT_ID]), $"Secret {CLIENT_ID} is invalid.");
             Assert.IsFalse(string.IsNullOrEmpty(secrets[CLIENT_SECRET]), $"Secret {CLIENT_SECRET} is invalid.");
-            Assert.IsFalse(string.IsNullOrEmpty(secrets[SANDBOX_URL]), $"Config {SANDBOX_URL} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_URL]), $"Config {SANDBOX_URL} is invalid.");
 
             client = new EInvoiceAPI(secrets[CLIENT_ID], secrets[CLIENT_SECRET], config[SANDBOX_URL]);
         }
@@ -47,7 +48,7 @@ namespace EInvoiceUtilsTest
             Assert.IsFalse(string.IsNullOrEmpty(secrets[SBS_CLIENT_ID]), $"Secret {SBS_CLIENT_ID} is invalid.");
             Assert.IsFalse(string.IsNullOrEmpty(secrets[SBS_CLIENT_SECRET]), $"Secret {SBS_CLIENT_SECRET} is invalid.");
             Assert.IsFalse(string.IsNullOrEmpty(secrets[PROD_URL]), $"Config {PROD_URL} is invalid.");
-            Assert.IsFalse(string.IsNullOrEmpty(secrets[ON_BEHALF_OF]), $"Config {ON_BEHALF_OF} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[ON_BEHALF_OF]), $"Config {ON_BEHALF_OF} is invalid.");
 
             EInvoiceAPI prodClient = new EInvoiceAPI(secrets[SBS_CLIENT_ID], secrets[SBS_CLIENT_SECRET], secrets[PROD_URL]);
             LoginAsIntermediaryResponse response = await prodClient.LoginAsIntermediary(secrets[ON_BEHALF_OF]);
@@ -73,6 +74,7 @@ namespace EInvoiceUtilsTest
                                                     { "INV00001", File.ReadAllText(secrets[SAMPLE_EINVOICE_DOC_PATH]!) }
                                                 }
                                                );
+            submissionUid = response.SubmissionUid;
 
             Assert.AreEqual(response.StatusCode, 202);
         }
@@ -122,7 +124,36 @@ namespace EInvoiceUtilsTest
 
             ValidateTaxpayerTINResponse response = await client.ValidateTaxpayerTIN(this.accessToken, secrets[TIN], TaxpayerType.NRIC, secrets[ID]);
 
-            Assert.AreEqual(response.statusCode, 200);
+            Assert.AreEqual(response.StatusCode, 200);
+        }
+
+        [TestMethod]
+        public async Task GetSubmission()
+        {
+            if (this.submissionUid == null)
+                await SubmitDocuments();
+            else if (this.accessToken == null)
+                await LoginAsTaxpayer();
+
+            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, this.submissionUid);
+
+            Assert.AreEqual(response.StatusCode, 200);
+        }
+
+        [TestMethod]
+        [DataRow(1000)]
+        public async Task GetSubmissionWithDelay(int delay)
+        {
+            if (this.submissionUid == null)
+                await SubmitDocuments();
+            else if (this.accessToken == null)
+                await LoginAsTaxpayer();
+
+            Thread.Sleep(delay);
+
+            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, this.submissionUid);
+
+            Assert.AreEqual(response.StatusCode, 200);
         }
     }
 }

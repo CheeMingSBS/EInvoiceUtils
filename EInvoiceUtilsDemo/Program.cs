@@ -17,13 +17,13 @@ EInvoiceAPI client = new EInvoiceAPI(
                          );
 
 LoginAsTaxpayerResponse loginAsTaxpayerResponse = await client.LoginAsTaxpayer();
-Console.WriteLine(JsonSerializer.Serialize(loginAsTaxpayerResponse));
+Console.WriteLine(JsonSerializer.Serialize(loginAsTaxpayerResponse) + "\n");
 #endregion
 
 #region Login as Intermediary System
 //EInvoiceAPI client = new EInvoiceAPI(secrets["SBS_CLIENT_ID"], secrets["SBS_CLIENT_SECRET"], config["PROD_URL"]);
 
-//Console.WriteLine(JsonSerializer.Serialize(await client.LoginAsIntermediary(config["ON_BEHALF_OF"])));
+//Console.WriteLine(JsonSerializer.Serialize(await client.LoginAsIntermediary(config["ON_BEHALF_OF"])) + "\n");
 #endregion
 
 #region Submit Documents
@@ -35,7 +35,7 @@ SubmitDocumentsResponse submitDocumentsResponse = await client.SubmitDocuments(
                                                         { "INV00001", File.ReadAllText(config["SAMPLE_EINVOICE_DOC_PATH"]) }
                                                     }
                                                   );
-Console.WriteLine(JsonSerializer.Serialize(submitDocumentsResponse));
+Console.WriteLine(JsonSerializer.Serialize(submitDocumentsResponse) + "\n");
 #endregion
 
 #region Validate Taxpayer TIN
@@ -45,7 +45,25 @@ ValidateTaxpayerTINResponse validateTaxpayerTINResponse = await client.ValidateT
                                                             idType: TaxpayerType.NRIC,
                                                             idValue: secrets["ID"]
                                                           );
-Console.WriteLine(JsonSerializer.Serialize(validateTaxpayerTINResponse));
+Console.WriteLine(JsonSerializer.Serialize(validateTaxpayerTINResponse) + "\n");
+#endregion
+
+#region Get Submission
+GetSubmissionResponse getSubmissionResponse = await client.GetSubmission(
+                                                accessToken: loginAsTaxpayerResponse.AccessToken,
+                                                submissionUid: submitDocumentsResponse.SubmissionUid
+                                              );
+
+Console.WriteLine(JsonSerializer.Serialize(getSubmissionResponse) + "\n");
+
+Thread.Sleep(1000);
+
+getSubmissionResponse = await client.GetSubmission(
+                                accessToken: loginAsTaxpayerResponse.AccessToken,
+                                submissionUid: submitDocumentsResponse.SubmissionUid
+                              );
+
+Console.WriteLine(JsonSerializer.Serialize(getSubmissionResponse) + "\n");
 #endregion
 
 Console.ReadLine(); 
