@@ -7,13 +7,22 @@ namespace EInvoiceUtils.Models
     /// <summary>
     ///     <see href="https://sdk.myinvois.hasil.gov.my/standard-error-response/#error-response-structure">Standard Error Response</see>
     /// </summary>
-    public class Error
+    public class StandardError
     {
         [JsonPropertyName("propertyName")]
         public string PropertyName { get; set; }
 
         [JsonPropertyName("propertyPath")]
         public string PropertyPath { get; set; }
+
+        [JsonPropertyName("errorCode")]
+        public string ErrorCode { get; set; }
+
+        [JsonPropertyName("error")]
+        public string Error { get; set; }
+
+        [JsonPropertyName("innerError")]
+        public List<StandardError> InnerError { get; set; }
 
         [JsonPropertyName("code")]
         public string Code { get; set; }
@@ -25,7 +34,7 @@ namespace EInvoiceUtils.Models
         public string Target { get; set; }
 
         [JsonPropertyName("details")]
-        public List<Error> Details { get; set; }
+        public List<StandardError> Details { get; set; }
     }
     #endregion
 
@@ -124,7 +133,7 @@ namespace EInvoiceUtils.Models
         public List<SubmitDocumentsResponseRejectedDocuments> RejectedDocuments { get; set; }
 
         [JsonPropertyName("error")]
-        public Error Error { get; set; }
+        public StandardError Error { get; set; }
     }
 
     /// <summary>
@@ -148,7 +157,7 @@ namespace EInvoiceUtils.Models
         public string InvoiceCodeNumber { get; set; }
 
         [JsonPropertyName("error")]
-        public Error Error { get; set; }
+        public StandardError Error { get; set; }
     }
     #endregion
 
@@ -181,7 +190,7 @@ namespace EInvoiceUtils.Models
         public List<GetSubmissionResponseDocumentSummary> DocumentSummary { get; set; }
 
         [JsonPropertyName("error")]
-        public Error Error { get; set; }
+        public StandardError Error { get; set; }
     }
 
     /// <summary>
@@ -212,6 +221,71 @@ namespace EInvoiceUtils.Models
 
         [JsonPropertyName("status")]
         public string Status { get; set; }
+    }
+    #endregion
+
+    #region Get Document Details
+    /// <summary>
+    ///     <see href="https://sdk.myinvois.hasil.gov.my/einvoicingapi/08-get-document-details/#outputs"> Get Document Details API Outputs</see>
+    /// </summary>
+    public class GetDocumentDetailsResponse
+    {
+        [JsonPropertyName("statusCode")]
+        public int StatusCode { get; set; }
+
+        [JsonPropertyName("uuid")]
+        public string UUID { get; set; }
+
+        [JsonPropertyName("longId")]
+        public string LongID { get; set; }
+
+        [JsonPropertyName("internalId")]
+        public string InternalID { get; set; }
+
+        [JsonPropertyName("totalExcludingTax")]
+        public decimal TotalExcludingTax { get; set; }
+
+        [JsonPropertyName("totalDiscount")]
+        public decimal TotalDiscount { get; set; }
+
+        [JsonPropertyName("totalNetAmount")]
+        public decimal TotalNetAmount { get; set; }
+
+        [JsonPropertyName("totalPayableAmount")]
+        public decimal TotalPayableAmount { get; set; }
+
+        [JsonPropertyName("validationResults")]
+        public GetDocumentDetailsResponseValidationResults ValidationResults { get; set; }
+
+        [JsonPropertyName("error")]
+        public StandardError Error { get; set; }
+    }
+
+    /// <summary>
+    ///     A <see href="https://sdk.myinvois.hasil.gov.my/einvoicingapi/08-get-document-details/#document-validation-results"/>collection of validation steps</see> used to validate the submitted document and the final submission status.
+    /// </summary>
+    public class GetDocumentDetailsResponseValidationResults
+    {
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
+
+        [JsonPropertyName("validationSteps")]
+        public List<GetDocumentDetailsResponseValidationStep> ValidationSteps { get; set; }
+    }
+
+    /// <summary>
+    ///     The details of a<see href="https://sdk.myinvois.hasil.gov.my/einvoicingapi/08-get-document-details/#validation-step-result">validation step</see> for the submitted document.
+    /// </summary>
+    public class GetDocumentDetailsResponseValidationStep
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
+
+        [JsonPropertyName("error")]
+        public StandardError Error { get; set; }
     }
     #endregion
 }

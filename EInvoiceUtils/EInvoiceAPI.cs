@@ -210,7 +210,7 @@ namespace EInvoiceUtils
                 HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
 
                 JsonSerializerOptions options = new JsonSerializerOptions();
-                options.Converters.Add(new ErrorConverter());
+                options.Converters.Add(new StandardErrorConverter());
 
                 response = JsonSerializer.Deserialize<SubmitDocumentsResponse>(await responseMessage.Content.ReadAsStringAsync(), options);
                 response.StatusCode = (int)responseMessage.StatusCode;
@@ -336,6 +336,36 @@ namespace EInvoiceUtils
                 HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
 
                 response = JsonSerializer.Deserialize<GetSubmissionResponse>(await responseMessage.Content.ReadAsStringAsync());
+                response.StatusCode = (int)responseMessage.StatusCode;
+            }
+            return response;
+        }
+        #endregion
+
+        #region Get Document Details
+        public async Task<GetDocumentDetailsResponse> GetDocumentDetails(string accessToken, string uuid)
+        {
+            if (accessToken == null)
+                throw new ArgumentNullException($"{nameof(accessToken)} cannot be NULL.", nameof(accessToken));
+            else if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ArgumentException($"{nameof(accessToken)} cannot be empty.", nameof(accessToken));
+
+            if (uuid == null)
+                throw new ArgumentNullException($"{nameof(uuid)} cannot be NULL.", nameof(uuid));
+            else if (string.IsNullOrWhiteSpace(uuid))
+                throw new ArgumentException($"{nameof(uuid)} cannot be empty.", nameof(uuid));
+
+            GetDocumentDetailsResponse response;
+
+            using (HttpRequestMessage requestMessage = new HttpRequestMessage())
+            {
+                requestMessage.Method = HttpMethod.Get;
+                requestMessage.RequestUri = new Uri($"/api/v1.0/documents/{uuid}/details", UriKind.Relative);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+
+                response = JsonSerializer.Deserialize<GetDocumentDetailsResponse>(await responseMessage.Content.ReadAsStringAsync());
                 response.StatusCode = (int)responseMessage.StatusCode;
             }
             return response;

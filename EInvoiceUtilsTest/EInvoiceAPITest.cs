@@ -12,7 +12,6 @@ namespace EInvoiceUtilsTest
 
         static EInvoiceAPI client;
         string accessToken;
-        string submissionUid;
 
         [ClassInitialize]
         public static void Init(TestContext context)
@@ -31,12 +30,16 @@ namespace EInvoiceUtilsTest
         [TestMethod]
         public async Task LoginAsTaxpayer()
         {
+            if (this.accessToken != null)
+                return;
+
             LoginAsTaxpayerResponse response = await client.LoginAsTaxpayer();
             this.accessToken = response.AccessToken;
 
             Assert.AreEqual(response.StatusCode, 200);
         }
 
+        [Ignore]
         [TestMethod]
         public async Task LoginAsIntermediary()
         {
@@ -47,11 +50,11 @@ namespace EInvoiceUtilsTest
 
             Assert.IsFalse(string.IsNullOrEmpty(secrets[SBS_CLIENT_ID]), $"Secret {SBS_CLIENT_ID} is invalid.");
             Assert.IsFalse(string.IsNullOrEmpty(secrets[SBS_CLIENT_SECRET]), $"Secret {SBS_CLIENT_SECRET} is invalid.");
-            Assert.IsFalse(string.IsNullOrEmpty(secrets[PROD_URL]), $"Config {PROD_URL} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[PROD_URL]), $"Config {PROD_URL} is invalid.");
             Assert.IsFalse(string.IsNullOrEmpty(config[ON_BEHALF_OF]), $"Config {ON_BEHALF_OF} is invalid.");
 
-            EInvoiceAPI prodClient = new EInvoiceAPI(secrets[SBS_CLIENT_ID], secrets[SBS_CLIENT_SECRET], secrets[PROD_URL]);
-            LoginAsIntermediaryResponse response = await prodClient.LoginAsIntermediary(secrets[ON_BEHALF_OF]);
+            EInvoiceAPI prodClient = new EInvoiceAPI(secrets[SBS_CLIENT_ID], secrets[SBS_CLIENT_SECRET], config[PROD_URL]);
+            LoginAsIntermediaryResponse response = await prodClient.LoginAsIntermediary(config[ON_BEHALF_OF]);
 
             Assert.AreEqual(response.StatusCode, 200);
         }
@@ -71,10 +74,9 @@ namespace EInvoiceUtilsTest
                                                 SubmitDocumentFormat.XML,
                                                 new Dictionary<string, string>()
                                                 {
-                                                    { "INV00001", File.ReadAllText(secrets[SAMPLE_EINVOICE_DOC_PATH]!) }
+                                                    { "INV00001", File.ReadAllText(config[SAMPLE_EINVOICE_DOC_PATH]!) }
                                                 }
                                                );
-            submissionUid = response.SubmissionUid;
 
             Assert.AreEqual(response.StatusCode, 202);
         }
@@ -94,7 +96,7 @@ namespace EInvoiceUtilsTest
                                                 SubmitDocumentFormat.XML,
                                                 new Dictionary<string, string>()
                                                 {
-                                                    { "INV00001", File.ReadAllText(secrets[SAMPLE_EINVOICE_DOC_PATH]!) }
+                                                    { "INV00001", File.ReadAllText(config[SAMPLE_EINVOICE_DOC_PATH]!) }
                                                 }
                                                );
 
@@ -103,7 +105,7 @@ namespace EInvoiceUtilsTest
                                 SubmitDocumentFormat.XML,
                                 new Dictionary<string, string>()
                                 {
-                                    { "INV00001", File.ReadAllText(secrets[SAMPLE_EINVOICE_DOC_PATH]!) }
+                                    { "INV00001", File.ReadAllText(config[SAMPLE_EINVOICE_DOC_PATH]!) }
                                 }
                              );
 
@@ -130,12 +132,14 @@ namespace EInvoiceUtilsTest
         [TestMethod]
         public async Task GetSubmission()
         {
-            if (this.submissionUid == null)
-                await SubmitDocuments();
-            else if (this.accessToken == null)
+            const string SANDBOX_EINVOICE_DOC_SUBMISSION_UID = "SANDBOX_EINVOICE_DOC_SUBMISSION_UID";
+
+            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]), $"Secret {SANDBOX_EINVOICE_DOC_SUBMISSION_UID} is invalid.");
+
+            if (this.accessToken == null)
                 await LoginAsTaxpayer();
 
-            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, this.submissionUid);
+            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]);
 
             Assert.AreEqual(response.StatusCode, 200);
         }
@@ -144,14 +148,31 @@ namespace EInvoiceUtilsTest
         [DataRow(1000)]
         public async Task GetSubmissionWithDelay(int delay)
         {
-            if (this.submissionUid == null)
-                await SubmitDocuments();
-            else if (this.accessToken == null)
+            const string SANDBOX_EINVOICE_DOC_SUBMISSION_UID = "SANDBOX_EINVOICE_DOC_SUBMISSION_UID";
+
+            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]), $"Secret {SANDBOX_EINVOICE_DOC_SUBMISSION_UID} is invalid.");
+
+            if (this.accessToken == null)
                 await LoginAsTaxpayer();
 
             Thread.Sleep(delay);
 
-            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, this.submissionUid);
+            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]);
+
+            Assert.AreEqual(response.StatusCode, 200);
+        }
+
+        [TestMethod]
+        public async Task GetDocumentDetails()
+        {
+            const string SANDBOX_EINVOICE_DOC_UUID = "SANDBOX_EINVOICE_DOC_UUID";
+
+            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_DOC_UUID]), $"Secret {SANDBOX_EINVOICE_DOC_UUID} is invalid.");
+
+            if (this.accessToken == null)
+                await LoginAsTaxpayer();
+
+            GetDocumentDetailsResponse response = await client.GetDocumentDetails(this.accessToken, config[SANDBOX_EINVOICE_DOC_UUID]);
 
             Assert.AreEqual(response.StatusCode, 200);
         }

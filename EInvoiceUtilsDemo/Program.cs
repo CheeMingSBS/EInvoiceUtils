@@ -66,4 +66,12 @@ getSubmissionResponse = await client.GetSubmission(
 Console.WriteLine(JsonSerializer.Serialize(getSubmissionResponse) + "\n");
 #endregion
 
+#region Get Document Details
+GetDocumentDetailsResponse getDocumentDetailsResponse = await client.GetDocumentDetails(
+                                                          accessToken: loginAsTaxpayerResponse.AccessToken,
+                                                          uuid: submitDocumentsResponse.AcceptedDocuments[0].Uuid
+                                                        );
+Console.WriteLine(JsonSerializer.Serialize(getDocumentDetailsResponse) + "\n");
+#endregion
+
 Console.ReadLine(); 
