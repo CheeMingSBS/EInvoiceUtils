@@ -32,7 +32,7 @@ SubmitDocumentsResponse submitDocumentsResponse = await client.SubmitDocuments(
                                                     format: SubmitDocumentFormat.XML,
                                                     documents: new Dictionary<string, string>()
                                                     {
-                                                        { "INV00001", File.ReadAllText(config["SAMPLE_EINVOICE_DOC_PATH"]) }
+                                                        { "INV00001", File.ReadAllText(config["INVOICE_XML"]) }
                                                     }
                                                   );
 Console.WriteLine(JsonSerializer.Serialize(submitDocumentsResponse) + "\n");
@@ -73,5 +73,7 @@ GetDocumentDetailsResponse getDocumentDetailsResponse = await client.GetDocument
                                                         );
 Console.WriteLine(JsonSerializer.Serialize(getDocumentDetailsResponse) + "\n");
 #endregion
+
+EInvoiceDocument document = new EInvoiceDocument();
 
 Console.ReadLine(); 

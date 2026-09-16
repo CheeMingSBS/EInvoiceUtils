@@ -62,9 +62,9 @@ namespace EInvoiceUtilsTest
         [TestMethod]
         public async Task SubmitDocuments()
         {
-            const string SAMPLE_EINVOICE_DOC_PATH = "SAMPLE_EINVOICE_DOC_PATH";
+            const string INVOICE_XML = "INVOICE_XML";
 
-            Assert.IsFalse(string.IsNullOrEmpty(config[SAMPLE_EINVOICE_DOC_PATH]), $"Config {SAMPLE_EINVOICE_DOC_PATH} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[INVOICE_XML]), $"Config: {INVOICE_XML} path is invalid.");
 
             if (this.accessToken == null)
                 await LoginAsTaxpayer();
@@ -74,7 +74,7 @@ namespace EInvoiceUtilsTest
                                                 SubmitDocumentFormat.XML,
                                                 new Dictionary<string, string>()
                                                 {
-                                                    { "INV00001", File.ReadAllText(config[SAMPLE_EINVOICE_DOC_PATH]!) }
+                                                    { "INV00001", File.ReadAllText(config[INVOICE_XML]!) }
                                                 }
                                                );
 
@@ -84,9 +84,9 @@ namespace EInvoiceUtilsTest
         [TestMethod]
         public async Task SubmitDuplicateDocuments()
         {
-            const string SAMPLE_EINVOICE_DOC_PATH = "SAMPLE_EINVOICE_DOC_PATH";
+            const string INVOICE_XML = "INVOICE_XML";
 
-            Assert.IsFalse(string.IsNullOrEmpty(config[SAMPLE_EINVOICE_DOC_PATH]), $"Config {SAMPLE_EINVOICE_DOC_PATH} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[INVOICE_XML]), $"Config: {INVOICE_XML} path is invalid.");
 
             if (this.accessToken == null)
                 await LoginAsTaxpayer();
@@ -96,7 +96,7 @@ namespace EInvoiceUtilsTest
                                                 SubmitDocumentFormat.XML,
                                                 new Dictionary<string, string>()
                                                 {
-                                                    { "INV00001", File.ReadAllText(config[SAMPLE_EINVOICE_DOC_PATH]!) }
+                                                    { "INV00001", File.ReadAllText(config[INVOICE_XML]!) }
                                                 }
                                                );
 
@@ -105,7 +105,7 @@ namespace EInvoiceUtilsTest
                                 SubmitDocumentFormat.XML,
                                 new Dictionary<string, string>()
                                 {
-                                    { "INV00001", File.ReadAllText(config[SAMPLE_EINVOICE_DOC_PATH]!) }
+                                    { "INV00001", File.ReadAllText(config[INVOICE_XML]!) }
                                 }
                              );
 
@@ -132,14 +132,14 @@ namespace EInvoiceUtilsTest
         [TestMethod]
         public async Task GetSubmission()
         {
-            const string SANDBOX_EINVOICE_DOC_SUBMISSION_UID = "SANDBOX_EINVOICE_DOC_SUBMISSION_UID";
+            const string SANDBOX_EINVOICE_SUBMISSION_UID = "SANDBOX_EINVOICE_SUBMISSION_UID";
 
-            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]), $"Secret {SANDBOX_EINVOICE_DOC_SUBMISSION_UID} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_SUBMISSION_UID]), $"Config {SANDBOX_EINVOICE_SUBMISSION_UID} is invalid.");
 
             if (this.accessToken == null)
                 await LoginAsTaxpayer();
 
-            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]);
+            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, config[SANDBOX_EINVOICE_SUBMISSION_UID]);
 
             Assert.AreEqual(response.StatusCode, 200);
         }
@@ -148,16 +148,16 @@ namespace EInvoiceUtilsTest
         [DataRow(1000)]
         public async Task GetSubmissionWithDelay(int delay)
         {
-            const string SANDBOX_EINVOICE_DOC_SUBMISSION_UID = "SANDBOX_EINVOICE_DOC_SUBMISSION_UID";
+            const string SANDBOX_EINVOICE_SUBMISSION_UID = "SANDBOX_EINVOICE_SUBMISSION_UID";
 
-            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]), $"Secret {SANDBOX_EINVOICE_DOC_SUBMISSION_UID} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_SUBMISSION_UID]), $"Config {SANDBOX_EINVOICE_SUBMISSION_UID} is invalid.");
 
             if (this.accessToken == null)
                 await LoginAsTaxpayer();
 
             Thread.Sleep(delay);
 
-            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, config[SANDBOX_EINVOICE_DOC_SUBMISSION_UID]);
+            GetSubmissionResponse response = await client.GetSubmission(this.accessToken, config[SANDBOX_EINVOICE_SUBMISSION_UID]);
 
             Assert.AreEqual(response.StatusCode, 200);
         }
@@ -165,14 +165,14 @@ namespace EInvoiceUtilsTest
         [TestMethod]
         public async Task GetDocumentDetails()
         {
-            const string SANDBOX_EINVOICE_DOC_UUID = "SANDBOX_EINVOICE_DOC_UUID";
+            const string SANDBOX_EINVOICE_UUID = "SANDBOX_EINVOICE_UUID";
 
-            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_DOC_UUID]), $"Secret {SANDBOX_EINVOICE_DOC_UUID} is invalid.");
+            Assert.IsFalse(string.IsNullOrEmpty(config[SANDBOX_EINVOICE_UUID]), $"Config {SANDBOX_EINVOICE_UUID} is invalid.");
 
             if (this.accessToken == null)
                 await LoginAsTaxpayer();
 
-            GetDocumentDetailsResponse response = await client.GetDocumentDetails(this.accessToken, config[SANDBOX_EINVOICE_DOC_UUID]);
+            GetDocumentDetailsResponse response = await client.GetDocumentDetails(this.accessToken, config[SANDBOX_EINVOICE_UUID]);
 
             Assert.AreEqual(response.StatusCode, 200);
         }

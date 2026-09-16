@@ -33,24 +33,17 @@ namespace EInvoiceUtils
         /// <param name="clientId">UUIDv4 string representing client ID for the ERP system, obtained from LHDN MyInvois portal.</param>
         /// <param name="clientSecret">UUIDv4 string representing client secret for the ERP system, obtained from LHDN MyInvois portal.</param>
         /// <param name="apiUrl">Environment URL provided by LHDN for the APIs to be called in (Prod/Sandbox).</param>
-        /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentException"/>
         public EInvoiceAPI(string clientId, string clientSecret, string apiUrl)
         {
-            if (clientId == null)
-                throw new ArgumentNullException($"{nameof(clientId)} cannot be NULL.", nameof(clientId));
-            else if (string.IsNullOrWhiteSpace(clientId))
-                throw new ArgumentException($"{nameof(clientId)} cannot be empty.", nameof(clientId));
+            if (string.IsNullOrWhiteSpace(clientId))
+                throw new ArgumentException($"{nameof(clientId)} cannot be NULL or empty.", nameof(clientId));
 
-            if (clientSecret == null)
-                throw new ArgumentNullException($"{nameof(clientSecret)} cannot be NULL.", nameof(clientSecret));
-            else if (string.IsNullOrWhiteSpace(clientSecret))
-                throw new ArgumentException($"{nameof(clientSecret)} cannot be empty.", nameof(clientSecret));
+            if (string.IsNullOrWhiteSpace(clientSecret))
+                throw new ArgumentException($"{nameof(clientSecret)} cannot be NULL or empty.", nameof(clientSecret));
 
-            if (apiUrl == null)
-                throw new ArgumentNullException($"{nameof(apiUrl)} cannot be NULL.", nameof(apiUrl));
-            else if (string.IsNullOrWhiteSpace(apiUrl))
-                throw new ArgumentException($"{nameof(apiUrl)} cannot be empty.", nameof(apiUrl));
+            if (string.IsNullOrWhiteSpace(apiUrl))
+                throw new ArgumentException($"{nameof(apiUrl)} cannot be NULL or empty.", nameof(apiUrl));
 
 
             this.clientId = clientId;
@@ -110,14 +103,11 @@ namespace EInvoiceUtils
         ///     <see cref="LoginAsIntermediaryResponse"/>
         /// </returns>
         /// <param name="onBehalfOf">TIN of the taxpayer to login on behalf of.</param>
-        /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentException"/>
         public async Task<LoginAsIntermediaryResponse> LoginAsIntermediary(string onBehalfOf)
         {
-            if (onBehalfOf == null)
-                throw new ArgumentNullException($"{nameof(onBehalfOf)} cannot be NULL.", nameof(onBehalfOf));
-            else if (string.IsNullOrWhiteSpace(onBehalfOf))
-                throw new ArgumentException($"{nameof(onBehalfOf)} cannot be empty.", nameof(onBehalfOf));
+            if (string.IsNullOrWhiteSpace(onBehalfOf))
+                throw new ArgumentException($"{nameof(onBehalfOf)} cannot be NULL or empty.", nameof(onBehalfOf));
 
             LoginAsIntermediaryResponse response;
 
@@ -155,7 +145,6 @@ namespace EInvoiceUtils
         /// <returns>
         ///     <see cref="SubmitDocumentsResponse"/>
         /// </returns>
-        /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentException"/>
         public async Task<SubmitDocumentsResponse> SubmitDocuments(
             string accessToken,
@@ -163,15 +152,11 @@ namespace EInvoiceUtils
             Dictionary<string, string> documents
         )
         {
-            if (accessToken == null)
-                throw new ArgumentNullException($"{nameof(accessToken)} cannot be NULL.", nameof(accessToken));
-            else if (string.IsNullOrWhiteSpace(accessToken))
-                throw new ArgumentException($"{nameof(accessToken)} cannot be empty.", nameof(accessToken));
+            if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ArgumentException($"{nameof(accessToken)} cannot be NULL or empty.", nameof(accessToken));
 
-            if (documents == null)
-                throw new ArgumentNullException($"{nameof(documents)} cannot be NULL.", nameof(documents));
-            else if (documents.Count == 0)
-                throw new ArgumentException($"{nameof(documents)} cannot be empty.", nameof(documents));
+            if (documents.Count == 0)
+                throw new ArgumentException($"{nameof(documents)} cannot be NULL or empty.", nameof(documents));
 
             SubmitDocumentsResponse response;
             List<SubmitDocumentsDocument> processedDocuments = new List<SubmitDocumentsDocument>();
@@ -191,7 +176,7 @@ namespace EInvoiceUtils
 
                     processedDocuments.Add(new SubmitDocumentsDocument()
                     {
-                        Format = Enum.GetName(typeof(SubmitDocumentFormat), format),
+                        Format = format.ToString(),
                         CodeNumber = codeNumber,
                         Document = Convert.ToBase64String(Encoding.UTF8.GetBytes(documents[codeNumber])),
                         DocumentHash = ConvertToHexString(sha256.ComputeHash(Encoding.UTF8.GetBytes(documents[codeNumber])))
@@ -232,7 +217,6 @@ namespace EInvoiceUtils
         /// <returns>
         ///     <see cref="ValidateTaxpayerTINResponse"/>
         /// </returns>
-        /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentException"/>
         public async Task<ValidateTaxpayerTINResponse> ValidateTaxpayerTIN(
             string accessToken,
@@ -241,27 +225,21 @@ namespace EInvoiceUtils
             string idValue
         )
         {
-            if (accessToken == null)
-                throw new ArgumentNullException($"{nameof(accessToken)} cannot be NULL.", nameof(accessToken));
-            else if (string.IsNullOrWhiteSpace(accessToken))
-                throw new ArgumentException($"{nameof(accessToken)} cannot be empty.", nameof(accessToken));
+            if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ArgumentException($"{nameof(accessToken)} cannot be NULL or empty.", nameof(accessToken));
 
-            if (tin == null)
-                throw new ArgumentNullException($"{nameof(tin)} cannot be NULL.", nameof(tin));
-            else if (string.IsNullOrWhiteSpace(tin))
-                throw new ArgumentException($"{nameof(tin)} cannot be empty.", nameof(tin));
+            if (string.IsNullOrWhiteSpace(tin))
+                throw new ArgumentException($"{nameof(tin)} cannot be NULL or empty.", nameof(tin));
 
-            if (idValue == null)
-                throw new ArgumentNullException($"{nameof(idValue)} cannot be NULL.", nameof(idValue));
-            else if (string.IsNullOrWhiteSpace(idValue))
-                throw new ArgumentException($"{nameof(idValue)} cannot be empty.", nameof(idValue));
+            if (string.IsNullOrWhiteSpace(idValue))
+                throw new ArgumentException($"{nameof(idValue)} cannot be NULL or empty.", nameof(idValue));
 
             ValidateTaxpayerTINResponse response;
 
             using (HttpRequestMessage requestMessage = new HttpRequestMessage())
             {
                 requestMessage.Method = HttpMethod.Get;
-                requestMessage.RequestUri = new Uri($"/api/v1.0/taxpayer/validate/{tin}?idType={Enum.GetName(typeof(TaxpayerType), idType)}&idValue={idValue}", UriKind.Relative);
+                requestMessage.RequestUri = new Uri($"/api/v1.0/taxpayer/validate/{tin}?idType={idType}&idValue={idValue}", UriKind.Relative);
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
                 HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
@@ -297,7 +275,6 @@ namespace EInvoiceUtils
         /// <returns>
         ///     <see cref="GetSubmissionResponse"/>
         /// </returns>
-        /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentException"/>
         /// <exception cref="ArgumentOutOfRangeException"/>
         public async Task<GetSubmissionResponse> GetSubmission(
@@ -307,15 +284,11 @@ namespace EInvoiceUtils
             int pageSize = 100
         )
         {
-            if (accessToken == null)
-                throw new ArgumentNullException($"{nameof(accessToken)} cannot be NULL.", nameof(accessToken));
-            else if (string.IsNullOrWhiteSpace(accessToken))
-                throw new ArgumentException($"{nameof(accessToken)} cannot be empty.", nameof(accessToken));
+            if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ArgumentException($"{nameof(accessToken)} cannot be NULL or empty.", nameof(accessToken));
 
-            if (submissionUid == null)
-                throw new ArgumentNullException($"{nameof(submissionUid)} cannot be NULL.", nameof(submissionUid));
-            else if (string.IsNullOrWhiteSpace(submissionUid))
-                throw new ArgumentException($"{nameof(submissionUid)} cannot be empty.", nameof(submissionUid));
+            if (string.IsNullOrWhiteSpace(submissionUid))
+                throw new ArgumentException($"{nameof(submissionUid)} cannot be NULL or empty.", nameof(submissionUid));
 
             if (pageNo <= 0)
                 throw new ArgumentException($"{nameof(pageNo)} is invalid.", nameof(pageNo));
@@ -345,15 +318,11 @@ namespace EInvoiceUtils
         #region Get Document Details
         public async Task<GetDocumentDetailsResponse> GetDocumentDetails(string accessToken, string uuid)
         {
-            if (accessToken == null)
-                throw new ArgumentNullException($"{nameof(accessToken)} cannot be NULL.", nameof(accessToken));
-            else if (string.IsNullOrWhiteSpace(accessToken))
-                throw new ArgumentException($"{nameof(accessToken)} cannot be empty.", nameof(accessToken));
+            if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ArgumentException($"{nameof(accessToken)} cannot be NULL or empty.", nameof(accessToken));
 
-            if (uuid == null)
-                throw new ArgumentNullException($"{nameof(uuid)} cannot be NULL.", nameof(uuid));
-            else if (string.IsNullOrWhiteSpace(uuid))
-                throw new ArgumentException($"{nameof(uuid)} cannot be empty.", nameof(uuid));
+            if (string.IsNullOrWhiteSpace(uuid))
+                throw new ArgumentException($"{nameof(uuid)} cannot be NULL or empty.", nameof(uuid));
 
             GetDocumentDetailsResponse response;
 

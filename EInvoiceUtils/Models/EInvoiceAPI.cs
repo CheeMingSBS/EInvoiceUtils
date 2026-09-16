@@ -15,6 +15,10 @@ namespace EInvoiceUtils.Models
         [JsonPropertyName("propertyPath")]
         public string PropertyPath { get; set; }
 
+        /*
+         *  Used in error returned from:
+         *      - Get Document Details API for invalid validation steps.
+         */
         [JsonPropertyName("errorCode")]
         public string ErrorCode { get; set; }
 
@@ -24,6 +28,10 @@ namespace EInvoiceUtils.Models
         [JsonPropertyName("innerError")]
         public List<StandardError> InnerError { get; set; }
 
+        /*
+         *  Used in error returned from:
+         *      - Submit Documents API for rejected documents and duplicate submissions.
+         */
         [JsonPropertyName("code")]
         public string Code { get; set; }
 
