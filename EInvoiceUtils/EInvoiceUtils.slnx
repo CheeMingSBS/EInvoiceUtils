@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="../EInvoiceUtilsDemo/EInvoiceUtilsDemo.csproj" />
   <Project Path="../EInvoiceUtilsTest/EInvoiceUtilsTest.csproj" />
+  <Project Path="../EInvoiceUtilsWebDemo/EInvoiceUtilsWebDemo.csproj" Id="087a3d7b-6139-431e-93d7-455a49a0fdd2" />
   <Project Path="EInvoiceUtils.csproj" />
 </Solution>
