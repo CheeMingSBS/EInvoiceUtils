@@ -148,7 +148,7 @@ namespace EInvoiceUtils
         /// <exception cref="ArgumentException"/>
         public async Task<SubmitDocumentsResponse> SubmitDocuments(
             string accessToken,
-            SubmitDocumentFormat format,
+            DocumentFormat format,
             Dictionary<string, string> documents
         )
         {
@@ -165,7 +165,7 @@ namespace EInvoiceUtils
             {
                 foreach (string codeNumber in documents.Keys)
                 {
-                    if (format == SubmitDocumentFormat.XML)
+                    if (format == DocumentFormat.XML)
                     {
                         XmlDocument xml = new XmlDocument();
                         xml.PreserveWhitespace = false;

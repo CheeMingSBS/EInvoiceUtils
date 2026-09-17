@@ -1,6 +1,6 @@
 ﻿namespace EInvoiceUtils
 {
-    public enum SubmitDocumentFormat
+    public enum DocumentFormat
     {
         JSON = 01,
         XML = 02

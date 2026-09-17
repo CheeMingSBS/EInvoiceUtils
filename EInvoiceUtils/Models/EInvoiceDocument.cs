@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace EInvoiceUtils.Models
@@ -9,31 +10,33 @@ namespace EInvoiceUtils.Models
     public class EInvoiceDocument
     {
         // Universal Business Language (UBL) schema in XML namespace
-        private string _D = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2";
-        private string _A = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2";
-        private string _B = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2";
+        public string _D { get; } = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2";
+        public string _A { get; } = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2";
+        public string _B { get; } = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2";
 
-        public Invoice Invoice { get; set; }
+        public List<Invoice> Invoice { get; set; }
 
         public EInvoiceDocument(
             string id,
-            DateTime? issueDateTime,
+            DateTime? issueDateTime = null,
             InvoiceType type = InvoiceType.INVOICE,
             InvoiceVersion version = InvoiceVersion.V_1_0,
             CurrencyCode currencyCode = CurrencyCode.MALAYSIAN_RINGGIT
         )
         {
-            this.Invoice = new Invoice();
+            this.Invoice = new List<Invoice>() { new Invoice() };
+
             this.SetInvoiceID(id);
 
             if (issueDateTime == null)
                 issueDateTime = DateTime.Now;
 
             this.SetIssueDate(issueDateTime.Value);
-            this.SetIssueDate(issueDateTime.Value);
+            this.SetIssueTime(issueDateTime.Value);
             this.SetInvoiceTypeCode(type, version);
             this.SetDocumentCurrencyCode(currencyCode);
             this.SetTaxCurrencyCode(currencyCode);
+
         }
 
         #region e-Invoice Code / Number (Invoice\:ID)
@@ -42,10 +45,10 @@ namespace EInvoiceUtils.Models
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("E-Invoice Code / Number is invalid.", nameof(id));
 
-            if (this.Invoice.ID == null)
-                this.Invoice.ID = new List<InvoiceID>() { new InvoiceID() };
+            if (this.Invoice[0].ID == null)
+                this.Invoice[0].ID = new List<InvoiceID>() { new InvoiceID() };
 
-            this.Invoice.ID[0]._ = id;
+            this.Invoice[0].ID[0]._ = id;
         }
         #endregion
 
@@ -55,10 +58,10 @@ namespace EInvoiceUtils.Models
             if (string.IsNullOrWhiteSpace(date))
                 throw new ArgumentException("E-Invoice Date is invalid.", nameof(date));
 
-            if (this.Invoice.IssueDate == null)
-                this.Invoice.IssueDate = new List<IssueDate>() { new IssueDate() };
+            if (this.Invoice[0].IssueDate == null)
+                this.Invoice[0].IssueDate = new List<IssueDate>() { new IssueDate() };
 
-            this.Invoice.IssueDate[0]._ = date;
+            this.Invoice[0].IssueDate[0]._ = date;
         }
 
         public void SetIssueDate(DateTime date)
@@ -66,10 +69,10 @@ namespace EInvoiceUtils.Models
             if (date == null)
                 throw new ArgumentNullException("E-Invoice Date is invalid.", nameof(date));
 
-            if (this.Invoice.IssueDate == null)
-                this.Invoice.IssueDate = new List<IssueDate>() { new IssueDate() };
+            if (this.Invoice[0].IssueDate == null)
+                this.Invoice[0].IssueDate = new List<IssueDate>() { new IssueDate() };
 
-            this.Invoice.IssueDate[0]._ = date.ToUniversalTime().ToString("yyyy-MM-dd");
+            this.Invoice[0].IssueDate[0]._ = date.ToUniversalTime().ToString("yyyy-MM-dd");
         }
         #endregion
 
@@ -79,10 +82,10 @@ namespace EInvoiceUtils.Models
             if (string.IsNullOrWhiteSpace(time))
                 throw new ArgumentException("E-Invoice Time is invalid", nameof(time));
 
-            if (this.Invoice.IssueTime == null)
-                this.Invoice.IssueTime = new List<IssueTime>() { new IssueTime() };
+            if (this.Invoice[0].IssueTime == null)
+                this.Invoice[0].IssueTime = new List<IssueTime>() { new IssueTime() };
 
-            this.Invoice.IssueTime[0]._ = time;
+            this.Invoice[0].IssueTime[0]._ = time;
         }
 
         public void SetIssueTime(DateTime time)
@@ -90,10 +93,10 @@ namespace EInvoiceUtils.Models
             if (time == null)
                 throw new ArgumentNullException("E-Invoice Date is invalid.", nameof(time));
 
-            if (this.Invoice.IssueTime == null)
-                this.Invoice.IssueTime = new List<IssueTime>() { new IssueTime() };
+            if (this.Invoice[0].IssueTime == null)
+                this.Invoice[0].IssueTime = new List<IssueTime>() { new IssueTime() };
 
-            this.Invoice.IssueTime[0]._ = time.ToUniversalTime().ToString("HH:mm:ss") + "Z";
+            this.Invoice[0].IssueTime[0]._ = time.ToUniversalTime().ToString("HH:mm:ss") + "Z";
         }
         #endregion
 
@@ -106,11 +109,11 @@ namespace EInvoiceUtils.Models
             if (string.IsNullOrWhiteSpace(listVersionId))
                 throw new ArgumentException("E-Invoice Version is invalid", nameof(listVersionId));
 
-            if (this.Invoice.InvoiceTypeCode == null)
-                this.Invoice.InvoiceTypeCode = new List<InvoiceTypeCode>() { new InvoiceTypeCode() };
+            if (this.Invoice[0].InvoiceTypeCode == null)
+                this.Invoice[0].InvoiceTypeCode = new List<InvoiceTypeCode>() { new InvoiceTypeCode() };
 
-            this.Invoice.InvoiceTypeCode[0]._ = type;
-            this.Invoice.InvoiceTypeCode[0].ListVersionID = listVersionId;
+            this.Invoice[0].InvoiceTypeCode[0]._ = type;
+            this.Invoice[0].InvoiceTypeCode[0].ListVersionID = listVersionId;
         }
 
         public void SetInvoiceTypeCode(InvoiceType type, InvoiceVersion version)
@@ -132,11 +135,11 @@ namespace EInvoiceUtils.Models
                     break;
             }
 
-            if (this.Invoice.InvoiceTypeCode == null)
-                this.Invoice.InvoiceTypeCode = new List<InvoiceTypeCode>() { new InvoiceTypeCode() };
+            if (this.Invoice[0].InvoiceTypeCode == null)
+                this.Invoice[0].InvoiceTypeCode = new List<InvoiceTypeCode>() { new InvoiceTypeCode() };
 
-            this.Invoice.InvoiceTypeCode[0]._ = ((int)type).ToString().PadLeft(2, '0');
-            this.Invoice.InvoiceTypeCode[0].ListVersionID = listVersionId;
+            this.Invoice[0].InvoiceTypeCode[0]._ = ((int)type).ToString().PadLeft(2, '0');
+            this.Invoice[0].InvoiceTypeCode[0].ListVersionID = listVersionId;
         }
         #endregion
 
@@ -146,49 +149,49 @@ namespace EInvoiceUtils.Models
             if (string.IsNullOrWhiteSpace(currencyCode))
                 throw new ArgumentException("E-Invoice Currency Code is invalid", nameof(currencyCode));
 
-            if (this.Invoice.DocumentCurrencyCode == null)
-                this.Invoice.DocumentCurrencyCode = new List<DocumentCurrencyCode>() { new DocumentCurrencyCode() };
+            if (this.Invoice[0].DocumentCurrencyCode == null)
+                this.Invoice[0].DocumentCurrencyCode = new List<DocumentCurrencyCode>() { new DocumentCurrencyCode() };
 
-            this.Invoice.DocumentCurrencyCode[0]._ = currencyCode;
+            this.Invoice[0].DocumentCurrencyCode[0]._ = currencyCode;
         }
 
         public void SetDocumentCurrencyCode(CurrencyCode currencyCode)
         {
-            if (this.Invoice.DocumentCurrencyCode == null)
-                this.Invoice.DocumentCurrencyCode = new List<DocumentCurrencyCode>() { new DocumentCurrencyCode() };
+            if (this.Invoice[0].DocumentCurrencyCode == null)
+                this.Invoice[0].DocumentCurrencyCode = new List<DocumentCurrencyCode>() { new DocumentCurrencyCode() };
 
-            this.Invoice.DocumentCurrencyCode[0]._ = EnumUtils.ConvertCurrencyNameToCode(currencyCode);
+            this.Invoice[0].DocumentCurrencyCode[0]._ = EnumUtils.ConvertCurrencyNameToCode(currencyCode);
         }
         #endregion
 
         #region Invoice Currency Code (TaxCurrencyCode)
         public void SetTaxCurrencyCode(string currencyCode)
         {
-            if (this.Invoice.TaxCurrencyCode == null)
-                this.Invoice.TaxCurrencyCode = new List<TaxCurrencyCode>() { new TaxCurrencyCode() };
+            if (this.Invoice[0].TaxCurrencyCode == null)
+                this.Invoice[0].TaxCurrencyCode = new List<TaxCurrencyCode>() { new TaxCurrencyCode() };
 
-            this.Invoice.TaxCurrencyCode[0]._ = currencyCode;
+            this.Invoice[0].TaxCurrencyCode[0]._ = currencyCode;
         }
 
         public void SetTaxCurrencyCode(CurrencyCode? currencyCode)
         {
-            if (this.Invoice.TaxCurrencyCode == null)
-                this.Invoice.TaxCurrencyCode = new List<TaxCurrencyCode>() { new TaxCurrencyCode() };
+            if (this.Invoice[0].TaxCurrencyCode == null)
+                this.Invoice[0].TaxCurrencyCode = new List<TaxCurrencyCode>() { new TaxCurrencyCode() };
 
-            this.Invoice.TaxCurrencyCode[0]._ = EnumUtils.ConvertCurrencyNameToCode(currencyCode.Value);
+            this.Invoice[0].TaxCurrencyCode[0]._ = EnumUtils.ConvertCurrencyNameToCode(currencyCode.Value);
         }
 
         public void RemoveTaxCurrencyCode()
         {
-            if (this.Invoice.TaxCurrencyCode != null)
-                this.Invoice.TaxCurrencyCode = null;
+            if (this.Invoice[0].TaxCurrencyCode != null)
+                this.Invoice[0].TaxCurrencyCode = null;
         }
         #endregion
 
         #region Billing Period Start Date (StartDate)
         public void SetInvoicePeriodStartDate(string date)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod == null)
                 invoice.InvoicePeriod = new List<InvoicePeriod>() { new InvoicePeriod() };
@@ -204,7 +207,7 @@ namespace EInvoiceUtils.Models
 
         public void SetInvoicePeriodStartDate(DateTime date)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod == null)
                 invoice.InvoicePeriod = new List<InvoicePeriod>() { new InvoicePeriod() };
@@ -220,7 +223,7 @@ namespace EInvoiceUtils.Models
 
         public void RemoveInvoicePeriodStartDate()
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod != null && invoice.InvoicePeriod[0].StartDate != null)
             {
@@ -236,7 +239,7 @@ namespace EInvoiceUtils.Models
         #region Billing Period End Date (EndDate)
         public void SetInvoicePeriodEndDate(string date)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod == null)
                 invoice.InvoicePeriod = new List<InvoicePeriod>() { new InvoicePeriod() };
@@ -252,7 +255,7 @@ namespace EInvoiceUtils.Models
 
         public void SetInvoicePeriodEndDate(DateTime date)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod == null)
                 invoice.InvoicePeriod = new List<InvoicePeriod>() { new InvoicePeriod() };
@@ -268,7 +271,7 @@ namespace EInvoiceUtils.Models
 
         public void RemoveInvoicePeriodEndDate()
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod != null && invoice.InvoicePeriod[0].EndDate != null)
             {
@@ -284,7 +287,7 @@ namespace EInvoiceUtils.Models
         #region Frequency of Billing (Description)
         public void SetInvoicePeriodDescription(string description)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod == null)
                 invoice.InvoicePeriod = new List<InvoicePeriod>() { new InvoicePeriod() };
@@ -300,7 +303,7 @@ namespace EInvoiceUtils.Models
 
         public void RemoveInvoicePeriodDescription()
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.InvoicePeriod != null && invoice.InvoicePeriod[0].Description != null)
             {
@@ -316,7 +319,7 @@ namespace EInvoiceUtils.Models
         #region Bill Reference Number (BillingReference:AdditionalDocumentReference:ID)
         public void SetBillingReference(string id)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.BillingReference == null)
                 invoice.BillingReference = new List<BillingReference>() { new BillingReference() };
@@ -332,13 +335,13 @@ namespace EInvoiceUtils.Models
 
         public void RemoveBillingReference()
         {
-            if (this.Invoice.BillingReference != null)
-                this.Invoice.BillingReference = null;
+            if (this.Invoice[0].BillingReference != null)
+                this.Invoice[0].BillingReference = null;
         }
         #endregion
 
         #region Supplier (AccountingSupplierParty)
-        public void SetAccountingSupplierParty(AccountingPartyArgs args)
+        public void SetAccountingSupplierParty(AccountingSupplierPartyArgs args)
         {
             if (string.IsNullOrWhiteSpace(args.Name))
                 throw new ArgumentException("Supplier Name is invalid.", nameof(args.Name));
@@ -358,39 +361,37 @@ namespace EInvoiceUtils.Models
             if (string.IsNullOrWhiteSpace(args.ContactNumber))
                 throw new ArgumentException("Supplier Contact Number is invalid.", nameof(args.ContactNumber));
 
-            if (this.Invoice.AccountingSupplierParty == null)
-                this.Invoice.AccountingSupplierParty = new List<AccountingSupplierParty>() { new AccountingSupplierParty() };
+            if (this.Invoice[0].AccountingSupplierParty == null)
+                this.Invoice[0].AccountingSupplierParty = new List<AccountingSupplierParty>() { new AccountingSupplierParty() };
 
-            if (this.Invoice.AccountingSupplierParty[0].Party == null)
-                this.Invoice.AccountingSupplierParty[0].Party = new List<Party>() { new Party() };
+            if (this.Invoice[0].AccountingSupplierParty[0].Party == null)
+                this.Invoice[0].AccountingSupplierParty[0].Party = new List<Party>() { new Party() };
 
-            Party supplierParty = this.Invoice.AccountingSupplierParty[0].Party[0];
+            Party supplierParty = this.Invoice[0].AccountingSupplierParty[0].Party[0];
 
-            #region Supplier's MSIC Code (AccountingSupplierParty:Party:IndustrialClassificationCode)
-            if (supplierParty.IndustrialClassificationCode == null)
-                supplierParty.IndustrialClassificationCode = new List<IndustrialClassificationCode>() { new IndustrialClassificationCode() };
+            if (supplierParty.PartyLegalEntity == null)
+                supplierParty.PartyLegalEntity = new List<PartyLegalEntity>() { new PartyLegalEntity() { RegistrationName = new List<RegistrationName>() { new RegistrationName() { _ = args.Name } } } };
 
-            supplierParty.IndustrialClassificationCode[0]._ = ((int)args.MSIC).ToString().PadLeft(5, '0');
+            #region Supplier's MSIC Code (AccountingSupplierParty:Party:IndustryClassificationCode)
+            if (supplierParty.IndustryClassificationCode == null)
+                supplierParty.IndustryClassificationCode = new List<IndustryClassificationCode>() { new IndustryClassificationCode() };
+
+            supplierParty.IndustryClassificationCode[0]._ = ((int)args.MSIC).ToString().PadLeft(5, '0');
 
             if (!string.IsNullOrWhiteSpace(args.BusinessDescription))
-                supplierParty.IndustrialClassificationCode[0].Name = args.BusinessDescription;
+                supplierParty.IndustryClassificationCode[0].Name = args.BusinessDescription;
             else
-                supplierParty.IndustrialClassificationCode[0].Name = EnumUtils.ConvertMSICNameToDescription(args.MSIC);
+                supplierParty.IndustryClassificationCode[0].Name = EnumUtils.ConvertMSICNameToDescription(args.MSIC);
             #endregion
 
             #region Supplier's Registration / Identification Number / Passport Number (AccountingSupplierParty:Party:PartyIdentification)
             if (supplierParty.PartyIdentification == null)
-                supplierParty.PartyIdentification = new List<PartyIdentification>() { new PartyIdentification() };
+                supplierParty.PartyIdentification = new List<PartyIdentification>();
 
-            PartyIdentification supplierPartyIdentification = supplierParty.PartyIdentification[0];
-
-            if (supplierPartyIdentification.ID == null)
-                supplierPartyIdentification.ID = new List<PartyIdentificationID>();
-
-            supplierPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.TIN, SchemeID = "TIN" });
-            supplierPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.ID, SchemeID = args.IDType.ToString() });
-            supplierPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.SST, SchemeID = "SST" });
-            supplierPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.TTX, SchemeID = "TTX" });
+            supplierParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.TIN, SchemeID = "TIN" } } });
+            supplierParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.ID, SchemeID = args.IDType.ToString() } } });
+            supplierParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.SST, SchemeID = "SST" } } });
+            supplierParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.TTX, SchemeID = "TTX" } } });
             #endregion
 
             #region Supplier's Address (AccountingSupplierParty:Party:Address)
@@ -454,7 +455,7 @@ namespace EInvoiceUtils.Models
 
             #region Supplier's Contact Number (AccountingSupplierParty:Party:Contact)
             if (supplierParty.Contact == null)
-                supplierParty.Contact = new List<Contact>() { new Contact() { Telephone = new List<Telephone>() } };
+                supplierParty.Contact = new List<Contact>() { new Contact() { Telephone = new List<Telephone>() { new Telephone() } } };
 
             supplierParty.Contact[0].Telephone[0]._ = args.ContactNumber;
 
@@ -470,31 +471,31 @@ namespace EInvoiceUtils.Models
 
         public void RemoveAccountingSupplierPartyAddressLine2()
         {
-            if (this.Invoice.AccountingSupplierParty != null && this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count > 1)
-                this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(1, this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
+            if (this.Invoice[0].AccountingSupplierParty != null && this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count > 1)
+                this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(1, this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
         }
 
         public void RemoveAccountingSupplierPartyAddressLine3()
         {
-            if (this.Invoice.AccountingSupplierParty != null && this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count > 2)
-                this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(2, this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
+            if (this.Invoice[0].AccountingSupplierParty != null && this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count > 2)
+                this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(2, this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
         }
 
         public void RemoveAccountingSupplierPartyPostalZone()
         {
-            if (this.Invoice.AccountingSupplierParty != null && this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].PostalZone != null)
-                this.Invoice.AccountingSupplierParty[0].Party[0].PostalAddress[0].PostalZone = null;
+            if (this.Invoice[0].AccountingSupplierParty != null && this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].PostalZone != null)
+                this.Invoice[0].AccountingSupplierParty[0].Party[0].PostalAddress[0].PostalZone = null;
         }
 
         public void RemoveAccountingSupplierPartyEmail()
         {
-            if (this.Invoice.AccountingSupplierParty != null && this.Invoice.AccountingSupplierParty[0].Party[0].Contact[0].ElectronicMail != null)
-                this.Invoice.AccountingSupplierParty[0].Party[0].Contact[0].ElectronicMail = null;
+            if (this.Invoice[0].AccountingSupplierParty != null && this.Invoice[0].AccountingSupplierParty[0].Party[0].Contact[0].ElectronicMail != null)
+                this.Invoice[0].AccountingSupplierParty[0].Party[0].Contact[0].ElectronicMail = null;
         }
         #endregion
 
         #region Buyer (AccountingCustomerParty)
-        public void SetAccountingCustomerParty(AccountingPartyArgs args)
+        public void SetAccountingCustomerParty(AccountingCustomerPartyArgs args)
         {
             if (string.IsNullOrWhiteSpace(args.Name))
                 throw new ArgumentException("Buyer Name is invalid.", nameof(args.Name));
@@ -514,39 +515,25 @@ namespace EInvoiceUtils.Models
             if (string.IsNullOrWhiteSpace(args.ContactNumber))
                 throw new ArgumentException("Buyer Contact Number is invalid.", nameof(args.ContactNumber));
 
-            if (this.Invoice.AccountingCustomerParty == null)
-                this.Invoice.AccountingCustomerParty = new List<AccountingCustomerParty>() { new AccountingCustomerParty() };
+            if (this.Invoice[0].AccountingCustomerParty == null)
+                this.Invoice[0].AccountingCustomerParty = new List<AccountingCustomerParty>() { new AccountingCustomerParty() };
 
-            if (this.Invoice.AccountingCustomerParty[0].Party == null)
-                this.Invoice.AccountingCustomerParty[0].Party = new List<Party>() { new Party() };
+            if (this.Invoice[0].AccountingCustomerParty[0].Party == null)
+                this.Invoice[0].AccountingCustomerParty[0].Party = new List<Party>() { new Party() };
 
-            Party buyerParty = this.Invoice.AccountingCustomerParty[0].Party[0];
+            Party buyerParty = this.Invoice[0].AccountingCustomerParty[0].Party[0];
 
-            #region Buyer's MSIC Code (AccountingCustomerParty:Party:IndustrialClassificationCode)
-            if (buyerParty.IndustrialClassificationCode == null)
-                buyerParty.IndustrialClassificationCode = new List<IndustrialClassificationCode>() { new IndustrialClassificationCode() };
-
-            buyerParty.IndustrialClassificationCode[0]._ = ((int)args.MSIC).ToString().PadLeft(5, '0');
-
-            if (!string.IsNullOrWhiteSpace(args.BusinessDescription))
-                buyerParty.IndustrialClassificationCode[0].Name = args.BusinessDescription;
-            else
-                buyerParty.IndustrialClassificationCode[0].Name = EnumUtils.ConvertMSICNameToDescription(args.MSIC);
-            #endregion
+            if (buyerParty.PartyLegalEntity == null)
+                buyerParty.PartyLegalEntity = new List<PartyLegalEntity>() { new PartyLegalEntity() { RegistrationName = new List<RegistrationName>() { new RegistrationName() { _ = args.Name } } } };
 
             #region Buyer's Registration / Identification Number / Passport Number (AccountingCustomerParty:Party:PartyIdentification)
             if (buyerParty.PartyIdentification == null)
-                buyerParty.PartyIdentification = new List<PartyIdentification>() { new PartyIdentification() };
+                buyerParty.PartyIdentification = new List<PartyIdentification>();
 
-            PartyIdentification buyerPartyIdentification = buyerParty.PartyIdentification[0];
-
-            if (buyerPartyIdentification.ID == null)
-                buyerPartyIdentification.ID = new List<PartyIdentificationID>();
-
-            buyerPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.TIN, SchemeID = "TIN" });
-            buyerPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.ID, SchemeID = args.IDType.ToString() });
-            buyerPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.SST, SchemeID = "SST" });
-            buyerPartyIdentification.ID.Add(new PartyIdentificationID() { _ = args.TTX, SchemeID = "TTX" });
+            buyerParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.TIN, SchemeID = "TIN" } } });
+            buyerParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.ID, SchemeID = args.IDType.ToString() } } });
+            buyerParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.SST, SchemeID = "SST" } } });
+            buyerParty.PartyIdentification.Add(new PartyIdentification() { ID = new List<PartyIdentificationID>() { new PartyIdentificationID() { _ = args.TTX, SchemeID = "TTX" } } });
             #endregion
 
             #region Buyer's Address (AccountingCustomerParty:Party:Address)
@@ -610,7 +597,7 @@ namespace EInvoiceUtils.Models
 
             #region Buyer's Contact Number (AccountingCustomerParty:Party:Contact)
             if (buyerParty.Contact == null)
-                buyerParty.Contact = new List<Contact>() { new Contact() { Telephone = new List<Telephone>() } };
+                buyerParty.Contact = new List<Contact>() { new Contact() { Telephone = new List<Telephone>() { new Telephone() } } };
 
             buyerParty.Contact[0].Telephone[0]._ = args.ContactNumber;
 
@@ -626,33 +613,33 @@ namespace EInvoiceUtils.Models
 
         public void RemoveAccountingCustomerPartyAddressLine2()
         {
-            if (this.Invoice.AccountingCustomerParty != null && this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count > 1)
-                this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(1, this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
+            if (this.Invoice[0].AccountingCustomerParty != null && this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count > 1)
+                this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(1, this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
         }
 
         public void RemoveAccountingCustomerPartyAddressLine3()
         {
-            if (this.Invoice.AccountingCustomerParty != null && this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count > 2)
-                this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(2, this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
+            if (this.Invoice[0].AccountingCustomerParty != null && this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count > 2)
+                this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.RemoveRange(2, this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].AddressLine.Count - 1);
         }
 
         public void RemoveAccountingCustomerPartyPostalZone()
         {
-            if (this.Invoice.AccountingCustomerParty != null && this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].PostalZone != null)
-                this.Invoice.AccountingCustomerParty[0].Party[0].PostalAddress[0].PostalZone = null;
+            if (this.Invoice[0].AccountingCustomerParty != null && this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].PostalZone != null)
+                this.Invoice[0].AccountingCustomerParty[0].Party[0].PostalAddress[0].PostalZone = null;
         }
 
         public void RemoveAccountingCustomerPartyEmail()
         {
-            if (this.Invoice.AccountingCustomerParty != null && this.Invoice.AccountingCustomerParty[0].Party[0].Contact[0].ElectronicMail != null)
-                this.Invoice.AccountingCustomerParty[0].Party[0].Contact[0].ElectronicMail = null;
+            if (this.Invoice[0].AccountingCustomerParty != null && this.Invoice[0].AccountingCustomerParty[0].Party[0].Contact[0].ElectronicMail != null)
+                this.Invoice[0].AccountingCustomerParty[0].Party[0].Contact[0].ElectronicMail = null;
         }
         #endregion
 
         #region Total Excluding Tax (TaxExclusiveAmount)
         private void CalculateTaxExclusiveAmount()
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.LegalMonetaryTotal == null)
                 invoice.LegalMonetaryTotal = new List<LegalMonetaryTotal>() { new LegalMonetaryTotal() };
@@ -674,7 +661,7 @@ namespace EInvoiceUtils.Models
         #region Total Including Tax (TaxInclusiveAmount)
         private void CalculateTaxInclusiveAmount()
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.LegalMonetaryTotal == null)
                 invoice.LegalMonetaryTotal = new List<LegalMonetaryTotal>() { new LegalMonetaryTotal() };
@@ -695,7 +682,7 @@ namespace EInvoiceUtils.Models
         #region Total Payable Amount (PayableAmount)
         private void CalculatePayableAmount()
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.LegalMonetaryTotal == null)
                 invoice.LegalMonetaryTotal = new List<LegalMonetaryTotal>() { new LegalMonetaryTotal() };
@@ -717,7 +704,7 @@ namespace EInvoiceUtils.Models
         #region Total Net Amount (Invoice:LegalMonetaryTotal:LineExtensionAmount)
         private void AddTotalNetAmount(decimal amount)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.LegalMonetaryTotal == null)
                 invoice.LegalMonetaryTotal = new List<LegalMonetaryTotal>() { new LegalMonetaryTotal() };
@@ -733,15 +720,15 @@ namespace EInvoiceUtils.Models
 
         public void RemoveTotalNetAmount()
         {
-            if (this.Invoice.LegalMonetaryTotal != null && this.Invoice.LegalMonetaryTotal[0].LineExtensionAmount != null)
-                this.Invoice.LegalMonetaryTotal[0].LineExtensionAmount = null;
+            if (this.Invoice[0].LegalMonetaryTotal != null && this.Invoice[0].LegalMonetaryTotal[0].LineExtensionAmount != null)
+                this.Invoice[0].LegalMonetaryTotal[0].LineExtensionAmount = null;
         }
         #endregion
 
         #region Total Discount Value (AllowanceTotalAmount)
         public void AddAllowanceTotalAmount(decimal amount)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.LegalMonetaryTotal == null)
                 invoice.LegalMonetaryTotal = new List<LegalMonetaryTotal>() { new LegalMonetaryTotal() };
@@ -757,15 +744,15 @@ namespace EInvoiceUtils.Models
 
         public void RemoveAllowanceTotalAmount()
         {
-            if (this.Invoice.LegalMonetaryTotal != null && this.Invoice.LegalMonetaryTotal[0].AllowanceTotalAmount != null)
-                this.Invoice.LegalMonetaryTotal[0].AllowanceTotalAmount = null;
+            if (this.Invoice[0].LegalMonetaryTotal != null && this.Invoice[0].LegalMonetaryTotal[0].AllowanceTotalAmount != null)
+                this.Invoice[0].LegalMonetaryTotal[0].AllowanceTotalAmount = null;
         }
         #endregion
 
         #region Total Fee / Charge Amount (ChargeTotalAmount)
         public void AddChargeTotalAmount(decimal amount)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.LegalMonetaryTotal == null)
                 invoice.LegalMonetaryTotal = new List<LegalMonetaryTotal>() { new LegalMonetaryTotal() };
@@ -781,15 +768,15 @@ namespace EInvoiceUtils.Models
 
         public void RemoveChargeTotalAmount()
         {
-            if (this.Invoice.LegalMonetaryTotal != null && this.Invoice.LegalMonetaryTotal[0].ChargeTotalAmount != null)
-                this.Invoice.LegalMonetaryTotal[0].ChargeTotalAmount = null;
+            if (this.Invoice[0].LegalMonetaryTotal != null && this.Invoice[0].LegalMonetaryTotal[0].ChargeTotalAmount != null)
+                this.Invoice[0].LegalMonetaryTotal[0].ChargeTotalAmount = null;
         }
         #endregion
 
         #region Total Tax Amount (TaxAmount)
         private void CalculateTaxAmount()
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.TaxTotal == null)
                 invoice.TaxTotal = new List<TaxTotal>() { new TaxTotal() };
@@ -816,7 +803,7 @@ namespace EInvoiceUtils.Models
         #region Rounding Amount (PayableRoundingAmount)
         public void SetPayableRoundingAmount(decimal amount)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.LegalMonetaryTotal == null)
                 invoice.LegalMonetaryTotal = new List<LegalMonetaryTotal>() { new LegalMonetaryTotal() };
@@ -832,29 +819,29 @@ namespace EInvoiceUtils.Models
 
         public void RemovePayableRoundingAmount()
         {
-            if (this.Invoice.LegalMonetaryTotal != null && this.Invoice.LegalMonetaryTotal[0].PayableRoundingAmount != null)
-                this.Invoice.LegalMonetaryTotal[0].PayableRoundingAmount = null;
+            if (this.Invoice[0].LegalMonetaryTotal != null && this.Invoice[0].LegalMonetaryTotal[0].PayableRoundingAmount != null)
+                this.Invoice[0].LegalMonetaryTotal[0].PayableRoundingAmount = null;
         }
         #endregion
 
         #region Total Taxable Amount Per Tax Type, Tax Type (Invoice:TaxTotal:TaxSubtotal)
         public void AddTaxSubtotal(decimal taxAmount, decimal taxableAmount, TaxType taxType)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
             string type = EnumUtils.ConvertTaxTypeToString(taxType);
-            string currencyId = this.Invoice.DocumentCurrencyCode[0]._;
+            string currencyId = this.Invoice[0].DocumentCurrencyCode[0]._;
 
             if (invoice.TaxTotal == null)
                 invoice.TaxTotal = new List<TaxTotal>() { new TaxTotal() };
 
             if (invoice.TaxTotal[0].TaxSubtotal == null)
-                invoice.TaxTotal[0].TaxSubtotal = new List<TaxSubtotal> { new TaxSubtotal() };
+                invoice.TaxTotal[0].TaxSubtotal = new List<TaxSubtotal>();
 
             TaxSubtotal subtotal = invoice.TaxTotal[0].TaxSubtotal.Find(match => match.TaxCategory != null && match.TaxCategory[0].ID[0]._ == type);
 
             if (subtotal == null)
             {
-                TaxSubtotal newSubtotal = new TaxSubtotal()
+                subtotal = new TaxSubtotal()
                 {
                     TaxAmount = new List<TaxAmount>() { new TaxAmount() { _ = taxAmount, CurrencyID = currencyId } },
                     TaxCategory = new List<TaxCategory>()
@@ -868,7 +855,7 @@ namespace EInvoiceUtils.Models
                     TaxableAmount = new List<TaxableAmount>() { new TaxableAmount() { _ = taxableAmount, CurrencyID = currencyId } }
                 };
 
-                invoice.TaxTotal[0].TaxSubtotal.Add(newSubtotal);
+                invoice.TaxTotal[0].TaxSubtotal.Add(subtotal);
             }
             else
             {
@@ -885,9 +872,9 @@ namespace EInvoiceUtils.Models
         {
             string type = EnumUtils.ConvertTaxTypeToString(taxType);
 
-            if (this.Invoice.TaxTotal != null && this.Invoice.TaxTotal[0].TaxSubtotal != null)
+            if (this.Invoice[0].TaxTotal != null && this.Invoice[0].TaxTotal[0].TaxSubtotal != null)
             {
-                TaxSubtotal subtotal = this.Invoice.TaxTotal[0].TaxSubtotal.Find(match => match.TaxCategory != null && match.TaxCategory[0].ID[0]._ == type);
+                TaxSubtotal subtotal = this.Invoice[0].TaxTotal[0].TaxSubtotal.Find(match => match.TaxCategory != null && match.TaxCategory[0].ID[0]._ == type);
 
                 if (subtotal != null && subtotal.TaxableAmount != null)
                     subtotal.TaxableAmount = null;
@@ -898,7 +885,7 @@ namespace EInvoiceUtils.Models
         #region Invoice Additional Discount / Fee Amount (Invoice:AllowanceCharge)
         public void AddAllowanceCharge(bool additionalCharge, decimal amount, string reason)
         {
-            Invoice invoice = this.Invoice;
+            Invoice invoice = this.Invoice[0];
 
             if (invoice.AllowanceCharge == null)
                 invoice.AllowanceCharge = new List<AllowanceCharge>() { new AllowanceCharge() { } };
@@ -957,7 +944,7 @@ namespace EInvoiceUtils.Models
             if (args.TaxSubtotal.Count == 0)
                 throw new ArgumentException("Invoice Line must have at least one TaxSubtotal", nameof(args.TaxSubtotal));
 
-            string currencyId = this.Invoice.DocumentCurrencyCode[0]._;
+            string currencyId = this.Invoice[0].DocumentCurrencyCode[0]._;
 
             InvoiceLineID id = new InvoiceLineID() { _ = args.ID };
 
@@ -1029,7 +1016,14 @@ namespace EInvoiceUtils.Models
                 }
 
                 newTaxSubtotal.TaxAmount = new List<TaxAmount>() { new TaxAmount() { _ = input.TaxAmount, CurrencyID = currencyId } };
+                taxAmount += input.TaxAmount;
                 taxSubtotal.Add(newTaxSubtotal);
+
+                this.AddTaxSubtotal(
+                    taxAmount: newTaxSubtotal.TaxAmount[0]._,
+                    taxableAmount: newTaxSubtotal.TaxableAmount[0]._,
+                    taxType: newTaxSubtotal.TaxCategory[0].ID[0]._ == "E" ? TaxType.TAX_EXEMPTION : (TaxType)int.Parse(newTaxSubtotal.TaxCategory[0].ID[0]._)
+                );
             }
 
             ItemPriceExtension subtotal = new ItemPriceExtension()
@@ -1045,6 +1039,7 @@ namespace EInvoiceUtils.Models
             };
 
             LineExtensionAmount totalExcludingTax = new LineExtensionAmount() { _ = subtotal.Amount[0]._, CurrencyID = currencyId };
+            this.AddTotalNetAmount(subtotal.Amount[0]._);
 
             InvoiceLine invoiceLine = new InvoiceLine()
             {
@@ -1086,7 +1081,7 @@ namespace EInvoiceUtils.Models
 
                     if (discountArgs.DiscountRate != null)
                     {
-                        discount.MultiplierFactorNumeric = new List<MultiplierFactorNumeric>() { new MultiplierFactorNumeric() { _ = discountArgs.DiscountRate.Value } }
+                        discount.MultiplierFactorNumeric = new List<MultiplierFactorNumeric>() { new MultiplierFactorNumeric() { _ = discountArgs.DiscountRate.Value } };
                         hasDiscount = true;
                     }
 
@@ -1104,6 +1099,12 @@ namespace EInvoiceUtils.Models
 
                         invoiceLine.AllowanceCharge.Add(discount);
                         invoiceLine.ItemPriceExtension[0].Amount[0]._ -= discountArgs.DiscountAmount.GetValueOrDefault();
+
+                        this.AddAllowanceCharge(
+                            additionalCharge: false,
+                            amount: discount.Amount[0]._,
+                            reason: discount.AllowanceChargeReason[0]._
+                        );
                     }
                 }
             }
@@ -1120,7 +1121,7 @@ namespace EInvoiceUtils.Models
 
                     if (chargeArgs.ChargeRate != null)
                     {
-                        charge.MultiplierFactorNumeric = new List<MultiplierFactorNumeric>() { new MultiplierFactorNumeric() { _ = chargeArgs.ChargeRate.Value } }
+                        charge.MultiplierFactorNumeric = new List<MultiplierFactorNumeric>() { new MultiplierFactorNumeric() { _ = chargeArgs.ChargeRate.Value } };
                         hasCharge = true;
                     }
 
@@ -1138,6 +1139,12 @@ namespace EInvoiceUtils.Models
 
                         invoiceLine.AllowanceCharge.Add(charge);
                         invoiceLine.ItemPriceExtension[0].Amount[0]._ += chargeArgs.ChargeAmount.GetValueOrDefault();
+
+                        this.AddAllowanceCharge(
+                            additionalCharge: true,
+                            amount: charge.Amount[0]._,
+                            reason: charge.AllowanceChargeReason[0]._
+                        );
                     }
                 }
             }
@@ -1171,31 +1178,34 @@ namespace EInvoiceUtils.Models
                 };
             }
 
-            if (this.Invoice.InvoiceLine == null)
-                this.Invoice.InvoiceLine = new List<InvoiceLine>();
+            if (this.Invoice[0].InvoiceLine == null)
+                this.Invoice[0].InvoiceLine = new List<InvoiceLine>();
 
-            this.Invoice.InvoiceLine.Add(invoiceLine);
-            this.AddTotalNetAmount(invoiceLine.LineExtensionAmount[0]._);
-
-            foreach (TaxSubtotal invoiceLineSubtotal in invoiceLine.TaxTotal[0].TaxSubtotal)
-            {
-                this.AddTaxSubtotal(
-                    taxAmount: invoiceLineSubtotal.TaxAmount[0]._,
-                    taxableAmount: invoiceLineSubtotal.TaxableAmount[0]._,
-                    taxType: invoiceLineSubtotal.TaxCategory[0].ID[0]._ == "E" ? TaxType.TAX_EXEMPTION : (TaxType)int.Parse(invoiceLineSubtotal.TaxCategory[0].ID[0]._)
-                );
-            }
-
-            foreach (AllowanceCharge allowanceCharge in invoiceLine.AllowanceCharge)
-            {
-                this.AddAllowanceCharge(
-                    additionalCharge: allowanceCharge.ChargeIndicator[0]._,
-                    amount: allowanceCharge.Amount[0]._,
-                    reason: allowanceCharge.AllowanceChargeReason[0]._
-                );
-            }
+            this.Invoice[0].InvoiceLine.Add(invoiceLine);
         }
         #endregion
+
+        public string Export(DocumentFormat format, bool indented = false)
+        {
+            this.CalculateTaxExclusiveAmount();
+            this.CalculateTaxInclusiveAmount();
+            this.CalculatePayableAmount();
+            this.CalculateTaxAmount();
+
+            switch (format)
+            {
+                default:
+                    JsonSerializerOptions options = new JsonSerializerOptions()
+                    {
+                        WriteIndented = indented,
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                    };
+                    options.Converters.Add(new TaxSubtotalListConverter());
+                    options.Converters.Add(new AllowanceChargeListConverter());
+
+                    return JsonSerializer.Serialize(this, options);
+            }
+        }
     }
 
     #region E-Invoice Document Model
@@ -1322,14 +1332,14 @@ namespace EInvoiceUtils.Models
 
     public class Party
     {
-        public List<IndustrialClassificationCode> IndustrialClassificationCode { get; set; }
+        public List<IndustryClassificationCode> IndustryClassificationCode { get; set; }
         public List<PartyIdentification> PartyIdentification { get; set; }
         public List<PostalAddress> PostalAddress { get; set; }
         public List<PartyLegalEntity> PartyLegalEntity { get; set; }
         public List<Contact> Contact { get; set; }
     }
 
-    public class IndustrialClassificationCode
+    public class IndustryClassificationCode
     {
         public string _ { get; set; }
 
@@ -1459,7 +1469,7 @@ namespace EInvoiceUtils.Models
 
     public class ChargeIndicator
     {
-        public bool _;
+        public bool _ { get; set; }
     }
 
     public class AllowanceChargeReason
@@ -1469,9 +1479,9 @@ namespace EInvoiceUtils.Models
 
     public class Amount
     {
-        public decimal _;
+        public decimal _ { get; set; }
 
-        [JsonPropertyName("CurrencyID")]
+        [JsonPropertyName("currencyID")]
         public string CurrencyID { get; set; }
     }
 
@@ -1560,7 +1570,7 @@ namespace EInvoiceUtils.Models
 
     public class TaxAmount
     {
-        public decimal _ = 0.0m;
+        public decimal _ { get; set; } = 0.0m;
 
         [JsonPropertyName("currencyID")]
         public string CurrencyID { get; set; }
@@ -1578,7 +1588,7 @@ namespace EInvoiceUtils.Models
 
     public class TaxableAmount
     {
-        public decimal _;
+        public decimal _ { get; set; }
 
         [JsonPropertyName("currencyID")]
         public string CurrencyID { get; set; }
@@ -1707,6 +1717,7 @@ namespace EInvoiceUtils.Models
 
     public class InvoiceLine
     {
+        [JsonPropertyName("ID")]
         public List<InvoiceLineID> InvoiceLineID { get; set; }
         public List<InvoicedQuantity> InvoicedQuantity { get; set; }
         public List<LineExtensionAmount> LineExtensionAmount { get; set; }
@@ -1777,6 +1788,7 @@ namespace EInvoiceUtils.Models
     }
     #endregion
 
+    #region Method parameters
     public class AccountingPartyArgs
     {
         public string Name { get; set; }
@@ -1785,8 +1797,6 @@ namespace EInvoiceUtils.Models
         public string ID { get; set; }
         public string SST { get; set; } = "NA";
         public string TTX { get; set; } = "NA";
-        public MSIC MSIC { get; set; }
-        public string BusinessDescription { get; set; }
         public string AddressLine0 { get; set; } = "NA";
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
@@ -1797,14 +1807,13 @@ namespace EInvoiceUtils.Models
         public string ContactNumber { get; set; }
         public string Email { get; set; }
 
-        private AccountingPartyArgs() { }
+        protected AccountingPartyArgs() { }
 
-        public AccountingPartyArgs(
+        protected AccountingPartyArgs(
             string name,
             string tin,
             TaxpayerType idType,
             string id,
-            MSIC msic,
             string cityName,
             State state,
             CountryCode country,
@@ -1815,12 +1824,50 @@ namespace EInvoiceUtils.Models
             this.TIN = tin;
             this.IDType = idType;
             this.ID = id;
-            this.MSIC = msic;
             this.CityName = cityName;
             this.State = state;
             this.Country = country;
             this.ContactNumber = contactNumber;
         }
+    }
+
+    public class AccountingSupplierPartyArgs : AccountingPartyArgs
+    {
+        public MSIC MSIC { get; set; }
+        public string BusinessDescription { get; set; }
+
+        private AccountingSupplierPartyArgs() { }
+
+        public AccountingSupplierPartyArgs(
+            string name,
+            string tin,
+            TaxpayerType idType,
+            string id,
+            MSIC msic,
+            string cityName,
+            State state,
+            CountryCode country,
+            string contactNumber
+        ) : base(name, tin, idType, id, cityName, state, country, contactNumber)
+        {
+            this.MSIC = msic;
+        }
+    }
+
+    public class AccountingCustomerPartyArgs : AccountingPartyArgs
+    {
+        private AccountingCustomerPartyArgs() { }
+
+        public AccountingCustomerPartyArgs(
+            string name,
+            string tin,
+            TaxpayerType idType,
+            string id,
+            string cityName,
+            State state,
+            CountryCode country,
+            string contactNumber
+        ) : base(name, tin, idType, id, cityName, state, country, contactNumber) { }
     }
 
     public class InvoiceLineArgs
@@ -1844,7 +1891,6 @@ namespace EInvoiceUtils.Models
             ClassificationCode classificationCode,
             string description,
             decimal unitPrice,
-            decimal totalExcludingTax,
             List<InvoiceLineTaxSubtotalArgs> taxSubtotal
         )
         {
@@ -1890,4 +1936,5 @@ namespace EInvoiceUtils.Models
         public decimal? ChargeAmount { get; set; }
         public string ChargeReason { get; set; }
     }
+    #endregion
 }

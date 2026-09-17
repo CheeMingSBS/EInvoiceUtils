@@ -71,7 +71,7 @@ namespace EInvoiceUtilsTest
 
             SubmitDocumentsResponse response = await client.SubmitDocuments(
                                                 this.accessToken,
-                                                SubmitDocumentFormat.XML,
+                                                DocumentFormat.XML,
                                                 new Dictionary<string, string>()
                                                 {
                                                     { "INV00001", File.ReadAllText(config[INVOICE_XML]!) }
@@ -93,7 +93,7 @@ namespace EInvoiceUtilsTest
 
             SubmitDocumentsResponse response = await client.SubmitDocuments(
                                                 this.accessToken,
-                                                SubmitDocumentFormat.XML,
+                                                DocumentFormat.XML,
                                                 new Dictionary<string, string>()
                                                 {
                                                     { "INV00001", File.ReadAllText(config[INVOICE_XML]!) }
@@ -102,7 +102,7 @@ namespace EInvoiceUtilsTest
 
             response = await client.SubmitDocuments(
                                 this.accessToken,
-                                SubmitDocumentFormat.XML,
+                                DocumentFormat.XML,
                                 new Dictionary<string, string>()
                                 {
                                     { "INV00001", File.ReadAllText(config[INVOICE_XML]!) }
