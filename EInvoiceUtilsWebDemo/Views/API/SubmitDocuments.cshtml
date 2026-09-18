@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Submit Documents";
+}
+
+<h1>Submit Documents</h1>
+<div class="flex-grow-1 d-flex gap-4">
+    <div class="flex-grow-1 d-flex flex-column gap-4">
+        <form id="form">
+            <div class="d-flex flex-column gap-3">
+                <div>
+                    <label for="reference-no">Reference No</label>
+                    <input type="text" class="form-control" id="reference-no" value="INV12345" />
+                </div>
+                <div>
+                    <label for="format">Document format</label>
+                    <select class="form-select" id="format">
+                        <option value="JSON" selected>JSON</option>
+                        <option value="XML">XML</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="file">Upload document</label>
+                    <input type="file" class="form-control" id="file" />
+                </div>
+                <div class="d-flex gap-3 align-items-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div id="result" class="fw-bold"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="flex-grow-1 d-flex flex-column">
+        <textarea class="form-control flex-grow-1" readonly id="output"></textarea>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $("#form").on("submit", (e) => {
+        e.preventDefault();
+
+        const fileInput = $("#file");
+
+        if (fileInput.length === 0 || fileInput[0].files.length === 0)
+            return;
+
+        const file = fileInput[0].files[0];
+        const formData = new FormData();
+
+        formData.append('referenceNo', $("#reference-no").val())
+        formData.append('format', $("#format").val())
+        formData.append('file', file);
+
+        $.ajax({
+            url: '@Url.Action("SubmitDocuments")',
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data, textStatus, jqXHR) {
+                $("#output").val(JSON.stringify(data, null, 2));
+
+                if (jqXHR.status == 200)
+                    $("#result").text("Success! ✅")
+                else
+                    $("#result").text("Failed! ❌")
+            }
+        });
+    });
+</script>

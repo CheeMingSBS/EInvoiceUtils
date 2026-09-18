@@ -1,31 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Validate Taxpayer TIN";
+    ViewData["Title"] = "Get Submission";
 }
 
-<h1>Validate Taxpayer TIN</h1>
+<h1>Get Submission</h1>
 <div class="flex-grow-1 d-flex gap-4">
     <div class="flex-grow-1 d-flex flex-column gap-4">
         <form id="form">
             <div class="d-flex flex-column gap-3">
                 <div>
-                    <label for="tin">TIN</label>
-                    <input type="text" class="form-control" id="tin" value="IG28566784100" />
-                </div>
-                <div>
-                    <label for="idType">ID Type</label>
-                    <select class="form-select" id="idType">
-                        <option value="NRIC" selected>NRIC</option>
-                        <option value="BRN">BRN</option>
-                        <option value="ARMY">ARMY</option>
-                        <option value="PASSPORT">PASSPORT</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="id">ID</label>
-                    <input type="text" class="form-control" id="id" value="980427145943" />
+                    <label for="submissionUid">Submission UID</label>
+                    <input type="text" class="form-control" id="submissionUid" value="ZN1JNBSKCSXFBNFTD78CZR2M10" />
                 </div>
                 <div class="d-flex gap-3 align-items-center">
-                    <button type="submit" class="btn btn-primary">Validate</button>
+                    <button type="submit" class="btn btn-primary">Retrieve</button>
                     <div id="result" class="fw-bold"></div>
                 </div>
             </div>
@@ -42,12 +29,10 @@
         e.preventDefault();
 
         $.ajax({
-            url: '@Url.Action("ValidateTaxpayerTIN")',
+            url: '@Url.Action("GetSubmission")',
             method: "POST",
             data: {
-                idType: $("#idType").val(),
-                tin: $("#tin").val(),
-                id: $("#id").val()
+                submissionUid: $("#submissionUid").val(),
             },
             success: function(data, textStatus, jqXHR) {
                 $("#output").val(JSON.stringify(data, null, 2));
