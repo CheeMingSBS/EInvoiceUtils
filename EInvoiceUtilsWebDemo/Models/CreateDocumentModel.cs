@@ -12,13 +12,14 @@ namespace EInvoiceUtilsWebDemo.Models
     {
         public string name { get; set; }
         public string tin { get; set; }
-        public string idType { get; set; }
+        public int idType { get; set; }
         public string id { get; set; }
         public string businessDesc { get; set; }
         public string address0 { get; set; }
         public string address1 { get; set; }
         public string cityName { get; set; }
         public string postalZone { get; set; }
+        public int state { get; set; }
         public string email { get; set; }
         public string contactNumber { get; set; }
     }

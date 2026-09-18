@@ -28,23 +28,14 @@ namespace EInvoiceUtilsWebDemo.Controllers
         {
             EInvoiceDocument document = new EInvoiceDocument(id: body.documentId);
 
-            TaxpayerType type;
-            if (body.supplier.idType == "BRN")
-                type = TaxpayerType.BRN;
-            else if (body.supplier.idType == "PASSPORT")
-                type = TaxpayerType.PASSPORT;
-            else if (body.supplier.idType == "ARMY")
-                type = TaxpayerType.ARMY;
-            else
-                type = TaxpayerType.NRIC;
             AccountingSupplierPartyArgs supplier = new AccountingSupplierPartyArgs(
                                                     name: body.supplier.name,
                                                     tin: body.supplier.tin,
-                                                    idType: type,
+                                                    idType: (TaxpayerType)body.supplier.idType,
                                                     id: body.supplier.id,
                                                     msic: MSIC.OPERATION_OF_PARKING_FACILITIES_FOR_MOTOR_VEHICLES_PARKING_LOTS,
                                                     cityName: body.supplier.cityName,
-                                                    state: State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR,
+                                                    state: (State)body.supplier.state,
                                                     country: CountryCode.MALAYSIA,
                                                     contactNumber: body.supplier.contactNumber
                                                    )
@@ -56,21 +47,13 @@ namespace EInvoiceUtilsWebDemo.Controllers
                 BusinessDescription = body.supplier.businessDesc
             };
 
-            if (body.customer.idType == "BRN")
-                type = TaxpayerType.BRN;
-            else if (body.customer.idType == "PASSPORT")
-                type = TaxpayerType.PASSPORT;
-            else if (body.customer.idType == "ARMY")
-                type = TaxpayerType.ARMY;
-            else
-                type = TaxpayerType.NRIC;
             AccountingCustomerPartyArgs customer = new AccountingCustomerPartyArgs(
                                                         name: body.customer.name,
                                                         tin: body.customer.tin,
-                                                        idType: type,
+                                                        idType: (TaxpayerType)body.customer.idType,
                                                         id: body.customer.id,
                                                         cityName: body.customer.cityName,
-                                                        state: State.NOT_APPLICABLE,
+                                                        state: (State)body.customer.state,
                                                         country: CountryCode.MALAYSIA,
                                                         contactNumber: body.customer.contactNumber
                                                        );
