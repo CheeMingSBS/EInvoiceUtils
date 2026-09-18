@@ -1,0 +1,273 @@
+﻿@{
+    ViewData["Title"] = "Create Document";
+}
+
+<h1>Create Document</h1>
+<div class="flex-grow-1 d-flex gap-4">
+    <div class="w-50 d-flex flex-column gap-4">
+        <form id="form">
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex flex-column gap-1">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#document-header" aria-expanded="false" aria-controls="document-header">
+                        Document Header
+                    </button>
+                    <div class="collapse" id="document-header">
+                        <label for="document-id">Document ID</label>
+                        <input type="text" class="form-control" id="document-id" value="JSON-INV12345" />
+                    </div>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#supplier" aria-expanded="false" aria-controls="supplier">
+                        Supplier
+                    </button>
+                    <div class="collapse" id="supplier">
+                        <div class="d-flex flex-column gap-2">
+                            <div>
+                                <label for="supplier-name">Name</label>
+                                <input type="text" class="form-control" id="supplier-name" value="Test" />
+                            </div>
+                            <div>
+                                <label for="supplier-tin">TIN</label>
+                                <input type="text" class="form-control" id="supplier-tin" value="IG28566784100" />
+                            </div>
+                            <div>
+                                <label for="supplier-id-type">ID Type</label>
+                                <select class="form-select" id="supplier-id-type">
+                                    <option value="NRIC" selected>NRIC</option>
+                                    <option value="BRN">BRN</option>
+                                    <option value="ARMY">ARMY</option>
+                                    <option value="PASSPORT">PASSPORT</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="supplier-id">ID</label>
+                                <input type="text" class="form-control" id="supplier-id" value="980427145943" />
+                            </div>
+                            <div>
+                                <label for="supplier-business-desc">Business Description</label>
+                                <input type="text" class="form-control" id="supplier-business-desc" value="Carpark Operator" />
+                            </div>
+                            <div>
+                                <label for="supplier-address-0">Address Line 1</label>
+                                <input type="text" class="form-control" id="supplier-address-0" value="X Unit 07-06, Vertical Tower A" />
+                            </div>
+                            <div>
+                                <label for="supplier-address-1">Address Line 2</label>
+                                <input type="text" class="form-control" id="supplier-address-1" value="No. 8 Jalan Kerinchi, Bangsar South" />
+                            </div>
+                            <div>
+                                <label for="supplier-city-name">City Name</label>
+                                <input type="text" class="form-control" id="supplier-city-name" value="Kuala Lumpur" />
+                            </div>
+                            <div>
+                                <label for="supplier-postal-zone">Postal Zone</label>
+                                <input type="text" class="form-control" id="supplier-postal-zone" value="50490" />
+                            </div>
+                            <div>
+                                <label for="supplier-email">Email</label>
+                                <input type="text" class="form-control" id="supplier-email" value="test@test.com" />
+                            </div>
+                            <div>
+                                <label for="supplier-contact-number">Contact Number</label>
+                                <input type="text" class="form-control" id="supplier-contact-number" value="01234567890" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#customer" aria-expanded="false" aria-controls="customer">
+                        Customer
+                    </button>
+                    <div class="collapse" id="customer">
+                        <div class="d-flex flex-column gap-2">
+                            <div>
+                                <label for="customer-name">Name</label>
+                                <input type="text" class="form-control" id="customer-name" value="General Public" />
+                            </div>
+                            <div>
+                                <label for="customer-tin">TIN</label>
+                                <input type="text" class="form-control" id="customer-tin" value="EI00000000010" />
+                            </div>
+                            <div>
+                                <label for="customer-id-type">ID Type</label>
+                                <select class="form-select" id="customer-id-type">
+                                    <option value="NRIC" selected>NRIC</option>
+                                    <option value="BRN">BRN</option>
+                                    <option value="ARMY">ARMY</option>
+                                    <option value="PASSPORT">PASSPORT</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="customer-id">ID</label>
+                                <input type="text" class="form-control" id="customer-id" value="NA" />
+                            </div>
+                            <div>
+                                <label for="customer-address-0">Address Line 1</label>
+                                <input type="text" class="form-control" id="customer-address-0" value="NA" />
+                            </div>
+                            <div>
+                                <label for="customer-address-1">Address Line 2</label>
+                                <input type="text" class="form-control" id="customer-address-1" value="NA" />
+                            </div>
+                            <div>
+                                <label for="customer-city-name">City Name</label>
+                                <input type="text" class="form-control" id="customer-city-name" value="NA" />
+                            </div>
+                            <div>
+                                <label for="customer-postal-zone">Postal Zone</label>
+                                <input type="text" class="form-control" id="customer-postal-zone" value="NA" />
+                            </div>
+                            <div>
+                                <label for="customer-email">Email</label>
+                                <input type="text" class="form-control" id="customer-email" value="NA" />
+                            </div>
+                            <div>
+                                <label for="customer-contact-number">Contact Number</label>
+                                <input type="text" class="form-control" id="customer-contact-number" value="NA" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column gap-1">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#invoice-lines" aria-expanded="false" aria-controls="invoice-lines">
+                        Invoice Lines
+                    </button>
+                    <div class="collapse" id="invoice-lines">
+                        <div>
+                            <h3>Invoice Line 1</h3>
+                            <div class="d-flex flex-column gap-2">
+                                <div>
+                                    <label for="invoice-line-id-1">ID</label>
+                                    <input type="text" class="form-control" id="invoice-line-id-1" value="INV00001" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-classification-code-1">Classification Code</label>
+                                    <input type="text" class="form-control" id="invoice-line-classification-code-1" value="004" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-desc-1">Description</label>
+                                    <input type="text" class="form-control" id="invoice-line-desc-1" value="E_1234567_1234" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-unit-price-1">Unit Price</label>
+                                    <input type="text" class="form-control" id="invoice-line-unit-price-1" value="5.66" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-taxable-amount-1">Taxable Amount</label>
+                                    <input type="text" class="form-control" id="invoice-line-taxable-amount-1" value="5.66" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-tax-amount-1">Tax Amount</label>
+                                    <input type="text" class="form-control" id="invoice-line-tax-amount-1" value="0.34" />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Invoice Line 2</h3>
+                            <div class="d-flex flex-column gap-2">
+                                <div>
+                                    <label for="invoice-line-id-2">ID</label>
+                                    <input type="text" class="form-control" id="invoice-line-id-2" value="INV00001" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-classification-code-2">Classification Code</label>
+                                    <input type="text" class="form-control" id="invoice-line-classification-code-2" value="004" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-desc-2">Description</label>
+                                    <input type="text" class="form-control" id="invoice-line-desc-2" value="E_1234567_1234" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-unit-price-2">Unit Price</label>
+                                    <input type="text" class="form-control" id="invoice-line-unit-price-2" value="5.66" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-taxable-amount-2">Taxable Amount</label>
+                                    <input type="text" class="form-control" id="invoice-line-taxable-amount-2" value="5.66" />
+                                </div>
+                                <div>
+                                    <label for="invoice-line-tax-amount-2">Tax Amount</label>
+                                    <input type="text" class="form-control" id="invoice-line-tax-amount-2" value="0.34" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 align-items-center">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <div id="result" class="fw-bold"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="w-50 d-flex flex-column">
+        <textarea class="form-control flex-grow-1" readonly id="output"></textarea>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $("#form").on("submit", (e) => {
+        e.preventDefault();
+
+        $.ajax({
+            url: '@Url.Action("CreateDocument")',
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                documentId: $("#document-id").val(),
+                supplier: {
+                    name: $("#supplier-name").val(),
+                    tin: $("#supplier-tin").val(),
+                    idType: $("#supplier-id-type").val(),
+                    id: $("#supplier-id").val(),
+                    businessDesc: $("#supplier-business-desc").val(),
+                    address0: $("#supplier-address-0").val(),
+                    address1: $("#supplier-address-1").val(),
+                    cityName: $("#supplier-city-name").val(),
+                    postalZone: $("#supplier-postal-zone").val(),
+                    email: $("#supplier-email").val(),
+                    contactNumber: $("#supplier-contact-number").val()
+                },
+                customer: {
+                    name: $("#customer-name").val(),
+                    tin: $("#customer-tin").val(),
+                    idType: $("#customer-id-type").val(),
+                    id: $("#customer-id").val(),
+                    address0: $("#customer-address-0").val(),
+                    address1: $("#customer-address-1").val(),
+                    cityName: $("#customer-city-name").val(),
+                    postalZone: $("#customer-postal-zone").val(),
+                    email: $("#customer-email").val(),
+                    contactNumber: $("#customer-contact-number").val()
+                },
+                invoiceLines: [
+                    {
+                        id: $("#invoice-line-id-1").val(),
+                        classificationCode: $("#invoice-line-classification-code-1").val(),
+                        description: $("#invoice-line-desc-1").val(),
+                        unitPrice: $("#invoice-line-unit-price-1").val(),
+                        taxableAmount: $("#invoice-line-taxable-amount-1").val(),
+                        taxAmount: $("#invoice-line-tax-amount-1").val()
+                    },
+                    {
+                        id: $("#invoice-line-id-2").val(),
+                        classificationCode: $("#invoice-line-classification-code-2").val(),
+                        description: $("#invoice-line-desc-2").val(),
+                        unitPrice: $("#invoice-line-unit-price-2").val(),
+                        taxableAmount: $("#invoice-line-taxable-amount-2").val(),
+                        taxAmount: $("#invoice-line-tax-amount-2").val()
+                    }
+                ]
+            }),
+            success: function(data, textStatus, jqXHR) {
+                $("#output").val(JSON.stringify(data, null, 2));
+
+                if (jqXHR.status == 200)
+                    $("#result").text("Success! ✅")
+                else
+                    $("#result").text("Failed! ❌")
+            }
+        });
+    });
+</script>

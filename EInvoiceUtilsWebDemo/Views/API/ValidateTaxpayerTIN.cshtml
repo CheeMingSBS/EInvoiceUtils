@@ -12,8 +12,8 @@
                     <input type="text" class="form-control" id="tin" value="IG28566784100" />
                 </div>
                 <div>
-                    <label for="idType">ID Type</label>
-                    <select class="form-select" id="idType">
+                    <label for="id-type">ID Type</label>
+                    <select class="form-select" id="id-type">
                         <option value="NRIC" selected>NRIC</option>
                         <option value="BRN">BRN</option>
                         <option value="ARMY">ARMY</option>
@@ -45,7 +45,7 @@
             url: '@Url.Action("ValidateTaxpayerTIN")',
             method: "POST",
             data: {
-                idType: $("#idType").val(),
+                idType: $("#id-type").val(),
                 tin: $("#tin").val(),
                 id: $("#id").val()
             },

@@ -8,16 +8,16 @@
         <form id="form">
             <div class="d-flex flex-column gap-3">
                 <div>
-                    <label for="clientId">Client ID</label>
-                    <input type="text" class="form-control" id="clientId" value="d6640527-32ff-42b8-8b73-8805169476d5" />
+                    <label for="client-id">Client ID</label>
+                    <input type="text" class="form-control" id="client-id" value="d6640527-32ff-42b8-8b73-8805169476d5" />
                 </div>
                 <div>
-                    <label for="clientSecret">Client Secret</label>
-                    <input type="text" class="form-control" id="clientSecret" value="720fdedd-8d3f-4222-b356-e2dd1332e951" />
+                    <label for="client-secret">Client Secret</label>
+                    <input type="text" class="form-control" id="client-secret" value="720fdedd-8d3f-4222-b356-e2dd1332e951" />
                 </div>
                 <div>
-                    <label for="onBehalfOf">On Behalf Of</label>
-                    <input type="text" class="form-control" id="onBehalfOf" value="C21506779070" />
+                    <label for="on-behalf-of">On Behalf Of</label>
+                    <input type="text" class="form-control" id="on-behalf-of" value="C21506779070" />
                 </div>
                 <div class="d-flex gap-3 align-items-center">
                     <button type="submit" class="btn btn-primary">Login</button>
@@ -40,9 +40,9 @@
             url: '@Url.Action("LoginAsIntermediary")',
             method: "POST",
             data: {
-                clientId: $("#clientId").val(),
-                clientSecret: $("#clientSecret").val(),
-                onBehalfOf: $("#onBehalfOf").val()
+                clientId: $("#client-id").val(),
+                clientSecret: $("#client-secret").val(),
+                onBehalfOf: $("#on-behalf-of").val()
             },
             success: function(data, textStatus, jqXHR) {
                 $("#output").val(JSON.stringify(data, null, 2));

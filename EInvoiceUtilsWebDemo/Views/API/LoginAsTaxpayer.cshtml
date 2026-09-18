@@ -8,12 +8,12 @@
         <form id="form">
             <div class="d-flex flex-column gap-3">
                 <div>
-                    <label for="clientId">Client ID</label>
-                    <input type="text" class="form-control" id="clientId" value="8f2c48da-fac9-460b-b2fa-7a724a175962" />
+                    <label for="client-id">Client ID</label>
+                    <input type="text" class="form-control" id="client-id" value="8f2c48da-fac9-460b-b2fa-7a724a175962" />
                 </div>
                 <div>
-                    <label for="clientSecret">Client Secret</label>
-                    <input type="text" class="form-control" id="clientSecret" value="0a594eff-e4b1-415b-b5dc-2bc9d9161ea0" />
+                    <label for="client-secret">Client Secret</label>
+                    <input type="text" class="form-control" id="client-secret" value="0a594eff-e4b1-415b-b5dc-2bc9d9161ea0" />
                 </div>
                 <div class="d-flex gap-3 align-items-center">
                     <button type="submit" class="btn btn-primary">Login</button>
@@ -36,8 +36,8 @@
             url: '@Url.Action("LoginAsTaxpayer")',
             method: "POST",
             data: {
-                clientId: $("#clientId").val(),
-                clientSecret: $("#clientSecret").val()
+                clientId: $("#client-id").val(),
+                clientSecret: $("#client-secret").val()
             },
             success: function (data, textStatus, jqXHR) {
                 $("#output").val(JSON.stringify(data, null, 2));
