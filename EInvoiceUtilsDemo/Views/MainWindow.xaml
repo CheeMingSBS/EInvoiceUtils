@@ -1,0 +1,239 @@
+﻿<Window x:Class="EInvoiceUtilsDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EInvoiceUtilsDemo"
+        mc:Ignorable="d"
+        Title="EInvoiceUtilsDemo" Height="500" Width="900" Background="Black">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Geist.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="RoundedSection" TargetType="Border">
+                <Setter Property="BorderBrush" Value="WhiteSmoke"/>
+                <Setter Property="BorderThickness" Value="3"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Background" Value="WhiteSmoke"/>
+                <Setter Property="Padding" Value="10"/>
+            </Style>
+
+            <Style x:Key="InputText" TargetType="TextBox">
+                <Setter Property="BorderBrush" Value="WhiteSmoke"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8"/>
+                <Setter Property="Foreground" Value="WhiteSmoke"/>
+                <Setter Property="FontFamily" Value="{StaticResource Geist}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="6"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+            <Style x:Key="PasswordText" TargetType="PasswordBox">
+                <Setter Property="BorderBrush" Value="WhiteSmoke"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Padding" Value="8"/>
+                <Setter Property="Foreground" Value="WhiteSmoke"/>
+                <Setter Property="FontFamily" Value="{StaticResource Geist}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="PasswordBox">
+                            <Border Name="border"
+                                    CornerRadius="6"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}"
+                                    SnapsToDevicePixels="True">
+                                <ScrollViewer Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="2"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+            <Style x:Key="LoginButton" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontFamily" Value="{StaticResource Geist}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="WhiteSmoke"/>
+                <Setter Property="Background" Value="#417EEA"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="CornflowerBlue"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="EInvoiceUtils Library"
+                           FontFamily="Geist"
+                           FontSize="28"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           Foreground="White"/>
+                <TextBlock Text="Demo"
+                           FontFamily="Geist"
+                           FontSize="28"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           Foreground="White"/>
+                <StackPanel Margin="0,10,0,0">
+                    <TextBlock Text="Client ID"
+                               FontFamily="Geist"
+                               FontSize="16"
+                               Foreground="White"
+                               FontWeight="Medium"/>
+                    <TextBox Style="{StaticResource InputText}" Margin="0,3,0,0"/>
+                </StackPanel>
+                <StackPanel Margin="0,15,0,15">
+                    <TextBlock Text="Client Secret"
+                               FontFamily="Geist"
+                               FontSize="16"
+                               Foreground="White"
+                               FontWeight="Medium"/>
+                    <PasswordBox Style="{StaticResource PasswordText}" Margin="0,3,0,0"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="On Behalf Of TIN (Optional)"
+                               FontFamily="Geist"
+                               FontSize="16"
+                               Foreground="White"
+                               FontWeight="Medium"/>
+                    <TextBox Style="{StaticResource InputText}" Margin="0,3,0,0"/>
+                </StackPanel>
+                <Border Width="150" BorderBrush="WhiteSmoke" BorderThickness="0,1,0,0" Margin="0,15,0,15"/>
+                <Button Style="{StaticResource LoginButton}">
+                    Login
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Visibility="Hidden">
+            <Grid.Resources>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuthenticated}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*"/>
+                <RowDefinition Height="0.85*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.4*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="EInvoiceUtils"
+                               FontFamily="Geist"
+                               FontWeight="SemiBold"
+                               FontSize="18"/>
+                    <TextBlock Text="Demo"
+                               HorizontalAlignment="Center"
+                               FontFamily="Geist"
+                               FontWeight="SemiBold"
+                               FontSize="18"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="API"
+                               FontFamily="Geist"
+                               FontWeight="SemiBold"
+                               FontSize="14"/>
+                    <ComboBox Name="APIComboBox"
+                              IsReadOnly="True"
+                              SelectedIndex="0"
+                              Width="150">
+                        <ComboBoxItem Name="ValidateTaxpayerTIN">Validate Taxpayer TIN</ComboBoxItem>
+                        <ComboBoxItem Name="SubmitDocuments">Submit Documents</ComboBoxItem>
+                        <ComboBoxItem Name="GetSubmission">Get Submission</ComboBoxItem>
+                        <ComboBoxItem Name="GetDocumentDetails">Get Document Details</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Document"
+                               FontFamily="Geist"
+                               FontWeight="SemiBold"
+                               FontSize="14"/>
+                    <ComboBox Name="DocumentComboBox"
+                              IsReadOnly="True"
+                              SelectedIndex="0"
+                              Width="150">
+                        <ComboBoxItem Name="CreateDocument">Create Document</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="1" Padding="8,0,8,8">
+                    <Border Grid.Column="1" Style="{StaticResource RoundedSection}">
+                        <RichTextBox BorderBrush="Transparent" Background="WhiteSmoke"></RichTextBox>
+                    </Border>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

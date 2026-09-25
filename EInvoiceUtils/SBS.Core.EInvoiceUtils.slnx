@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../EInvoiceUtilsConsoleDemo/SBS.Core.EInvoiceUtilsConsoleDemo.csproj" />
+  <Project Path="../EInvoiceUtilsDemo/SBS.Core.EInvoiceUtilsDemo.csproj" Id="813cb77c-1140-4f88-9e22-a1f65b39cce3" />
+  <Project Path="../EInvoiceUtilsTest/SBS.Core.EInvoiceUtilsTest.csproj" />
+  <Project Path="../EInvoiceUtilsWebDemo/SBS.Core.EInvoiceUtilsWebDemo.csproj" Id="087a3d7b-6139-431e-93d7-455a49a0fdd2" />
+  <Project Path="SBS.Core.EInvoiceUtils.csproj" />
+</Solution>

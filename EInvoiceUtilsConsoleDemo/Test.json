@@ -1,0 +1,533 @@
+{
+  "_D": "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
+  "_A": "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2",
+  "_B": "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2",
+  "Invoice": [
+    {
+      "ID": [
+        {
+          "_": "JSON-INV12345"
+        }
+      ],
+      "IssueDate": [
+        {
+          "_": "2026-09-17"
+        }
+      ],
+      "IssueTime": [
+        {
+          "_": "09:06:24Z"
+        }
+      ],
+      "InvoiceTypeCode": [
+        {
+          "_": "01",
+          "listVersionID": "1.0"
+        }
+      ],
+      "DocumentCurrencyCode": [
+        {
+          "_": "MYR"
+        }
+      ],
+      "TaxCurrencyCode": [
+        {
+          "_": "MYR"
+        }
+      ],
+      "AccountingSupplierParty": [
+        {
+          "Party": [
+            {
+              "IndustryClassificationCode": [
+                {
+                  "_": "52213",
+                  "name": "Carpark Operator"
+                }
+              ],
+              "PartyIdentification": [
+                {
+                  "ID": [
+                    {
+                      "_": "IG28566784100",
+                      "schemeID": "TIN"
+                    }
+                  ]
+                },
+                {
+                  "ID": [
+                    {
+                      "_": "980427145943",
+                      "schemeID": "NRIC"
+                    }
+                  ]
+                },
+                {
+                  "ID": [
+                    {
+                      "_": "NA",
+                      "schemeID": "SST"
+                    }
+                  ]
+                },
+                {
+                  "ID": [
+                    {
+                      "_": "NA",
+                      "schemeID": "TTX"
+                    }
+                  ]
+                }
+              ],
+              "PostalAddress": [
+                {
+                  "CityName": [
+                    {
+                      "_": "Kuala Lumpur"
+                    }
+                  ],
+                  "PostalZone": [
+                    {
+                      "_": "50490"
+                    }
+                  ],
+                  "CountrySubentityCode": [
+                    {
+                      "_": "14"
+                    }
+                  ],
+                  "AddressLine": [
+                    {
+                      "Line": [
+                        {
+                          "_": "X Unit 07-06, Vertical Tower A"
+                        }
+                      ]
+                    },
+                    {
+                      "Line": [
+                        {
+                          "_": "No. 8 Jalan Kerinchi, Bangsar South"
+                        }
+                      ]
+                    }
+                  ],
+                  "Country": [
+                    {
+                      "IdentificationCode": [
+                        {
+                          "_": "MYS",
+                          "listID": "ISO3166-1",
+                          "listAgencyID": "6"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "PartyLegalEntity": [
+                {
+                  "RegistrationName": [
+                    {
+                      "_": "Test"
+                    }
+                  ]
+                }
+              ],
+              "Contact": [
+                {
+                  "Telephone": [
+                    {
+                      "_": "0123456789"
+                    }
+                  ],
+                  "ElectronicMail": [
+                    {
+                      "_": "test@test.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "AccountingCustomerParty": [
+        {
+          "Party": [
+            {
+              "PartyIdentification": [
+                {
+                  "ID": [
+                    {
+                      "_": "EI00000000010",
+                      "schemeID": "TIN"
+                    }
+                  ]
+                },
+                {
+                  "ID": [
+                    {
+                      "_": "NA",
+                      "schemeID": "NRIC"
+                    }
+                  ]
+                },
+                {
+                  "ID": [
+                    {
+                      "_": "NA",
+                      "schemeID": "SST"
+                    }
+                  ]
+                },
+                {
+                  "ID": [
+                    {
+                      "_": "NA",
+                      "schemeID": "TTX"
+                    }
+                  ]
+                }
+              ],
+              "PostalAddress": [
+                {
+                  "CityName": [
+                    {
+                      "_": "NA"
+                    }
+                  ],
+                  "CountrySubentityCode": [
+                    {
+                      "_": "17"
+                    }
+                  ],
+                  "AddressLine": [
+                    {
+                      "Line": [
+                        {
+                          "_": "NA"
+                        }
+                      ]
+                    }
+                  ],
+                  "Country": [
+                    {
+                      "IdentificationCode": [
+                        {
+                          "_": "MYS",
+                          "listID": "ISO3166-1",
+                          "listAgencyID": "6"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "PartyLegalEntity": [
+                {
+                  "RegistrationName": [
+                    {
+                      "_": "General Public"
+                    }
+                  ]
+                }
+              ],
+              "Contact": [
+                {
+                  "Telephone": [
+                    {
+                      "_": "NA"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "TaxTotal": [
+        {
+          "TaxAmount": [
+            {
+              "_": 0.68,
+              "currencyID": "MYR"
+            }
+          ],
+          "TaxSubtotal": [
+            {
+              "TaxableAmount": [
+                {
+                  "_": 11.32,
+                  "currencyID": "MYR"
+                }
+              ],
+              "TaxAmount": [
+                {
+                  "_": 0.68,
+                  "currencyID": "MYR"
+                }
+              ],
+              "TaxCategory": [
+                {
+                  "ID": [
+                    {
+                      "_": "02"
+                    }
+                  ],
+                  "TaxScheme": [
+                    {
+                      "ID": [
+                        {
+                          "_": "OTH",
+                          "schemeID": "UN/ECE 5153",
+                          "schemeAgencyID": "6"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "LegalMonetaryTotal": [
+        {
+          "LineExtensionAmount": [
+            {
+              "_": 11.32,
+              "currencyID": "MYR"
+            }
+          ],
+          "TaxExclusiveAmount": [
+            {
+              "_": 11.32,
+              "currencyID": "MYR"
+            }
+          ],
+          "TaxInclusiveAmount": [
+            {
+              "_": 11.32,
+              "currencyID": "MYR"
+            }
+          ],
+          "PayableAmount": [
+            {
+              "_": 11.32,
+              "currencyID": "MYR"
+            }
+          ]
+        }
+      ],
+      "InvoiceLine": [
+        {
+          "ID": [
+            {
+              "_": "INV00001"
+            }
+          ],
+          "InvoicedQuantity": [
+            {
+              "_": 1
+            }
+          ],
+          "LineExtensionAmount": [
+            {
+              "_": 5.66,
+              "currencyID": "MYR"
+            }
+          ],
+          "TaxTotal": [
+            {
+              "TaxAmount": [
+                {
+                  "_": 0.34,
+                  "currencyID": "MYR"
+                }
+              ],
+              "TaxSubtotal": [
+                {
+                  "TaxableAmount": [
+                    {
+                      "_": 5.66,
+                      "currencyID": "MYR"
+                    }
+                  ],
+                  "TaxAmount": [
+                    {
+                      "_": 0.34,
+                      "currencyID": "MYR"
+                    }
+                  ],
+                  "TaxCategory": [
+                    {
+                      "ID": [
+                        {
+                          "_": "02"
+                        }
+                      ],
+                      "TaxScheme": [
+                        {
+                          "ID": [
+                            {
+                              "_": "OTH",
+                              "schemeID": "UN/ECE 5153",
+                              "schemeAgencyID": "6"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Item": [
+            {
+              "CommodityClassification": [
+                {
+                  "ItemClassificationCode": [
+                    {
+                      "_": "004",
+                      "listID": "CLASS"
+                    }
+                  ]
+                }
+              ],
+              "Description": [
+                {
+                  "_": "E_1234567_1234"
+                }
+              ]
+            }
+          ],
+          "Price": [
+            {
+              "PriceAmount": [
+                {
+                  "_": 5.66,
+                  "currencyID": "MYR"
+                }
+              ]
+            }
+          ],
+          "ItemPriceExtension": [
+            {
+              "Amount": [
+                {
+                  "_": 5.66,
+                  "currencyID": "MYR"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ID": [
+            {
+              "_": "INV00002"
+            }
+          ],
+          "InvoicedQuantity": [
+            {
+              "_": 1
+            }
+          ],
+          "LineExtensionAmount": [
+            {
+              "_": 5.66,
+              "currencyID": "MYR"
+            }
+          ],
+          "TaxTotal": [
+            {
+              "TaxAmount": [
+                {
+                  "_": 0.34,
+                  "currencyID": "MYR"
+                }
+              ],
+              "TaxSubtotal": [
+                {
+                  "TaxableAmount": [
+                    {
+                      "_": 5.66,
+                      "currencyID": "MYR"
+                    }
+                  ],
+                  "TaxAmount": [
+                    {
+                      "_": 0.34,
+                      "currencyID": "MYR"
+                    }
+                  ],
+                  "TaxCategory": [
+                    {
+                      "ID": [
+                        {
+                          "_": "02"
+                        }
+                      ],
+                      "TaxScheme": [
+                        {
+                          "ID": [
+                            {
+                              "_": "OTH",
+                              "schemeID": "UN/ECE 5153",
+                              "schemeAgencyID": "6"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Item": [
+            {
+              "CommodityClassification": [
+                {
+                  "ItemClassificationCode": [
+                    {
+                      "_": "004",
+                      "listID": "CLASS"
+                    }
+                  ]
+                }
+              ],
+              "Description": [
+                {
+                  "_": "E_1234567_4567"
+                }
+              ]
+            }
+          ],
+          "Price": [
+            {
+              "PriceAmount": [
+                {
+                  "_": 5.66,
+                  "currencyID": "MYR"
+                }
+              ]
+            }
+          ],
+          "ItemPriceExtension": [
+            {
+              "Amount": [
+                {
+                  "_": 5.66,
+                  "currencyID": "MYR"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

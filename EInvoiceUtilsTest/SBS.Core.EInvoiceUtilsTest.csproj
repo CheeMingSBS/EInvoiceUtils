@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EInvoiceUtils\EInvoiceUtils.csproj" />
+    <ProjectReference Include="..\EInvoiceUtils\SBS.Core.EInvoiceUtils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
