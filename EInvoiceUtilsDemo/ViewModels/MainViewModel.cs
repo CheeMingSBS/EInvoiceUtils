@@ -1,16 +1,22 @@
-﻿using ChatApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
+﻿namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 {
     internal class MainViewModel: ViewModelBase
     {
-        public MainViewModel() { }
+        public RelayCommand ToggleNavbarDropdownCommand { get; set; }
 
+        public MainViewModel()
+        {
+            this.ToggleNavbarDropdownCommand = new RelayCommand(ToggleNavbarDropdown, CanToggleNavbarDropdown);
+        }
 
+        public bool CanToggleNavbarDropdown(object? obj)
+        {
+            return true;
+        }
+
+        public void ToggleNavbarDropdown(object? obj)
+        {
+            //PART_Popup.IsOpen = !PART_Popup.IsOpen;
+        }
     }
 }

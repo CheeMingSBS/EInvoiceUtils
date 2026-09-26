@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 
-namespace ChatApp.ViewModels
+namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 {
     internal class ViewModelBase : INotifyPropertyChanged, INotifyDataErrorInfo
     {
