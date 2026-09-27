@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EInvoiceUtilsDemo"
+        xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo"
+        xmlns:uc="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
         mc:Ignorable="d"
         Title="EInvoiceUtilsDemo" MinHeight="600" MinWidth="900" Background="#E8E8E8">
 
@@ -11,90 +12,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Geist.xaml"/>
-                <ResourceDictionary Source="/Resources/Login.xaml"/>
                 <ResourceDictionary Source="/Resources/General.xaml"/>
-                <ResourceDictionary Source="/Resources/Main.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
-        <Grid Visibility="Hidden">
-            <Grid.Resources>
-                <Style TargetType="Grid">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Resources>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Border Style="{StaticResource RoundedSection}"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Padding="30">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                               Grid.ColumnSpan="3"
-                               Text="EInvoiceUtils Library Demo"
-                               FontFamily="Geist"
-                               FontSize="32"
-                               FontWeight="SemiBold"
-                               HorizontalAlignment="Center"
-                               Foreground="#0D0D0D"/>
-
-                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,25,0,0" MaxWidth="350">
-                        <StackPanel Style="{StaticResource Input}">
-                            <TextBlock Text="Client ID" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0"/>
-                        </StackPanel>
-                        <StackPanel Margin="0,15,0,15" Style="{StaticResource Input}">
-                            <TextBlock Text="Client Secret" FontSize="16"/>
-                            <PasswordBox Margin="0,3,0,0"/>
-                        </StackPanel>
-                        <StackPanel Style="{StaticResource Input}">
-                            <TextBlock Text="[ Intermediary ] On Behalf Of TIN (Optional)" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0"/>
-                        </StackPanel>
-                        <Border Width="150" BorderBrush="#0D0D0D" BorderThickness="0,1,0,0" Margin="0,15,0,15"/>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.15*"/>
-                                <ColumnDefinition Width="0.65*"/>
-                                <ColumnDefinition Width="0.15*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Button Grid.Column="1" Content="Login" Style="{StaticResource LoginButton}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </Grid>
+        <uc:Login Visibility="Hidden"/>
 
         <Grid Margin="20">
             <Grid.Resources>
@@ -122,65 +46,47 @@
                        VerticalAlignment="Center"
                        Padding="3,0,3,0"/>
 
-            <Grid Grid.Row="1">
+            <uc:Navbar Grid.Row="1"/>
+
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Style="{StaticResource RoundedSection}">
+                <Border Style="{StaticResource RoundedSection}" Grid.Column="0">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Column="0">
-                            <ToggleButton Name="API" Content="API" Style="{StaticResource NavItem}"/>
-                            <Popup Name="APIPopup"
-                                   Placement="Bottom"
-                                   PlacementTarget="{Binding ElementName=API}"
-                                   IsOpen="{Binding ElementName=API, Path=IsChecked, Mode=TwoWay}"
-                                   Style="{StaticResource NavDropdown}">
-                                <Border>
-                                    <ListView>
-                                        <ListViewItem Content="Validate Taxpayer TIN"/>
-                                        <ListViewItem Content="Submit Documents"/>
-                                        <ListViewItem Content="Get Submission"/>
-                                        <ListViewItem Content="Get Document Details"/>
-                                    </ListView>
-                                </Border>
-                            </Popup>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Width="1" Background="LightGray" Margin="8,0,8,0"/>
-                        <StackPanel Grid.Column="2">
-                            <ToggleButton Name="Document" Content="Document" Style="{StaticResource NavItem}"/>
-                            <Popup Name="DocumentPopup"
-                                   Placement="Bottom"
-                                   PlacementTarget="{Binding ElementName=Document}"
-                                   IsOpen="{Binding ElementName=Document, Path=IsChecked, Mode=TwoWay}"
-                                   Style="{StaticResource NavDropdown}">
-                                <Border>
-                                    <ListView>
-                                        <ListViewItem Content="Create Document"/>
-                                    </ListView>
-                                </Border>
-                            </Popup>
-                        </StackPanel>
+                        <TextBlock Grid.Row="0"
+                                   Text="Title"
+                                   FontFamily="Geist"
+                                   FontSize="24 "
+                                   FontWeight="Medium"
+                                   Foreground="#0D0D0D"
+                                   TextDecorations="Underline"/>
+
+                        <!--<uc:ValidateTaxpayerTIN Grid.Row="2"/>-->
+                        <!--<uc:GetSubmission Grid.Row="2"/>-->
+                        <!--<uc:GetDocumentDetails Grid.Row="2"/>-->
+                        <!--<uc:SubmitDocuments Grid.Row="2"/>-->
+                        <uc:CreateDocument Grid.Row="2"/>
                     </Grid>
                 </Border>
-            </Grid>
-
-            <Grid Grid.Row="2" Margin="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
-                    <ColumnDefinition Width="0.5*"/>
-                </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="1">
                     <Border Grid.Column="1" Style="{StaticResource RoundedSection}">
-                        <RichTextBox BorderBrush="Transparent" Background="#0D0D0D"></RichTextBox>
+                        <RichTextBox Name="Output"
+                                     BorderBrush="Transparent"
+                                     Background="WhiteSmoke"
+                                     FontFamily="Geist"
+                                     FontWeight="Medium"
+                                     FontSize="14"
+                                     IsReadOnly="True"/>
                     </Border>
                 </Border>
             </Grid>

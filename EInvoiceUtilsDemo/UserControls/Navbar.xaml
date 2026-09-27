@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="SBS.Core.EInvoiceUtilsDemo.UserControls.Navbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Geist.xaml"/>
+                <ResourceDictionary Source="/Resources/Navbar.xaml"/>
+                <ResourceDictionary Source="/Resources/General.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Style="{StaticResource RoundedSection}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Style="{StaticResource NavItem}">
+                    <ToggleButton Name="API" Content="API"/>
+                    <Popup Name="APIPopup"
+                           Placement="Bottom"
+                           PlacementTarget="{Binding ElementName=API}"
+                           IsOpen="{Binding ElementName=API, Path=IsChecked, Mode=TwoWay}">
+                        <Border>
+                            <ListView>
+                                <ListViewItem Content="Validate Taxpayer TIN"/>
+                                <ListViewItem Content="Submit Documents"/>
+                                <ListViewItem Content="Get Submission"/>
+                                <ListViewItem Content="Get Document Details"/>
+                            </ListView>
+                        </Border>
+                    </Popup>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Width="1" Background="LightGray" Margin="8,0,8,0"/>
+                <StackPanel Grid.Column="2" Style="{StaticResource NavItem}">
+                    <ToggleButton Name="Document" Content="Document"/>
+                    <Popup Name="DocumentPopup"
+                           Placement="Bottom"
+                           PlacementTarget="{Binding ElementName=Document}"
+                           IsOpen="{Binding ElementName=Document, Path=IsChecked, Mode=TwoWay}">
+                        <Border>
+                            <ListView>
+                                <ListViewItem Content="Create Document"/>
+                            </ListView>
+                        </Border>
+                    </Popup>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

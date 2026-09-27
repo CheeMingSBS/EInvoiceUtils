@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="SBS.Core.EInvoiceUtilsDemo.UserControls.SubmitDocuments"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Geist.xaml"/>
+                <ResourceDictionary Source="/Resources/General.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <StackPanel Style="{StaticResource Input}">
+                <TextBlock Text="Reference No / Code Number" FontSize="16"/>
+                <TextBox Margin="0,3,0,0"/>
+            </StackPanel>
+            <StackPanel Margin="0,15,0,15" Style="{StaticResource Input}">
+                <TextBlock Text="Document Format" FontSize="16"/>
+                <ComboBox SelectedIndex="0" Margin="0,3,0,0" Focusable="False" Style="{StaticResource DropdownSelection}">
+                    <ComboBoxItem Content="JSON"/>
+                    <ComboBoxItem Content="XML"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Style="{StaticResource Input}">
+                <TextBlock Text="Upload Document" FontSize="16"/>
+                <Grid Margin="0,3,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBox Grid.Column="0" IsReadOnly="True"/>
+                    <Border Grid.Column="1"/>
+                    <Button Grid.Column="2"
+                            Content="Upload"
+                            Style="{StaticResource PrimaryBtn}"/>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+
+        <Button Grid.Row="1"
+                Content="Retrieve"
+                Style="{StaticResource PrimaryBtn}"
+                Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>
