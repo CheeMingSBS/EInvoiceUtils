@@ -37,14 +37,39 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0"
-                       Text="EInvoiceUtils Demo"
-                       FontFamily="Geist"
-                       FontWeight="SemiBold"
-                       FontSize="28"
-                       Foreground="#0D0D0D"
-                       VerticalAlignment="Center"
-                       Padding="3,0,3,0"/>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Grid.Column="0"
+                               Text="EInvoiceUtils Demo"
+                               FontFamily="Geist"
+                               FontWeight="SemiBold"
+                               FontSize="28"
+                               Foreground="#0D0D0D"
+                               VerticalAlignment="Bottom"
+                               Padding="3,0,3,0"/>
+
+                    <Border Grid.Column="0"
+                            Background="SeaGreen"
+                            CornerRadius="6"
+                            Padding="6"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource RoundedSection}">
+                        <TextBlock Text="Taxpayer"
+                                   FontFamily="Geist"
+                                   FontWeight="SemiBold"
+                                   FontSize="12"
+                                   Foreground="WhiteSmoke"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+
+                <Button Grid.Column="1" Content="Logout" Style="{StaticResource FailureBtn}"/>
+            </Grid>
 
             <uc:Navbar Grid.Row="1"/>
 
