@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo"
         xmlns:uc="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
+        xmlns:c="clr-namespace:SBS.Core.EInvoiceUtilsDemo.Converters"
         mc:Ignorable="d"
         Title="EInvoiceUtilsDemo" MinHeight="600" MinWidth="900" Background="#E8E8E8">
 
@@ -14,6 +15,8 @@
                 <ResourceDictionary Source="/Resources/Geist.xaml"/>
                 <ResourceDictionary Source="/Resources/General.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <c:MainUIConverter x:Key ="MainUIConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -21,7 +24,7 @@
         <uc:Login Visibility="Hidden"/>
 
         <Grid Margin="20">
-            <Grid.Resources>
+            <!--<Grid.Resources>
                 <Style TargetType="Grid">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsAuthenticated}" Value="False">
@@ -29,7 +32,7 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Grid.Resources>
+            </Grid.Resources>-->
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -88,18 +91,52 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0"
-                                   Text="Title"
+                                   Text="{Binding SelectedMode, Mode=OneWay}"
                                    FontFamily="Geist"
                                    FontSize="24 "
                                    FontWeight="Medium"
                                    Foreground="#0D0D0D"
                                    TextDecorations="Underline"/>
 
-                        <!--<uc:ValidateTaxpayerTIN Grid.Row="2"/>-->
-                        <!--<uc:GetSubmission Grid.Row="2"/>-->
-                        <!--<uc:GetDocumentDetails Grid.Row="2"/>-->
-                        <!--<uc:SubmitDocuments Grid.Row="2"/>-->
-                        <uc:CreateDocument Grid.Row="2"/>
+                        <uc:ValidateTaxpayerTIN Grid.Row="2">
+                            <uc:ValidateTaxpayerTIN.Visibility>
+                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Validate Taxpayer TIN">
+                                    <Binding Path="SelectedMode"/>
+                                </MultiBinding>
+                            </uc:ValidateTaxpayerTIN.Visibility>
+                        </uc:ValidateTaxpayerTIN>
+
+                        <uc:GetSubmission Grid.Row="2">
+                            <uc:GetSubmission.Visibility>
+                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Get Submission">
+                                    <Binding Path="SelectedMode"/>
+                                </MultiBinding>
+                            </uc:GetSubmission.Visibility>
+                        </uc:GetSubmission>
+
+                        <uc:GetDocumentDetails Grid.Row="2">
+                            <uc:GetDocumentDetails.Visibility>
+                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Get Document Details">
+                                    <Binding Path="SelectedMode"/>
+                                </MultiBinding>
+                            </uc:GetDocumentDetails.Visibility>
+                        </uc:GetDocumentDetails>
+
+                        <uc:SubmitDocuments Grid.Row="2">
+                            <uc:SubmitDocuments.Visibility>
+                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Submit Documents">
+                                    <Binding Path="SelectedMode"/>
+                                </MultiBinding>
+                            </uc:SubmitDocuments.Visibility>
+                        </uc:SubmitDocuments>
+
+                        <uc:CreateDocument Grid.Row="2">
+                            <uc:CreateDocument.Visibility>
+                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Create Document">
+                                    <Binding Path="SelectedMode"/>
+                                </MultiBinding>
+                            </uc:CreateDocument.Visibility>
+                        </uc:CreateDocument>
                     </Grid>
                 </Border>
 

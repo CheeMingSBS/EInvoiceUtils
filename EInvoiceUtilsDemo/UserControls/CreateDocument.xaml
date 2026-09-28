@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -44,11 +45,18 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID Type" FontSize="16"/>
-                            <ComboBox SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="SupplierIdTypeComboBox" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="NRIC"/>
                                 <ComboBoxItem Content="PASSPORT"/>
                                 <ComboBoxItem Content="BRN"/>
                                 <ComboBoxItem Content="ARMY"/>
+
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
+                                                               CommandParameter="{Binding ElementName=SupplierIdTypeComboBox}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 
@@ -84,7 +92,7 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="State" FontSize="16"/>
-                            <ComboBox SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="SupplierStateComboBox" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="Johor"/>
                                 <ComboBoxItem Content="Kedah"/>
                                 <ComboBoxItem Content="Kelantan"/>
@@ -102,6 +110,13 @@
                                 <ComboBoxItem Content="Wilayah Persekutuan Labuan"/>
                                 <ComboBoxItem Content="Wilayah Persekutuan Putrajaya"/>
                                 <ComboBoxItem Content="Not Applicable"/>
+
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
+                                                               CommandParameter="{Binding ElementName=SupplierStateComboBox}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 
@@ -131,11 +146,18 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID Type" FontSize="16"/>
-                            <ComboBox SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="CustomerIdTypeComboBox" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="NRIC"/>
                                 <ComboBoxItem Content="PASSPORT"/>
                                 <ComboBoxItem Content="BRN"/>
                                 <ComboBoxItem Content="ARMY"/>
+                                
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
+                                                               CommandParameter="{Binding ElementName=CustomerIdTypeComboBox}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 
@@ -166,7 +188,7 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="State" FontSize="16"/>
-                            <ComboBox SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="CustomerStateComboBox" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="Johor"/>
                                 <ComboBoxItem Content="Kedah"/>
                                 <ComboBoxItem Content="Kelantan"/>
@@ -184,6 +206,13 @@
                                 <ComboBoxItem Content="Wilayah Persekutuan Labuan"/>
                                 <ComboBoxItem Content="Wilayah Persekutuan Putrajaya"/>
                                 <ComboBoxItem Content="Not Applicable"/>
+
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
+                                                               CommandParameter="{Binding ElementName=CustomerStateComboBox}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 

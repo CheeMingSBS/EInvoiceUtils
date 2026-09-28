@@ -67,23 +67,23 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="PasswordBox">
-                            <Border Name="border"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="True"
-                            CornerRadius="6">
+                            <Border Name="Border"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}"
+                                    SnapsToDevicePixels="True"
+                                    CornerRadius="6">
                                 <ScrollViewer Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                    <Setter Property="Opacity" TargetName="Border" Value="0.56"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                    <Setter Property="BorderBrush" TargetName="Border" Value="#FF7EB4EA"/>
                                 </Trigger>
                                 <Trigger Property="IsKeyboardFocused" Value="True">
-                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                                    <Setter Property="BorderBrush" TargetName="Border" Value="#FF569DE5"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -104,8 +104,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid FocusVisualStyle="{x:Null}">
-                        <ToggleButton Name="toggleBtn"
-                                      Content="{TemplateBinding Text}">
+                        <ToggleButton Name="ToggleBtn"
+                                      Content="{TemplateBinding Text}"
+                                      IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ComboBox}, Path=IsDropDownOpen, Mode=TwoWay}">
                             <ToggleButton.Style>
                                 <Style TargetType="ToggleButton">
                                     <Setter Property="Foreground" Value="#0D0D0D"/>
@@ -115,7 +116,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ToggleButton">
-                                                <Border Name="border"
+                                                <Border Name="Border"
                                                         BorderBrush="#0D0D0D"
                                                         Background="WhiteSmoke"
                                                         BorderThickness="1"
@@ -128,7 +129,7 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <ContentPresenter Grid.Column="0"/>
-                                                        <Path Name="arrow"
+                                                        <Path Name="Arrow"
                                                               Grid.Column="1"
                                                               Width="15"
                                                               Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
@@ -139,12 +140,12 @@
 
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
-                                                        <Setter Property="Fill" TargetName="arrow" Value="#FF7EB4EA"/>
+                                                        <Setter Property="BorderBrush" TargetName="Border" Value="#FF7EB4EA"/>
+                                                        <Setter Property="Fill" TargetName="Arrow" Value="#FF7EB4EA"/>
                                                     </Trigger>
                                                     <Trigger Property="IsFocused" Value="True">
-                                                        <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
-                                                        <Setter Property="Fill" TargetName="arrow" Value="#FF7EB4EA"/>
+                                                        <Setter Property="BorderBrush" TargetName="Border" Value="#FF569DE5"/>
+                                                        <Setter Property="Fill" TargetName="Arrow" Value="#FF7EB4EA"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -156,10 +157,10 @@
 
                         <Popup Name="PART_Popup"
                                Placement="Bottom"
-                               PlacementTarget="{Binding ElementName=toggleBtn}"
-                               IsOpen="{Binding ElementName=toggleBtn, Path=IsChecked, Mode=OneWay}"
+                               PlacementTarget="{Binding ElementName=ToggleBtn}"
+                               IsOpen="{Binding ElementName=ToggleBtn, Path=IsChecked, Mode=OneWay}"
                                StaysOpen="False"
-                               Width="{Binding ElementName=toggleBtn, Path=ActualWidth, Mode=OneWay}">
+                               Width="{Binding ElementName=ToggleBtn, Path=ActualWidth, Mode=OneWay}">
                             <Border Background="WhiteSmoke"
                                     BorderBrush="#0D0D0D"
                                     BorderThickness="1">

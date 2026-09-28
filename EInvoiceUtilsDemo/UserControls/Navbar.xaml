@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:SBS.Core.EInvoiceUtilsDemo.Converters"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -13,6 +15,8 @@
                 <ResourceDictionary Source="/Resources/Navbar.xaml"/>
                 <ResourceDictionary Source="/Resources/General.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <c:MainUIConverter x:Key ="MainUIConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -32,16 +36,28 @@
 
                 <StackPanel Grid.Column="0" Style="{StaticResource NavItem}">
                     <ToggleButton Name="API" Content="API"/>
-                    <Popup Name="APIPopup"
-                           Placement="Bottom"
+                    <Popup Placement="Bottom"
                            PlacementTarget="{Binding ElementName=API}"
                            IsOpen="{Binding ElementName=API, Path=IsChecked, Mode=TwoWay}">
                         <Border>
-                            <ListView>
+                            <ListView SelectedIndex="0" Name="APIListView">
                                 <ListViewItem Content="Validate Taxpayer TIN"/>
                                 <ListViewItem Content="Submit Documents"/>
                                 <ListViewItem Content="Get Submission"/>
                                 <ListViewItem Content="Get Document Details"/>
+
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding UpdateMainUIOnSelectCommand}">
+                                            <b:InvokeCommandAction.CommandParameter>
+                                                <MultiBinding Converter="{StaticResource MainUIConverter}">
+                                                    <Binding Path="SelectedItem.Content" ElementName="APIListView"/>
+                                                    <Binding ElementName="API"/>
+                                                </MultiBinding>
+                                            </b:InvokeCommandAction.CommandParameter>
+                                        </b:InvokeCommandAction>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                             </ListView>
                         </Border>
                     </Popup>
@@ -49,13 +65,25 @@
                 <StackPanel Grid.Column="1" Width="1" Background="LightGray" Margin="8,0,8,0"/>
                 <StackPanel Grid.Column="2" Style="{StaticResource NavItem}">
                     <ToggleButton Name="Document" Content="Document"/>
-                    <Popup Name="DocumentPopup"
-                           Placement="Bottom"
+                    <Popup Placement="Bottom"
                            PlacementTarget="{Binding ElementName=Document}"
                            IsOpen="{Binding ElementName=Document, Path=IsChecked, Mode=TwoWay}">
                         <Border>
-                            <ListView>
+                            <ListView Name="DocumentListView">
                                 <ListViewItem Content="Create Document"/>
+
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:InvokeCommandAction Command="{Binding UpdateMainUIOnSelectCommand}">
+                                            <b:InvokeCommandAction.CommandParameter>
+                                                <MultiBinding Converter="{StaticResource MainUIConverter}">
+                                                    <Binding Path="SelectedItem.Content" ElementName="DocumentListView"/>
+                                                    <Binding ElementName="Document"/>
+                                                </MultiBinding>
+                                            </b:InvokeCommandAction.CommandParameter>
+                                        </b:InvokeCommandAction>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
                             </ListView>
                         </Border>
                     </Popup>

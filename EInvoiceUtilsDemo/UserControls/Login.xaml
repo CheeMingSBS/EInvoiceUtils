@@ -16,7 +16,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.Resources>
+        <!--<Grid.Resources>
             <Style TargetType="Grid">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
@@ -24,7 +24,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-        </Grid.Resources>
+        </Grid.Resources>-->
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
