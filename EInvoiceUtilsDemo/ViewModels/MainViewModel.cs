@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using SBS.Core.EInvoiceUtils;
 using SBS.Core.EInvoiceUtils.Models;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -27,44 +28,36 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         private string? selectedMode;
 
         [ObservableProperty]
-        private string? loggedInAs;
+        private string? loggedInAs = "Test";
 
         [ObservableProperty]
         private string? output;
 
-        public RelayCommand<object> LoginCommand { get; set; }
-        public RelayCommand<object> ValidateTaxpayerTINCommand { get; set; }
-        public RelayCommand<object> SubmitDocumentsCommand { get; set; }
-        public RelayCommand<TextBox> GetSubmissionCommand { get; set; }
-        public RelayCommand<TextBox> GetDocumentDetailsCommand { get; set; }
-
-        public RelayCommand LogoutCommand { get; set; }
-        public RelayCommand<ComboBox> CloseDropdownOnSelectCommand { get; set; }
-        public RelayCommand<object> UpdateMainUIOnSelectCommand { get; set; }
-        public RelayCommand<TextBox> AttachFileCommand { get; set; }
+        public ObservableCollection<InvoiceLineItem> InvoiceLineItems { get; set; }
 
         public MainViewModel()
         {
-            this.LoginCommand = new RelayCommand<object>(Login, CanLogin);
-            this.ValidateTaxpayerTINCommand = new RelayCommand<object>(ValidateTaxpayerTIN, CanValidateTaxpayerTIN);
-            this.SubmitDocumentsCommand = new RelayCommand<object>(SubmitDocuments, CanSubmitDocuments);
-            this.GetSubmissionCommand = new RelayCommand<TextBox>(GetSubmission, CanGetSubmission);
-            this.GetDocumentDetailsCommand = new RelayCommand<TextBox>(GetDocumentDetails, CanGetDocumentDetails);
-
-            this.LogoutCommand = new RelayCommand(Logout, CanLogout);
-            this.CloseDropdownOnSelectCommand = new RelayCommand<ComboBox>(CloseDropdownOnSelect, CanCloseDropdownOnSelect);
-            this.UpdateMainUIOnSelectCommand = new RelayCommand<object>(UpdateMainUIOnSelect, CanUpdateMainUIOnSelect);
-            this.AttachFileCommand = new RelayCommand<TextBox>(AttachFile, CanAttachFile);
+            this.InvoiceLineItems = new ObservableCollection<InvoiceLineItem>()
+            {
+                new InvoiceLineItem()
+                {
+                    Header = "Line Item 1",
+                    ID = "INV-12345_1",
+                    ClassificationCode = "004",
+                    Description = "E_1234567_1234",
+                    UnitPrice = "5.66",
+                    Quantity = "1",
+                    TaxableAmount = "5.66",
+                    TaxAmount = "0.34",
+                    TaxType = 1
+                }
+            };
         }
 
         #region EInvoice
         #region Login
-        public bool CanLogin(object? values)
-        {
-            return true;
-        }
-
-        public async void Login(object? values)
+        [RelayCommand]
+        private async Task Login(object? values)
         {
             #region Input Validation
             if (values == null)
@@ -150,12 +143,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         #endregion
 
         #region Validate Taxpayer TIN
-        public bool CanValidateTaxpayerTIN(object? values)
-        {
-            return true;
-        }
-
-        public async void ValidateTaxpayerTIN(object? values)
+        [RelayCommand]
+        private async Task ValidateTaxpayerTIN(object? values)
         {
             #region Input Validation
             if (values == null)
@@ -188,12 +177,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         #endregion
 
         #region Submit Documents
-        public bool CanSubmitDocuments(object? values)
-        {
-            return true;
-        }
-
-        public async void SubmitDocuments(object? values)
+        [RelayCommand]
+        private async Task SubmitDocuments(object? values)
         {
             #region Input Validation
             if (values == null)
@@ -236,12 +221,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         #endregion
 
         #region Get Submission
-        public bool CanGetSubmission(TextBox? submissionUid)
-        {
-            return true;
-        }
-
-        public async void GetSubmission(TextBox? submissionUid)
+        [RelayCommand]
+        private async Task GetSubmission(TextBox? submissionUid)
         {
             #region Input Validation
             if (submissionUid == null)
@@ -268,12 +249,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         #endregion
 
         #region Get Document Details
-        public bool CanGetDocumentDetails(TextBox? uuid)
-        {
-            return true;
-        }
-
-        public async void GetDocumentDetails(TextBox? uuid)
+        [RelayCommand]
+        private async Task GetDocumentDetails(TextBox? uuid)
         {
             #region Input Validation
             if (uuid == null)
@@ -298,15 +275,71 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
             #endregion
         }
         #endregion
+
+        #region CreateDocument
+        [RelayCommand]
+        private void CreateDocument(object? values)
+        {
+            if (values == null || this.InvoiceLineItems.Count == 0)
+                return;
+
+            string? id = (((object[])values)[0] as TextBox)?.Text ?? null;
+            int? documentType = (((object[])values)[1] as ComboBox)?.SelectedIndex ?? -1;
+
+            if (string.IsNullOrWhiteSpace(id))
+                return;
+            
+            try
+            {
+                EInvoiceDocument document = new EInvoiceDocument(id);
+                foreach (InvoiceLineItem item in this.InvoiceLineItems)
+                {
+                    if (string.IsNullOrWhiteSpace(item.ID))
+                        throw new Exception();
+
+                    // TODO: Check for int values only
+                    if (!Enum.TryParse(item.ClassificationCode, out ClassificationCode classificationCode))
+                        throw new Exception();
+
+                    if (string.IsNullOrWhiteSpace(item.Description))
+                        throw new Exception();
+
+                    if (!decimal.TryParse(item.UnitPrice, out decimal unitPrice))
+                        throw new Exception();
+
+                    if (!decimal.TryParse(item.TaxableAmount, out decimal taxableAmount))
+                        throw new Exception();
+
+                    if (!decimal.TryParse(item.TaxAmount, out decimal taxAmount))
+                        throw new Exception();
+
+                    if (!int.TryParse(item.Quantity, out int quantity))
+                        throw new Exception();
+
+                    document.AddInvoiceLineItem(new InvoiceLineArgs(
+                        item.ID, classificationCode,
+                        item.Description, unitPrice,
+                        new List<InvoiceLineTaxSubtotalArgs>()
+                        {
+                            new InvoiceLineTaxSubtotalArgs(taxableAmount, taxAmount, (TaxType)(item.TaxType! + 1))
+                        }
+                    )
+                    {
+                        Quantity = quantity
+                    });
+                }
+            }
+            catch
+            {
+                // TODO: Validation message
+            }
+        }
+        #endregion
         #endregion
 
         #region UI-related
-        public bool CanLogout()
-        {
-            return true;
-        }
-
-        public void Logout()
+        [RelayCommand]
+        private void Logout()
         {
             this.ClientId = null;
             this.ClientSecret = null;
@@ -314,12 +347,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
             this.LoggedInAs = null;
         }
 
-        public bool CanCloseDropdownOnSelect(ComboBox? comboBox)
-        {
-            return true;
-        }
-
-        public void CloseDropdownOnSelect(ComboBox? comboBox)
+        [RelayCommand]
+        private void CloseDropdownOnSelect(ComboBox? comboBox)
         {
             if (comboBox == null)
                 return;
@@ -327,12 +356,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
             comboBox.IsDropDownOpen = false;
         }
 
-        public bool CanUpdateMainUIOnSelect(object? values)
-        {
-            return true;
-        }
-
-        public void UpdateMainUIOnSelect(object? values)
+        [RelayCommand]
+        private void UpdateMainUIOnSelect(object? values)
         {
             if (values == null)
                 return;
@@ -347,12 +372,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                 popup.IsChecked = false;
         }
 
-        public bool CanAttachFile(TextBox? textBlock)
-        {
-            return true;
-        }
-
-        public void AttachFile(TextBox? textBlock)
+        [RelayCommand]
+        private void AttachFile(TextBox? textBlock)
         {
             if (textBlock == null)
                 return;
@@ -367,6 +388,42 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
             if (result.HasValue && result.Value && textBlock != null)
                 textBlock.Text = this.SubmitDocumentDialog.SafeFileName;
         }
+
+        [RelayCommand]
+        private void AddInvoiceLineItem()
+        {
+            this.InvoiceLineItems.Add(new InvoiceLineItem()
+            {
+                Header = $"Line Item {this.InvoiceLineItems.Count + 1}",
+                ID = $"INV-12345_{this.InvoiceLineItems.Count + 1}",
+                ClassificationCode = "004",
+                Description = "E_1234567_1234",
+                UnitPrice = "5.66",
+                Quantity = "1",
+                TaxableAmount = "5.66",
+                TaxAmount = "0.34",
+                TaxType = 1
+            });
+        }
+
+        [RelayCommand]
+        private void RemoveInvoiceLineItem(int num)
+        {
+            this.InvoiceLineItems.RemoveAt(num);
+        }
         #endregion
+
+        public class InvoiceLineItem
+        {
+            public string? Header { get; set; }
+            public string? ID { get; set; }
+            public string? ClassificationCode { get; set; }
+            public string? Description { get; set; }
+            public string? UnitPrice { get; set; }
+            public string? Quantity { get; set; }
+            public string? TaxableAmount { get; set; }
+            public string? TaxAmount { get; set; }
+            public int? TaxType { get; set; }
+        }
     }
 }

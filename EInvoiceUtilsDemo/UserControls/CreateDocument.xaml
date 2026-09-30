@@ -27,7 +27,7 @@
                 <Expander Header="Document Header" Style="{StaticResource Collapsible}">
                     <StackPanel Margin="0,5,0,10" Style="{StaticResource Input}">
                         <TextBlock Text="Document ID" FontSize="16"/>
-                        <TextBox Margin="0,3,0,0" Text="INV-12345"/>
+                        <TextBox Name="CreateDocumentID"  Margin="0,3,0,0" Text="INV-12345"/>
                     </StackPanel>
                 </Expander>
 
@@ -35,17 +35,17 @@
                     <StackPanel>
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Name" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="Test"/>
+                            <TextBox Name="CreateDocumentSupplierName" Margin="0,3,0,0" Text="Test"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="TIN" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0"/>
+                            <TextBox Name="CreateDocumentSupplierTIN" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID Type" FontSize="16"/>
-                            <ComboBox Name="SupplierIdTypeComboBox" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="CreateDocumentSupplierIDType" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="NRIC"/>
                                 <ComboBoxItem Content="PASSPORT"/>
                                 <ComboBoxItem Content="BRN"/>
@@ -54,7 +54,7 @@
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="SelectionChanged">
                                         <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=SupplierIdTypeComboBox}"/>
+                                                               CommandParameter="{Binding ElementName=CreateDocumentSupplierIDType}"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                             </ComboBox>
@@ -62,37 +62,37 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0"/>
+                            <TextBox Name="CreateDocumentSupplierID" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Business Description" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="Carpark Operator"/>
+                            <TextBox Name="CreateDocumentSupplierBusinessDescription" Margin="0,3,0,0" Text="Carpark Operator"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 1" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="X Unit 07-06, Vertical Tower A"/>
+                            <TextBox Name="CreateDocumentSupplierAddressLine1" Margin="0,3,0,0" Text="X Unit 07-06, Vertical Tower A"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 2" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="No. 8 Jalan Kerinchi, Bangsar South"/>
+                            <TextBox Name="CreateDocumentSupplierAddressLine2" Margin="0,3,0,0" Text="No. 8 Jalan Kerinchi, Bangsar South"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="City Name" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="Kuala Lumpur"/>
+                            <TextBox Name="CreateDocumentSupplierCityName" Margin="0,3,0,0" Text="Kuala Lumpur"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Postal Zone" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="50490"/>
+                            <TextBox  Name="CreateDocumentSupplierPostalZone" Margin="0,3,0,0" Text="50490"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="State" FontSize="16"/>
-                            <ComboBox Name="SupplierStateComboBox" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="CreateDocumentSupplierState" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="Johor"/>
                                 <ComboBoxItem Content="Kedah"/>
                                 <ComboBoxItem Content="Kelantan"/>
@@ -114,7 +114,7 @@
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="SelectionChanged">
                                         <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=SupplierStateComboBox}"/>
+                                                               CommandParameter="{Binding ElementName=CreateDocumentSupplierState}"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                             </ComboBox>
@@ -122,12 +122,12 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Email" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="test@test.com"/>
+                            <TextBox Name="CreateDocumentSupplierEmail" Margin="0,3,0,0" Text="test@test.com"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5,0,10" Style="{StaticResource Input}">
                             <TextBlock Text="Contact Number" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="01234567890"/>
+                            <TextBox Name="CreateDocumentSupplierContactNumber" Margin="0,3,0,0" Text="01234567890"/>
                         </StackPanel>
                     </StackPanel>
                 </Expander>
@@ -136,17 +136,17 @@
                     <StackPanel>
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Name" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="Test"/>
+                            <TextBox Name="CreateDocumentCustomerName" Margin="0,3,0,0" Text="Test"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="TIN" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0"/>
+                            <TextBox Name="CreateDocumentCustomerTIN" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID Type" FontSize="16"/>
-                            <ComboBox Name="CustomerIdTypeComboBox" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="CreateDocumentCustomerIDType" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="NRIC"/>
                                 <ComboBoxItem Content="PASSPORT"/>
                                 <ComboBoxItem Content="BRN"/>
@@ -155,7 +155,7 @@
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="SelectionChanged">
                                         <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=CustomerIdTypeComboBox}"/>
+                                                               CommandParameter="{Binding ElementName=CreateDocumentCustomerIDType}"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                             </ComboBox>
@@ -163,32 +163,32 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0"/>
+                            <TextBox Name="CreateDocumentCustomerID" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 1" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="X Unit 07-06, Vertical Tower A"/>
+                            <TextBox Name="CreateDocumentCustomerAddressLine1" Margin="0,3,0,0" Text="X Unit 07-06, Vertical Tower A"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 2" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="No. 8 Jalan Kerinchi, Bangsar South"/>
+                            <TextBox Name="CreateDocumentCustomerAddressLine2" Margin="0,3,0,0" Text="No. 8 Jalan Kerinchi, Bangsar South"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="City Name" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="Kuala Lumpur"/>
+                            <TextBox Name="CreateDocumentCustomerCityName" Margin="0,3,0,0" Text="Kuala Lumpur"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Postal Zone" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="50490"/>
+                            <TextBox Name="CreateDocumentCustomerPostalZone" Margin="0,3,0,0" Text="50490"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="State" FontSize="16"/>
-                            <ComboBox Name="CustomerStateComboBox" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox Name="CreateDocumentCustomerState" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="Johor"/>
                                 <ComboBoxItem Content="Kedah"/>
                                 <ComboBoxItem Content="Kelantan"/>
@@ -210,7 +210,7 @@
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="SelectionChanged">
                                         <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=CustomerStateComboBox}"/>
+                                                               CommandParameter="{Binding ElementName=CreateDocumentCustomerState}"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                             </ComboBox>
@@ -218,128 +218,110 @@
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Email" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="test@test.com"/>
+                            <TextBox Name="CreateDocumentCustomerEmail" Margin="0,3,0,0" Text="test@test.com"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5,0,10" Style="{StaticResource Input}">
                             <TextBlock Text="Contact Number" FontSize="16"/>
-                            <TextBox Margin="0,3,0,0" Text="01234567890"/>
+                            <TextBox Name="CreateDocumentCustomerContactNumber" Margin="0,3,0,0" Text="01234567890"/>
                         </StackPanel>
                     </StackPanel>
                 </Expander>
+                
                 <Expander Header="Invoice Line Items" Style="{StaticResource Collapsible}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Margin="0,5,0,0">
+                        <StackPanel Grid.Row="0" Margin="0,5,0,0">
                             <StackPanel>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <TextBlock Grid.Column="0"
-                                               Text="Line Item 1"
-                                               TextDecorations="Underline"
-                                               FontFamily="Geist"
-                                               FontWeight="Medium"
-                                               FontSize="16"/>
+                                <ItemsControl ItemsSource="{Binding InvoiceLineItems}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                    <Button Grid.Column="1"
-                                            Content="Remove"
-                                            Style="{StaticResource FailureBtn}"/>
-                                </Grid>
+                                                    <TextBlock Grid.Column="0"
+                                                               Text="{Binding Path=Header}"
+                                                               TextDecorations="Underline"
+                                                               FontFamily="{StaticResource Geist}"
+                                                               FontWeight="Medium"
+                                                               FontSize="16"/>
 
-                                <StackPanel Margin="0,0,0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="ID" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="INV-12345_1"/>
-                                </StackPanel>
+                                                    <Button Grid.Column="1"
+                                                            Content="Remove"
+                                                            Style="{StaticResource FailureBtn}"
+                                                            Command="{Binding DataContext.RemoveInvoiceLineItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                                </Grid>
 
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Classification Code" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="004"/>
-                                </StackPanel>
-                            
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Description" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="E_1234567_1234"/>
-                                </StackPanel>
+                                                <StackPanel>
+                                                    <StackPanel Margin="0,0,0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="ID" FontSize="16"/>
+                                                        <TextBox Margin="0,3,0,0" Text="{Binding Path=ID}"/>
+                                                    </StackPanel>
 
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Unit Price Code" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="5.66"/>
-                                </StackPanel>
+                                                    <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="Classification Code" FontSize="16"/>
+                                                        <TextBox Margin="0,3,0,0" Text="{Binding Path=ClassificationCode}"/>
+                                                    </StackPanel>
 
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Taxable Amount" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="5.66"/>
-                                </StackPanel>
+                                                    <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="Description" FontSize="16"/>
+                                                        <TextBox Margin="0,3,0,0" Text="{Binding Path=Description}"/>
+                                                    </StackPanel>
 
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Unit Price Code" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,10" Text="0.34"/>
-                                </StackPanel>
-                            </StackPanel>
+                                                    <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="Unit Price" FontSize="16"/>
+                                                        <TextBox Margin="0,3,0,0" Text="{Binding Path=UnitPrice}"/>
+                                                    </StackPanel>
 
-                            <StackPanel>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="Taxable Amount" FontSize="16"/>
+                                                        <TextBox Margin="0,3,0,0" Text="{Binding Path=TaxableAmount}"/>
+                                                    </StackPanel>
 
-                                    <TextBlock Grid.Column="0"
-                                               Text="Line Item 2"
-                                               TextDecorations="Underline"
-                                               FontFamily="Geist"
-                                               FontWeight="Medium"
-                                               FontSize="16"/>
+                                                    <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="Tax Amount" FontSize="16"/>
+                                                        <TextBox Margin="0,3,0,0" Text="{Binding Path=TaxAmount}"/>
+                                                    </StackPanel>
 
-                                    <Button Grid.Column="1"
-                                            Content="Remove"
-                                            Style="{StaticResource FailureBtn}"/>
-                                </Grid>
+                                                    <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="Tax Type" FontSize="16"/>
+                                                        <ComboBox SelectedIndex="{Binding Path=TaxType}" Margin="0,3,0,0" Focusable="False" Style="{StaticResource DropdownSelection}">
+                                                            <ComboBoxItem Content="Sales Tax"/>
+                                                            <ComboBoxItem Content="Service Tax"/>
+                                                            <ComboBoxItem Content="Tourism Tax"/>
+                                                            <ComboBoxItem Content="High-Value Goods Tax"/>
+                                                            <ComboBoxItem Content="Sales Tax on Low Value Goods"/>
+                                                            <ComboBoxItem Content="Not Applicable"/>
+                                                            <ComboBoxItem Content="Tax Exemption"/>
+                                                        </ComboBox>
+                                                    </StackPanel>
 
-                                <StackPanel Margin="0,0,0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="ID" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="INV-12345_1"/>
-                                </StackPanel>
-
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Classification Code" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="004"/>
-                                </StackPanel>
-
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Description" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="E_1234567_1234"/>
-                                </StackPanel>
-
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Unit Price Code" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="5.66"/>
-                                </StackPanel>
-
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Taxable Amount" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="5.66"/>
-                                </StackPanel>
-
-                                <StackPanel Margin="0,5" Style="{StaticResource Input}">
-                                    <TextBlock Text="Unit Price Code" FontSize="16"/>
-                                    <TextBox Margin="0,3,0,0" Text="0.34"/>
-                                </StackPanel>
+                                                    <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                                                        <TextBlock Text="Quantity" FontSize="16"/>
+                                                        <TextBox Margin="0,3,0,5" Text="{Binding Path=Quantity}"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </StackPanel>
                         </StackPanel>
 
                         <Button Grid.Row="2"
                                 Content="Add"
-                                Style="{StaticResource SuccessBtn}"/>
+                                Style="{StaticResource SuccessBtn}"
+                                Command="{Binding AddInvoiceLineItemCommand}"/>
                     </Grid>
                 </Expander>
             </StackPanel>

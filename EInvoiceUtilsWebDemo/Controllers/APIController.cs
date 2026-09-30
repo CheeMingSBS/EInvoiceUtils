@@ -1,11 +1,11 @@
-﻿using EInvoiceUtilsWebDemo.Models;
+﻿using SBS.Core.EInvoiceUtilsWebDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using EInvoiceUtils;
-using EInvoiceUtils.Models;
+using SBS.Core.EInvoiceUtils;
+using SBS.Core.EInvoiceUtils.Models;
 using System.Text;
 
-namespace EInvoiceUtilsWebDemo.Controllers
+namespace SBS.Core.EInvoiceUtilsWebDemo.Controllers
 {
     public class APIController : Controller
     {

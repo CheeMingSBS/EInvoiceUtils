@@ -1,13 +1,11 @@
-﻿using EInvoiceUtils;
-using EInvoiceUtils.Models;
-using EInvoiceUtilsWebDemo.Models;
+﻿using SBS.Core.EInvoiceUtils;
+using SBS.Core.EInvoiceUtils.Models;
+using SBS.Core.EInvoiceUtilsWebDemo.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
 
-namespace EInvoiceUtilsWebDemo.Controllers
+namespace SBS.Core.EInvoiceUtilsWebDemo.Controllers
 {
     public class DocumentController : Controller
     {
@@ -61,7 +59,7 @@ namespace EInvoiceUtilsWebDemo.Controllers
             document.SetAccountingSupplierParty(supplier);
             document.SetAccountingCustomerParty(customer);
 
-            foreach (EInvoiceUtilsWebDemo.Models.InvoiceLine line in body.invoiceLines)
+            foreach (SBS.Core.EInvoiceUtilsWebDemo.Models.InvoiceLine line in body.invoiceLines)
             {
                 InvoiceLineTaxSubtotalArgs taxSubtotal = new InvoiceLineTaxSubtotalArgs(
                                             taxableAmount: decimal.Parse(line.taxableAmount),

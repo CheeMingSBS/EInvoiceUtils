@@ -1,4 +1,4 @@
-namespace EInvoiceUtilsWebDemo.Models
+namespace SBS.Core.EInvoiceUtilsWebDemo.Models
 {
     public class ErrorViewModel
     {

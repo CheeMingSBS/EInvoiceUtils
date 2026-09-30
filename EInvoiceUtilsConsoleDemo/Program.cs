@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using EInvoiceUtils;
+using SBS.Core.EInvoiceUtils;
 using System.Text.Json;
-using EInvoiceUtils.Models;
+using SBS.Core.EInvoiceUtils.Models;
 using System.Text;
 
 IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json")

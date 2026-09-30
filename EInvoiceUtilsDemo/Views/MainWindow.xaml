@@ -66,7 +66,7 @@
                             VerticalAlignment="Top"
                             Style="{StaticResource RoundedSection}">
                         <TextBlock Text="{Binding LoggedInAs}"
-                                   FontFamily="Geist"
+                                   FontFamily="{StaticResource Geist}"
                                    FontWeight="SemiBold"
                                    FontSize="12"
                                    Foreground="WhiteSmoke"
@@ -98,7 +98,7 @@
 
                         <TextBlock Grid.Row="0"
                                    Text="{Binding SelectedMode, Mode=OneWay}"
-                                   FontFamily="Geist"
+                                   FontFamily="{StaticResource Geist}"
                                    FontSize="24 "
                                    FontWeight="Medium"
                                    Foreground="#0D0D0D"
@@ -151,7 +151,7 @@
                         <!-- TODO: Should really use a TextBlock here...? -->
                         <TextBox BorderBrush="Transparent"
                                  Background="WhiteSmoke"
-                                 FontFamily="Geist"
+                                 FontFamily="{StaticResource Geist}"
                                  FontWeight="Medium"
                                  FontSize="14"
                                  IsReadOnly="True"

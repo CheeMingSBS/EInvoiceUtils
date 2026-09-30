@@ -50,7 +50,7 @@
                 <TextBlock Grid.Row="0"
                                Grid.ColumnSpan="3"
                                Text="EInvoiceUtils Library Demo"
-                               FontFamily="Geist"
+                               FontFamily="{StaticResource Geist}"
                                FontSize="32"
                                FontWeight="SemiBold"
                                HorizontalAlignment="Center"
