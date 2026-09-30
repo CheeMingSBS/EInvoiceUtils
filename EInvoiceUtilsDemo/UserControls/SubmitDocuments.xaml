@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
+             xmlns:c="clr-namespace:SBS.Core.EInvoiceUtilsDemo.Converters"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -12,6 +13,8 @@
                 <ResourceDictionary Source="/Resources/Geist.xaml"/>
                 <ResourceDictionary Source="/Resources/General.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <c:SubmitDocumentsUIConverter x:Key ="SubmitDocumentsUIConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -24,11 +27,15 @@
         <StackPanel Grid.Row="0">
             <StackPanel Style="{StaticResource Input}">
                 <TextBlock Text="Reference No / Code Number" FontSize="16"/>
-                <TextBox Margin="0,3,0,0"/>
+                <TextBox Name="SubmitDocumentsCodeNumberInput" Margin="0,3,0,0"/>
             </StackPanel>
             <StackPanel Margin="0,15,0,15" Style="{StaticResource Input}">
                 <TextBlock Text="Document Format" FontSize="16"/>
-                <ComboBox SelectedIndex="0" Margin="0,3,0,0" Focusable="False" Style="{StaticResource DropdownSelection}">
+                <ComboBox Name="SubmitDocumentsDocumentFormatInput"
+                          SelectedIndex="0"
+                          Margin="0,3,0,0"
+                          Focusable="False"
+                          Style="{StaticResource DropdownSelection}">
                     <ComboBoxItem Content="JSON"/>
                     <ComboBoxItem Content="XML"/>
                 </ComboBox>
@@ -41,19 +48,30 @@
                         <ColumnDefinition Width="8"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    
-                    <TextBox Grid.Column="0" IsReadOnly="True"/>
+
+                    <!-- TODO: Should really use a TextBlock here... -->
+                    <TextBox Name="SubmitDocumentsFileInput" Grid.Column="0" IsReadOnly="True"/>
                     <Border Grid.Column="1"/>
                     <Button Grid.Column="2"
                             Content="Upload"
-                            Style="{StaticResource PrimaryBtn}"/>
+                            Style="{StaticResource PrimaryBtn}"
+                            Command="{Binding AttachFileCommand}"
+                            CommandParameter="{Binding ElementName=SubmitDocumentsFileInput}"/>
                 </Grid>
             </StackPanel>
         </StackPanel>
 
         <Button Grid.Row="1"
-                Content="Retrieve"
+                Content="Submit"
                 Style="{StaticResource PrimaryBtn}"
-                Margin="0,15,0,0"/>
+                Margin="0,15,0,0"
+                Command="{Binding SubmitDocumentsCommand}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource SubmitDocumentsUIConverter}">
+                    <Binding ElementName="SubmitDocumentsCodeNumberInput"/>
+                    <Binding ElementName="SubmitDocumentsDocumentFormatInput"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
     </Grid>
 </UserControl>

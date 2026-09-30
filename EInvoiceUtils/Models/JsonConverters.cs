@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
-namespace EInvoiceUtils.Models
+namespace SBS.Core.EInvoiceUtils.Models
 {
     /*
      * NOTE:

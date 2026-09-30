@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace EInvoiceUtils.Models
+namespace SBS.Core.EInvoiceUtils.Models
 {
     #region Standard Response
     /// <summary>

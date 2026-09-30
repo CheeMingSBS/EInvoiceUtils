@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace EInvoiceUtils.Models
+namespace SBS.Core.EInvoiceUtils.Models
 {
     public class EInvoiceDocument
     {

@@ -17,23 +17,26 @@
             </ResourceDictionary.MergedDictionaries>
 
             <c:MainUIConverter x:Key ="MainUIConverter"/>
+            <c:LoginUIConverter x:Key ="LoginUIConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
-        <uc:Login Visibility="Hidden"/>
+        <uc:Login>
+            <uc:Login.Visibility>
+                <MultiBinding Converter="{StaticResource LoginUIConverter}" ConverterParameter="LoginPage">
+                    <Binding Path="LoggedInAs"/>
+                </MultiBinding>
+            </uc:Login.Visibility>
+        </uc:Login>
 
         <Grid Margin="20">
-            <!--<Grid.Resources>
-                <Style TargetType="Grid">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsAuthenticated}" Value="False">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Resources>-->
-
+            <Grid.Visibility>
+                <MultiBinding Converter="{StaticResource LoginUIConverter}" ConverterParameter="MainPage">
+                    <Binding Path="LoggedInAs"/>
+                </MultiBinding>
+            </Grid.Visibility>
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -62,7 +65,7 @@
                             Padding="6"
                             VerticalAlignment="Top"
                             Style="{StaticResource RoundedSection}">
-                        <TextBlock Text="Taxpayer"
+                        <TextBlock Text="{Binding LoggedInAs}"
                                    FontFamily="Geist"
                                    FontWeight="SemiBold"
                                    FontSize="12"
@@ -71,7 +74,10 @@
                     </Border>
                 </StackPanel>
 
-                <Button Grid.Column="1" Content="Logout" Style="{StaticResource FailureBtn}"/>
+                <Button Grid.Column="1"
+                        Content="Logout"
+                        Style="{StaticResource FailureBtn}"
+                        Command="{Binding LogoutCommand}"/>
             </Grid>
 
             <uc:Navbar Grid.Row="1"/>
@@ -142,13 +148,17 @@
 
                 <Border Grid.Column="1">
                     <Border Grid.Column="1" Style="{StaticResource RoundedSection}">
-                        <RichTextBox Name="Output"
-                                     BorderBrush="Transparent"
-                                     Background="WhiteSmoke"
-                                     FontFamily="Geist"
-                                     FontWeight="Medium"
-                                     FontSize="14"
-                                     IsReadOnly="True"/>
+                        <!-- TODO: Should really use a TextBlock here...? -->
+                        <TextBox BorderBrush="Transparent"
+                                 Background="WhiteSmoke"
+                                 FontFamily="Geist"
+                                 FontWeight="Medium"
+                                 FontSize="14"
+                                 IsReadOnly="True"
+                                 AcceptsReturn="True"
+                                 AcceptsTab="True"
+                                 TextWrapping="WrapWithOverflow"
+                                 Text="{Binding Output, Mode=OneWay}"/>
                     </Border>
                 </Border>
             </Grid>

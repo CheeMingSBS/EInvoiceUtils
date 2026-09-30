@@ -40,7 +40,7 @@
                            PlacementTarget="{Binding ElementName=API}"
                            IsOpen="{Binding ElementName=API, Path=IsChecked, Mode=TwoWay}">
                         <Border>
-                            <ListView SelectedIndex="0" Name="APIListView">
+                            <ListView Name="APIListView">
                                 <ListViewItem Content="Validate Taxpayer TIN"/>
                                 <ListViewItem Content="Submit Documents"/>
                                 <ListViewItem Content="Get Submission"/>
@@ -52,6 +52,7 @@
                                             <b:InvokeCommandAction.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource MainUIConverter}">
                                                     <Binding Path="SelectedItem.Content" ElementName="APIListView"/>
+                                                    <Binding ElementName="DocumentListView"/>
                                                     <Binding ElementName="API"/>
                                                 </MultiBinding>
                                             </b:InvokeCommandAction.CommandParameter>
@@ -78,6 +79,7 @@
                                             <b:InvokeCommandAction.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource MainUIConverter}">
                                                     <Binding Path="SelectedItem.Content" ElementName="DocumentListView"/>
+                                                    <Binding ElementName="APIListView"/>
                                                     <Binding ElementName="Document"/>
                                                 </MultiBinding>
                                             </b:InvokeCommandAction.CommandParameter>

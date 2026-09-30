@@ -1,4 +1,4 @@
-﻿using EInvoiceUtils.Models;
+﻿using SBS.Core.EInvoiceUtils.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Json;
 using System.Xml;
 
-namespace EInvoiceUtils
+namespace SBS.Core.EInvoiceUtils
 {
     public partial class EInvoiceAPI
     {

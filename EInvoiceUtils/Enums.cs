@@ -1,4 +1,4 @@
-﻿namespace EInvoiceUtils
+﻿namespace SBS.Core.EInvoiceUtils
 {
     public enum DocumentFormat
     {

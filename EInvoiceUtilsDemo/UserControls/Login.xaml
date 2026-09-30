@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
+             xmlns:c="clr-namespace:SBS.Core.EInvoiceUtilsDemo.Converters"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -12,20 +13,12 @@
                 <ResourceDictionary Source="/Resources/Geist.xaml"/>
                 <ResourceDictionary Source="/Resources/General.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <c:LoginUIConverter x:Key ="LoginUIConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
-        <!--<Grid.Resources>
-            <Style TargetType="Grid">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
-                        <Setter Property="Visibility" Value="Hidden"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Resources>-->
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
@@ -63,18 +56,25 @@
                                HorizontalAlignment="Center"
                                Foreground="#0D0D0D"/>
 
-                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,25,0,0" MaxWidth="350">
+                <StackPanel Name="InputPanel" Grid.Row="1" Grid.Column="1" Margin="0,25,0,0" MaxWidth="350">
                     <StackPanel Style="{StaticResource Input}">
                         <TextBlock Text="Client ID" FontSize="16"/>
-                        <TextBox Margin="0,3,0,0"/>
+                        <TextBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}" Name="LoginClientIDInput"  Margin="0,3,0,0"/>
                     </StackPanel>
-                    <StackPanel Margin="0,15,0,15" Style="{StaticResource Input}">
+                    <StackPanel Margin="0,15,0,0" Style="{StaticResource Input}">
                         <TextBlock Text="Client Secret" FontSize="16"/>
-                        <PasswordBox Margin="0,3,0,0"/>
+                        <PasswordBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}" Name="LoginClientSecretInput" Margin="0,3,0,0"/>
                     </StackPanel>
-                    <StackPanel Style="{StaticResource Input}">
+                    <StackPanel Margin="0,15,0,0" Style="{StaticResource Input}">
                         <TextBlock Text="[ Intermediary ] On Behalf Of TIN (Optional)" FontSize="16"/>
-                        <TextBox Margin="0,3,0,0"/>
+                        <TextBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}" Name="LoginOnBehalfOfInput"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,15,0,0" Style="{StaticResource Input}">
+                        <TextBlock Text="Environment" FontSize="16"/>
+                        <ComboBox Name="LoginEnvironmentInput" SelectedIndex="0" Margin="0,3,0,0" Focusable="False" Style="{StaticResource DropdownSelection}">
+                            <ComboBoxItem Content="Sandbox"/>
+                            <ComboBoxItem Content="Production"/>
+                        </ComboBox>
                     </StackPanel>
                     <Border Width="150" BorderBrush="#0D0D0D" BorderThickness="0,1,0,0" Margin="0,15,0,15"/>
 
@@ -85,7 +85,19 @@
                             <ColumnDefinition Width="0.15*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="1" Content="Login" Style="{StaticResource PrimaryBtn}"/>
+                        <Button Grid.Column="1"
+                                Content="Login"
+                                Style="{StaticResource PrimaryBtn}"
+                                Command="{Binding LoginCommand}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource LoginUIConverter}">
+                                    <Binding ElementName="LoginClientIDInput"/>
+                                    <Binding ElementName="LoginClientSecretInput"/>
+                                    <Binding ElementName="LoginOnBehalfOfInput"/>
+                                    <Binding ElementName="LoginEnvironmentInput"/>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
                     </Grid>
                 </StackPanel>
             </Grid>
