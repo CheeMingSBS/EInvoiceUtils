@@ -13,8 +13,6 @@
                 <ResourceDictionary Source="/Resources/Geist.xaml"/>
                 <ResourceDictionary Source="/Resources/General.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <c:LoginUIConverter x:Key ="LoginUIConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -59,19 +57,27 @@
                 <StackPanel Name="InputPanel" Grid.Row="1" Grid.Column="1" Margin="0,25,0,0" MaxWidth="350">
                     <StackPanel Style="{StaticResource Input}">
                         <TextBlock Text="Client ID" FontSize="16"/>
-                        <TextBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}" Name="LoginClientIDInput"  Margin="0,3,0,0"/>
+                        <TextBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}"
+                                 Margin="0,3,0,0"
+                                 Text="{Binding ClientId, Mode=TwoWay}"/>
                     </StackPanel>
                     <StackPanel Margin="0,15,0,0" Style="{StaticResource Input}">
                         <TextBlock Text="Client Secret" FontSize="16"/>
-                        <PasswordBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}" Name="LoginClientSecretInput" Margin="0,3,0,0"/>
+                        <PasswordBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}"
+                                     Name="LoginClientSecretInput"
+                                     Margin="0,3,0,0"/>
                     </StackPanel>
                     <StackPanel Margin="0,15,0,0" Style="{StaticResource Input}">
                         <TextBlock Text="[ Intermediary ] On Behalf Of TIN (Optional)" FontSize="16"/>
-                        <TextBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}" Name="LoginOnBehalfOfInput"/>
+                        <TextBox Width="{Binding ElementName=InputPanel, Path=ActualWidth}"
+                                 Text="{Binding OnBehalfOf, Mode=TwoWay}"/>
                     </StackPanel>
                     <StackPanel Margin="0,15,0,0" Style="{StaticResource Input}">
                         <TextBlock Text="Environment" FontSize="16"/>
-                        <ComboBox Name="LoginEnvironmentInput" SelectedIndex="0" Margin="0,3,0,0" Focusable="False" Style="{StaticResource DropdownSelection}">
+                        <ComboBox SelectedIndex="{Binding Environment, Mode=TwoWay}"
+                                  Margin="0,3,0,0"
+                                  Focusable="False"
+                                  Style="{StaticResource DropdownSelection}">
                             <ComboBoxItem Content="Sandbox"/>
                             <ComboBoxItem Content="Production"/>
                         </ComboBox>
@@ -88,16 +94,8 @@
                         <Button Grid.Column="1"
                                 Content="Login"
                                 Style="{StaticResource PrimaryBtn}"
-                                Command="{Binding LoginCommand}">
-                            <Button.CommandParameter>
-                                <MultiBinding Converter="{StaticResource LoginUIConverter}">
-                                    <Binding ElementName="LoginClientIDInput"/>
-                                    <Binding ElementName="LoginClientSecretInput"/>
-                                    <Binding ElementName="LoginOnBehalfOfInput"/>
-                                    <Binding ElementName="LoginEnvironmentInput"/>
-                                </MultiBinding>
-                            </Button.CommandParameter>
-                        </Button>
+                                Command="{Binding LoginCommand}"
+                                CommandParameter="{Binding ElementName=LoginClientSecretInput}"/>
                     </Grid>
                 </StackPanel>
             </Grid>

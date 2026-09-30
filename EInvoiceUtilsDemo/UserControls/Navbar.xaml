@@ -51,7 +51,7 @@
                                         <b:InvokeCommandAction Command="{Binding UpdateMainUIOnSelectCommand}">
                                             <b:InvokeCommandAction.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource MainUIConverter}">
-                                                    <Binding Path="SelectedItem.Content" ElementName="APIListView"/>
+                                                    <Binding ElementName="APIListView"/>
                                                     <Binding ElementName="DocumentListView"/>
                                                     <Binding ElementName="API"/>
                                                 </MultiBinding>
@@ -78,7 +78,7 @@
                                         <b:InvokeCommandAction Command="{Binding UpdateMainUIOnSelectCommand}">
                                             <b:InvokeCommandAction.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource MainUIConverter}">
-                                                    <Binding Path="SelectedItem.Content" ElementName="DocumentListView"/>
+                                                    <Binding ElementName="DocumentListView"/>
                                                     <Binding ElementName="APIListView"/>
                                                     <Binding ElementName="Document"/>
                                                 </MultiBinding>

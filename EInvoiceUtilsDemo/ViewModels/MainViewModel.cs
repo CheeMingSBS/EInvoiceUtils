@@ -14,33 +14,186 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 {
     internal partial class MainViewModel : ObservableObject
     {
-        public string? ClientId { get; set; }
-        public string? ClientSecret { get; set; }
-        public string? OnBehalfOf { get; set; }
-
         public EInvoiceAPI? Client { get; set; }
         public string? AccessToken { get; set; }
         public DateTime? TimeUntilAccessTokenExpiry { get; set; }
 
-        OpenFileDialog? SubmitDocumentDialog { get; set; }
+        #region UI Input & Bindings
+        #region Login
+        [ObservableProperty]
+        private string? clientId;
 
+        private string? ClientSecret { get; set; }
+
+        [ObservableProperty]
+        private string? onBehalfOf;
+
+        [ObservableProperty]
+        private int? environment;
+        #endregion
+
+        #region Main UI
         [ObservableProperty]
         private string? selectedMode;
 
         [ObservableProperty]
-        private string? loggedInAs = "Test";
+        private string? loggedInAs;
 
         [ObservableProperty]
         private string? output;
+        #endregion
+
+        #region Validate Taxpayer TIN
+        [ObservableProperty]
+        private string? validateTaxpayerTINInput;
+
+        [ObservableProperty]
+        private int? validateTaxpayerIDTypeInput;
+
+        [ObservableProperty]
+        private string? validateTaxpayerIDInput;
+        #endregion
+
+        #region Submit Documents
+        [ObservableProperty]
+        private string? submitDocumentsCodeNumberInput;
+
+        [ObservableProperty]
+        private int? submitDocumentsDocumentFormatInput;
+
+        [ObservableProperty]
+        private string? submitDocumentsFileInput;
+
+        OpenFileDialog? SubmitDocumentDialog { get; set; }
+        #endregion
+
+        #region Get Submission
+        [ObservableProperty]
+        private string? getSubmissionUIDInput;
+        #endregion
+
+        #region Get Document Details
+        [ObservableProperty]
+        private string? getDocumentDetailsUUIDInput;
+        #endregion
+
+        #region Create Document
+        [ObservableProperty]
+        private string? createDocumentIDInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierNameInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierTINInput;
+
+        [ObservableProperty]
+        private int? createDocumentSupplierIDTypeInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierIDInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierBusinessDescriptionInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierAddressLine1Input;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierAddressLine2Input;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierAddressLine3Input;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierCityNameInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierPostalZoneInput;
+
+        [ObservableProperty]
+        private int? createDocumentSupplierStateInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierEmailInput;
+
+        [ObservableProperty]
+        private string? createDocumentSupplierContactNumberInput;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerNameInput;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerTINInput;
+
+        [ObservableProperty]
+        private int? createDocumentCustomerIDTypeInput;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerIDInput;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerAddressLine1Input;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerAddressLine2Input;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerAddressLine3Input;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerCityNameInput;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerPostalZoneInput;
+
+        [ObservableProperty]
+        private int? createDocumentCustomerStateInput;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerEmailInput;
+
+        [ObservableProperty]
+        private string? createDocumentCustomerContactNumberInput;
 
         public ObservableCollection<InvoiceLineItem> InvoiceLineItems { get; set; }
+        #endregion
+        #endregion
 
         public MainViewModel()
         {
+            this.LoggedInAs = "Test";
+            this.Environment = (int)TaxpayerType.NRIC - 1;
+            this.ValidateTaxpayerIDTypeInput = (int)TaxpayerType.NRIC - 1;
+            this.SubmitDocumentsDocumentFormatInput = (int)DocumentFormat.JSON - 1;
+
+            this.CreateDocumentIDInput = "INV-12345";
+            this.CreateDocumentSupplierNameInput = "Test";
+            this.CreateDocumentSupplierIDTypeInput = (int)TaxpayerType.NRIC - 1;
+            this.CreateDocumentSupplierBusinessDescriptionInput = "Carpark Operator";
+            this.CreateDocumentSupplierAddressLine1Input = "X Unit 07-06, Vertical Tower A";
+            this.CreateDocumentSupplierAddressLine2Input = "No. 8 Jalan Kerinchi, Bangsar South";
+            this.CreateDocumentSupplierCityNameInput = "Kuala Lumpur";
+            this.CreateDocumentSupplierPostalZoneInput = "50490";
+            this.CreateDocumentSupplierStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
+            this.CreateDocumentSupplierEmailInput = "test@test.com";
+            this.CreateDocumentSupplierContactNumberInput = "01234567890";
+
+            this.CreateDocumentCustomerNameInput = "Test";
+            this.CreateDocumentCustomerIDTypeInput = (int)TaxpayerType.NRIC - 1;
+            this.CreateDocumentCustomerAddressLine1Input = "X Unit 07-06, Vertical Tower A";
+            this.CreateDocumentCustomerAddressLine2Input = "No. 8 Jalan Kerinchi, Bangsar South";
+            this.CreateDocumentCustomerCityNameInput = "Kuala Lumpur";
+            this.CreateDocumentCustomerPostalZoneInput = "50490";
+            this.CreateDocumentCustomerStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
+            this.CreateDocumentCustomerEmailInput = "test@test.com";
+            this.CreateDocumentCustomerContactNumberInput = "01234567890";
+
             this.InvoiceLineItems = new ObservableCollection<InvoiceLineItem>()
             {
                 new InvoiceLineItem()
                 {
+                    Num = 0,
                     Header = "Line Item 1",
                     ID = "INV-12345_1",
                     ClassificationCode = "004",
@@ -57,37 +210,21 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         #region EInvoice
         #region Login
         [RelayCommand]
-        private async Task Login(object? values)
+        private async Task Login(PasswordBox? clientSecret)
         {
             #region Input Validation
-            if (values == null)
+            if (clientSecret == null)
                 return;
 
-            object[] inputs = (object[])values;
-
-            TextBox? clientId = inputs[0] as TextBox;
-            PasswordBox? clientSecret = inputs[1] as PasswordBox;
-            TextBox? onBehalfOf = inputs[2] as TextBox;
-            ComboBox? environment = inputs[3] as ComboBox;
-            string? apiUrl;
-
-            if (clientId != null)
-                this.ClientId = clientId.Text;
-
-            if (clientSecret != null)
-                this.ClientSecret = clientSecret.Password;
-
-            if (string.IsNullOrWhiteSpace(this.ClientId) || string.IsNullOrWhiteSpace(this.ClientSecret))
+            if (string.IsNullOrWhiteSpace(this.ClientId) || string.IsNullOrWhiteSpace(clientSecret.Password))
+            {
+                clientSecret.Password = string.Empty;
                 return;
-
-            if (onBehalfOf != null)
-                this.OnBehalfOf = onBehalfOf.Text;
-
-            if (environment?.SelectedIndex == 0)
-                apiUrl = "preprod-api.myinvois.hasil.gov.my";
-            else
-                apiUrl = "api.myinvois.hasil.gov.my";
+            }
             #endregion
+
+            this.ClientSecret = clientSecret.Password;
+            string apiUrl = this.Environment == 0 ? "preprod-api.myinvois.hasil.gov.my" : "api.myinvois.hasil.gov.my";
 
             #region Handling
             this.Client = new EInvoiceAPI(this.ClientId, this.ClientSecret, apiUrl);
@@ -108,6 +245,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
             {
                 // TODO: Validation message
             }
+            clientSecret.Password = string.Empty;
             #endregion
         }
 
@@ -144,19 +282,10 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
         #region Validate Taxpayer TIN
         [RelayCommand]
-        private async Task ValidateTaxpayerTIN(object? values)
+        private async Task ValidateTaxpayerTIN()
         {
             #region Input Validation
-            if (values == null)
-                return;
-
-            object[] inputs = (object[])values;
-
-            string? tin = (inputs[0] as TextBox)?.Text ?? null;
-            int idType = (inputs[1] as ComboBox)?.SelectedIndex ?? -1;
-            string? id = (inputs[2] as TextBox)?.Text ?? null;
-
-            if (string.IsNullOrWhiteSpace(tin) || string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(this.ValidateTaxpayerTINInput) || string.IsNullOrWhiteSpace(this.ValidateTaxpayerIDInput))
                 return;
             #endregion
 
@@ -169,7 +298,12 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                     await this.LoginAsIntermediary();
             }
 
-            ValidateTaxpayerTINResponse response = await this.Client!.ValidateTaxpayerTIN(this.AccessToken, tin, (TaxpayerType)(idType + 1), id);
+            ValidateTaxpayerTINResponse response = await this.Client!.ValidateTaxpayerTIN(
+                                                        this.AccessToken,
+                                                        this.ValidateTaxpayerTINInput,
+                                                        (TaxpayerType)this.ValidateTaxpayerIDTypeInput! + 1,
+                                                        this.ValidateTaxpayerIDInput
+                                                   );
 
             this.Output = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
             #endregion
@@ -178,18 +312,10 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
         #region Submit Documents
         [RelayCommand]
-        private async Task SubmitDocuments(object? values)
+        private async Task SubmitDocuments()
         {
             #region Input Validation
-            if (values == null)
-                return;
-
-            object[] inputs = (object[])values;
-
-            string? invoiceCodeNumber = (inputs[0] as TextBox)?.Text ?? null;
-            int documentType = (inputs[1] as ComboBox)?.SelectedIndex ?? -1;
-
-            if (string.IsNullOrWhiteSpace(invoiceCodeNumber) || this.SubmitDocumentDialog == null || !this.SubmitDocumentDialog.CheckPathExists)
+            if (string.IsNullOrWhiteSpace(this.SubmitDocumentsCodeNumberInput) || this.SubmitDocumentDialog == null || !this.SubmitDocumentDialog.CheckPathExists)
                 return;
             #endregion
 
@@ -208,10 +334,10 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
             SubmitDocumentsResponse response = await this.Client!.SubmitDocuments(
                                                         this.AccessToken,
-                                                        (DocumentFormat)(documentType + 1),
+                                                        (DocumentFormat)this.SubmitDocumentsDocumentFormatInput! + 1,
                                                         new Dictionary<string, string>()
                                                         {
-                                                            { invoiceCodeNumber, Encoding.UTF8.GetString(buffer) }
+                                                            { this.SubmitDocumentsCodeNumberInput, Encoding.UTF8.GetString(buffer) }
                                                         }
                                                      );
 
@@ -222,13 +348,10 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
         #region Get Submission
         [RelayCommand]
-        private async Task GetSubmission(TextBox? submissionUid)
+        private async Task GetSubmission()
         {
             #region Input Validation
-            if (submissionUid == null)
-                return;
-
-            if (string.IsNullOrWhiteSpace(submissionUid.Text))
+            if (string.IsNullOrWhiteSpace(this.GetSubmissionUIDInput))
                 return;
             #endregion
 
@@ -241,7 +364,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                     await this.LoginAsIntermediary();
             }
 
-            GetSubmissionResponse response = await this.Client!.GetSubmission(this.AccessToken, submissionUid.Text);
+            GetSubmissionResponse response = await this.Client!.GetSubmission(this.AccessToken, this.GetSubmissionUIDInput);
 
             this.Output = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
             #endregion
@@ -250,13 +373,10 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
         #region Get Document Details
         [RelayCommand]
-        private async Task GetDocumentDetails(TextBox? uuid)
+        private async Task GetDocumentDetails()
         {
             #region Input Validation
-            if (uuid == null)
-                return;
-
-            if (string.IsNullOrWhiteSpace(uuid.Text))
+            if (string.IsNullOrWhiteSpace(this.GetDocumentDetailsUUIDInput))
                 return;
             #endregion
 
@@ -269,7 +389,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                     await this.LoginAsIntermediary();
             }
 
-            GetDocumentDetailsResponse response = await this.Client!.GetDocumentDetails(this.AccessToken, uuid.Text);
+            GetDocumentDetailsResponse response = await this.Client!.GetDocumentDetails(this.AccessToken, this.GetDocumentDetailsUUIDInput);
 
             this.Output = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
             #endregion
@@ -278,20 +398,63 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
         #region CreateDocument
         [RelayCommand]
-        private void CreateDocument(object? values)
+        private void CreateDocument()
         {
-            if (values == null || this.InvoiceLineItems.Count == 0)
+            if (string.IsNullOrWhiteSpace(this.CreateDocumentIDInput))
                 return;
 
-            string? id = (((object[])values)[0] as TextBox)?.Text ?? null;
-            int? documentType = (((object[])values)[1] as ComboBox)?.SelectedIndex ?? -1;
+            if (string.IsNullOrWhiteSpace(this.CreateDocumentSupplierNameInput) || string.IsNullOrWhiteSpace(this.CreateDocumentCustomerNameInput))
+                return;
 
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(this.CreateDocumentSupplierTINInput) || string.IsNullOrWhiteSpace(this.CreateDocumentCustomerTINInput))
+                return;
+
+            if (string.IsNullOrWhiteSpace(this.CreateDocumentSupplierIDInput) || string.IsNullOrWhiteSpace(this.CreateDocumentCustomerIDInput))
+                return;
+
+            if (string.IsNullOrWhiteSpace(this.CreateDocumentSupplierBusinessDescriptionInput))
+                return;
+
+            if (string.IsNullOrWhiteSpace(this.CreateDocumentSupplierCityNameInput) || string.IsNullOrWhiteSpace(this.CreateDocumentCustomerCityNameInput))
+                return;
+
+            if (string.IsNullOrWhiteSpace(this.CreateDocumentSupplierContactNumberInput) || string.IsNullOrWhiteSpace(this.CreateDocumentCustomerContactNumberInput))
                 return;
             
             try
             {
-                EInvoiceDocument document = new EInvoiceDocument(id);
+                EInvoiceDocument document = new EInvoiceDocument(this.CreateDocumentIDInput);
+
+                document.SetAccountingSupplierParty(new AccountingSupplierPartyArgs(
+                    this.CreateDocumentSupplierNameInput, this.CreateDocumentSupplierTINInput,
+                    (TaxpayerType)this.CreateDocumentSupplierIDTypeInput! + 1, this.CreateDocumentSupplierIDInput,
+                    MSIC.OPERATION_OF_PARKING_FACILITIES_FOR_MOTOR_VEHICLES_PARKING_LOTS, this.CreateDocumentSupplierCityNameInput,
+                    (State)this.CreateDocumentSupplierStateInput! + 1, CountryCode.MALAYSIA,
+                    this.CreateDocumentSupplierContactNumberInput
+                )
+                {
+                    BusinessDescription = this.CreateDocumentSupplierBusinessDescriptionInput,
+                    PostalZone = this.CreateDocumentSupplierPostalZoneInput,
+                    AddressLine0 = this.CreateDocumentSupplierAddressLine1Input,
+                    AddressLine1 = this.CreateDocumentSupplierAddressLine2Input,
+                    AddressLine2 = this.CreateDocumentSupplierAddressLine3Input,
+                    Email = this.CreateDocumentSupplierEmailInput
+                });
+
+                document.SetAccountingCustomerParty(new AccountingCustomerPartyArgs(
+                    this.CreateDocumentCustomerNameInput, this.CreateDocumentCustomerTINInput,
+                    (TaxpayerType)this.CreateDocumentCustomerIDTypeInput! + 1, this.CreateDocumentCustomerIDInput,
+                    this.CreateDocumentCustomerCityNameInput, (State)this.CreateDocumentCustomerStateInput! + 1,
+                    CountryCode.MALAYSIA, this.CreateDocumentCustomerContactNumberInput
+                )
+                {
+                    PostalZone = this.CreateDocumentCustomerPostalZoneInput,
+                    AddressLine0 = this.CreateDocumentCustomerAddressLine1Input,
+                    AddressLine1 = this.CreateDocumentCustomerAddressLine2Input,
+                    AddressLine2 = this.CreateDocumentCustomerAddressLine3Input,
+                    Email = this.CreateDocumentCustomerEmailInput
+                });
+
                 foreach (InvoiceLineItem item in this.InvoiceLineItems)
                 {
                     if (string.IsNullOrWhiteSpace(item.ID))
@@ -321,13 +484,15 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                         item.Description, unitPrice,
                         new List<InvoiceLineTaxSubtotalArgs>()
                         {
-                            new InvoiceLineTaxSubtotalArgs(taxableAmount, taxAmount, (TaxType)(item.TaxType! + 1))
+                            new InvoiceLineTaxSubtotalArgs(taxableAmount, taxAmount, (TaxType)item.TaxType! + 1)
                         }
                     )
                     {
                         Quantity = quantity
                     });
                 }
+
+                this.Output = document.Export(DocumentFormat.JSON, true);
             }
             catch
             {
@@ -362,8 +527,11 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
             if (values == null)
                 return;
 
-            if (((object[])values)[0] is string selection)
-                this.SelectedMode = selection;
+            if (((object[])values)[0] is ListView listView && listView.SelectedItem is ListViewItem item)
+            {
+                this.SelectedMode = item.Content as string;
+                listView.SelectedIndex = -1;
+            }
 
             if (((object[])values)[1] is ListView listview)
                 listview.SelectedIndex = -1;
@@ -373,20 +541,17 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         }
 
         [RelayCommand]
-        private void AttachFile(TextBox? textBlock)
+        private void AttachFile()
         {
-            if (textBlock == null)
-                return;
-
             this.SubmitDocumentDialog = new OpenFileDialog()
             {
-                Filter = "txt files (*.txt)|*.txt|JSON files (*.json)|*.json|XML files (*.xml)|*.xml"
+                Filter = "All files (*.*)|*.*|Text files (*.txt)|*.txt|JSON files (*.json)|*.json|XML files (*.xml)|*.xml"
             };
 
             bool? result = this.SubmitDocumentDialog.ShowDialog();
 
-            if (result.HasValue && result.Value && textBlock != null)
-                textBlock.Text = this.SubmitDocumentDialog.SafeFileName;
+            if (result.HasValue && result.Value)
+                this.SubmitDocumentsFileInput = this.SubmitDocumentDialog.SafeFileName;
         }
 
         [RelayCommand]
@@ -394,6 +559,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         {
             this.InvoiceLineItems.Add(new InvoiceLineItem()
             {
+                Num = this.InvoiceLineItems.Count,
                 Header = $"Line Item {this.InvoiceLineItems.Count + 1}",
                 ID = $"INV-12345_{this.InvoiceLineItems.Count + 1}",
                 ClassificationCode = "004",
@@ -415,6 +581,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
         public class InvoiceLineItem
         {
+            public int? Num { get; set; }
             public string? Header { get; set; }
             public string? ID { get; set; }
             public string? ClassificationCode { get; set; }

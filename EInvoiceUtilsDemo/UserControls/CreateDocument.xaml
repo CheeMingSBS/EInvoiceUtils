@@ -27,7 +27,7 @@
                 <Expander Header="Document Header" Style="{StaticResource Collapsible}">
                     <StackPanel Margin="0,5,0,10" Style="{StaticResource Input}">
                         <TextBlock Text="Document ID" FontSize="16"/>
-                        <TextBox Name="CreateDocumentID"  Margin="0,3,0,0" Text="INV-12345"/>
+                        <TextBox Text="{Binding CreateDocumentIDInput}"  Margin="0,3,0,0"/>
                     </StackPanel>
                 </Expander>
 
@@ -35,64 +35,62 @@
                     <StackPanel>
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Name" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierName" Margin="0,3,0,0" Text="Test"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierNameInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="TIN" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierTIN" Margin="0,3,0,0"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierTINInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID Type" FontSize="16"/>
-                            <ComboBox Name="CreateDocumentSupplierIDType" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox SelectedIndex="{Binding CreateDocumentSupplierIDTypeInput, Mode=TwoWay}" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="NRIC"/>
                                 <ComboBoxItem Content="PASSPORT"/>
                                 <ComboBoxItem Content="BRN"/>
                                 <ComboBoxItem Content="ARMY"/>
-
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="SelectionChanged">
-                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=CreateDocumentSupplierIDType}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierID" Margin="0,3,0,0"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierIDInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Business Description" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierBusinessDescription" Margin="0,3,0,0" Text="Carpark Operator"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierBusinessDescriptionInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 1" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierAddressLine1" Margin="0,3,0,0" Text="X Unit 07-06, Vertical Tower A"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierAddressLine1Input, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 2" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierAddressLine2" Margin="0,3,0,0" Text="No. 8 Jalan Kerinchi, Bangsar South"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierAddressLine2Input, Mode=TwoWay}" Margin="0,3,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                            <TextBlock Text="Address Line 3" FontSize="16"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierAddressLine3Input, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="City Name" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierCityName" Margin="0,3,0,0" Text="Kuala Lumpur"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierCityNameInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Postal Zone" FontSize="16"/>
-                            <TextBox  Name="CreateDocumentSupplierPostalZone" Margin="0,3,0,0" Text="50490"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierPostalZoneInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="State" FontSize="16"/>
-                            <ComboBox Name="CreateDocumentSupplierState" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox SelectedIndex="{Binding CreateDocumentSupplierStateInput, Mode=TwoWay}" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="Johor"/>
                                 <ComboBoxItem Content="Kedah"/>
                                 <ComboBoxItem Content="Kelantan"/>
@@ -110,24 +108,17 @@
                                 <ComboBoxItem Content="Wilayah Persekutuan Labuan"/>
                                 <ComboBoxItem Content="Wilayah Persekutuan Putrajaya"/>
                                 <ComboBoxItem Content="Not Applicable"/>
-
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="SelectionChanged">
-                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=CreateDocumentSupplierState}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Email" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierEmail" Margin="0,3,0,0" Text="test@test.com"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierEmailInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5,0,10" Style="{StaticResource Input}">
                             <TextBlock Text="Contact Number" FontSize="16"/>
-                            <TextBox Name="CreateDocumentSupplierContactNumber" Margin="0,3,0,0" Text="01234567890"/>
+                            <TextBox Text="{Binding CreateDocumentSupplierContactNumberInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Expander>
@@ -136,59 +127,57 @@
                     <StackPanel>
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Name" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerName" Margin="0,3,0,0" Text="Test"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerNameInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="TIN" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerTIN" Margin="0,3,0,0"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerTINInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID Type" FontSize="16"/>
-                            <ComboBox Name="CreateDocumentCustomerIDType" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox SelectedIndex="{Binding CreateDocumentCustomerIDTypeInput, Mode=TwoWay}" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="NRIC"/>
                                 <ComboBoxItem Content="PASSPORT"/>
                                 <ComboBoxItem Content="BRN"/>
                                 <ComboBoxItem Content="ARMY"/>
-                                
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="SelectionChanged">
-                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=CreateDocumentCustomerIDType}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="ID" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerID" Margin="0,3,0,0"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerIDInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 1" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerAddressLine1" Margin="0,3,0,0" Text="X Unit 07-06, Vertical Tower A"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerAddressLine1Input, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Address Line 2" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerAddressLine2" Margin="0,3,0,0" Text="No. 8 Jalan Kerinchi, Bangsar South"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerAddressLine2Input, Mode=TwoWay}" Margin="0,3,0,0"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,5" Style="{StaticResource Input}">
+                            <TextBlock Text="Address Line 3" FontSize="16"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerAddressLine3Input, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="City Name" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerCityName" Margin="0,3,0,0" Text="Kuala Lumpur"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerCityNameInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Postal Zone" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerPostalZone" Margin="0,3,0,0" Text="50490"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerPostalZoneInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="State" FontSize="16"/>
-                            <ComboBox Name="CreateDocumentCustomerState" SelectedIndex="13" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                            <ComboBox SelectedIndex="{Binding CreateDocumentCustomerStateInput, Mode=TwoWay}" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
                                 <ComboBoxItem Content="Johor"/>
                                 <ComboBoxItem Content="Kedah"/>
                                 <ComboBoxItem Content="Kelantan"/>
@@ -206,24 +195,17 @@
                                 <ComboBoxItem Content="Wilayah Persekutuan Labuan"/>
                                 <ComboBoxItem Content="Wilayah Persekutuan Putrajaya"/>
                                 <ComboBoxItem Content="Not Applicable"/>
-
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="SelectionChanged">
-                                        <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                               CommandParameter="{Binding ElementName=CreateDocumentCustomerState}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
                             </ComboBox>
                         </StackPanel>
 
                         <StackPanel Margin="0,5" Style="{StaticResource Input}">
                             <TextBlock Text="Email" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerEmail" Margin="0,3,0,0" Text="test@test.com"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerEmailInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
 
                         <StackPanel Margin="0,5,0,10" Style="{StaticResource Input}">
                             <TextBlock Text="Contact Number" FontSize="16"/>
-                            <TextBox Name="CreateDocumentCustomerContactNumber" Margin="0,3,0,0" Text="01234567890"/>
+                            <TextBox Text="{Binding CreateDocumentCustomerContactNumberInput, Mode=TwoWay}" Margin="0,3,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Expander>
@@ -257,9 +239,18 @@
 
                                                     <Button Grid.Column="1"
                                                             Content="Remove"
-                                                            Style="{StaticResource FailureBtn}"
                                                             Command="{Binding DataContext.RemoveInvoiceLineItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                                            CommandParameter="{Binding Path=Num}">
+                                                        <Button.Style>
+                                                            <Style TargetType="Button" BasedOn="{StaticResource FailureBtn}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Path=Num}" Value="0">
+                                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Button.Style>
+                                                    </Button>
                                                 </Grid>
 
                                                 <StackPanel>
@@ -330,6 +321,7 @@
         <Button Grid.Row="1"
                 Content="Create"
                 Style="{StaticResource PrimaryBtn}"
-                Margin="0,15,0,0"/>
+                Margin="0,15,0,0"
+                Command="{Binding CreateDocumentCommand}"/>
     </Grid>
 </UserControl>

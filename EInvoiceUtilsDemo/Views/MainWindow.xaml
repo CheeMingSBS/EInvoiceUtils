@@ -17,26 +17,39 @@
             </ResourceDictionary.MergedDictionaries>
 
             <c:MainUIConverter x:Key ="MainUIConverter"/>
-            <c:LoginUIConverter x:Key ="LoginUIConverter"/>
+            <c:IsNullConverter x:Key ="IsNullConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
         <uc:Login>
-            <uc:Login.Visibility>
-                <MultiBinding Converter="{StaticResource LoginUIConverter}" ConverterParameter="LoginPage">
-                    <Binding Path="LoggedInAs"/>
-                </MultiBinding>
-            </uc:Login.Visibility>
+            <uc:Login.Style>
+                <Style TargetType="{x:Type uc:Login}">
+                    <Setter Property="Visibility" Value="Visible"/>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoggedInAs, Converter={StaticResource IsNullConverter}}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </uc:Login.Style>
         </uc:Login>
 
-        <Grid Margin="20">
-            <Grid.Visibility>
-                <MultiBinding Converter="{StaticResource LoginUIConverter}" ConverterParameter="MainPage">
-                    <Binding Path="LoggedInAs"/>
-                </MultiBinding>
-            </Grid.Visibility>
-            
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Margin" Value="20"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoggedInAs, Converter={StaticResource IsNullConverter}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -52,7 +65,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Grid.Column="0"
                                Text="EInvoiceUtils Demo"
-                               FontFamily="Geist"
+                               FontFamily="{StaticResource Geist}"
                                FontWeight="SemiBold"
                                FontSize="28"
                                Foreground="#0D0D0D"
@@ -105,43 +118,73 @@
                                    TextDecorations="Underline"/>
 
                         <uc:ValidateTaxpayerTIN Grid.Row="2">
-                            <uc:ValidateTaxpayerTIN.Visibility>
-                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Validate Taxpayer TIN">
-                                    <Binding Path="SelectedMode"/>
-                                </MultiBinding>
-                            </uc:ValidateTaxpayerTIN.Visibility>
+                            <uc:ValidateTaxpayerTIN.Style>
+                                <Style TargetType="{x:Type uc:ValidateTaxpayerTIN}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedMode}" Value="Validate Taxpayer TIN">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </uc:ValidateTaxpayerTIN.Style>
                         </uc:ValidateTaxpayerTIN>
 
                         <uc:GetSubmission Grid.Row="2">
-                            <uc:GetSubmission.Visibility>
-                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Get Submission">
-                                    <Binding Path="SelectedMode"/>
-                                </MultiBinding>
-                            </uc:GetSubmission.Visibility>
+                            <uc:GetSubmission.Style>
+                                <Style TargetType="{x:Type uc:GetSubmission}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedMode}" Value="Get Submission">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </uc:GetSubmission.Style>
                         </uc:GetSubmission>
 
                         <uc:GetDocumentDetails Grid.Row="2">
-                            <uc:GetDocumentDetails.Visibility>
-                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Get Document Details">
-                                    <Binding Path="SelectedMode"/>
-                                </MultiBinding>
-                            </uc:GetDocumentDetails.Visibility>
+                            <uc:GetDocumentDetails.Style>
+                                <Style TargetType="{x:Type uc:GetDocumentDetails}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedMode}" Value="Get Document Details">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </uc:GetDocumentDetails.Style>
                         </uc:GetDocumentDetails>
 
                         <uc:SubmitDocuments Grid.Row="2">
-                            <uc:SubmitDocuments.Visibility>
-                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Submit Documents">
-                                    <Binding Path="SelectedMode"/>
-                                </MultiBinding>
-                            </uc:SubmitDocuments.Visibility>
+                            <uc:SubmitDocuments.Style>
+                                <Style TargetType="{x:Type uc:SubmitDocuments}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedMode}" Value="Submit Documents">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </uc:SubmitDocuments.Style>
                         </uc:SubmitDocuments>
 
                         <uc:CreateDocument Grid.Row="2">
-                            <uc:CreateDocument.Visibility>
-                                <MultiBinding Converter="{StaticResource MainUIConverter}" ConverterParameter="Create Document">
-                                    <Binding Path="SelectedMode"/>
-                                </MultiBinding>
-                            </uc:CreateDocument.Visibility>
+                            <uc:CreateDocument.Style>
+                                <Style TargetType="{x:Type uc:CreateDocument}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedMode}" Value="Create Document">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </uc:CreateDocument.Style>
                         </uc:CreateDocument>
                     </Grid>
                 </Border>
@@ -158,7 +201,7 @@
                                  AcceptsReturn="True"
                                  AcceptsTab="True"
                                  TextWrapping="WrapWithOverflow"
-                                 Text="{Binding Output, Mode=OneWay}"/>
+                                 Text="{Binding Output}"/>
                     </Border>
                 </Border>
             </Grid>

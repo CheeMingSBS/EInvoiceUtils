@@ -24,7 +24,7 @@
         <StackPanel Grid.Row="0">
             <StackPanel Style="{StaticResource Input}">
                 <TextBlock Text="Submission UID" FontSize="16"/>
-                <TextBox Name="GetSubmissionUIDInput" Margin="0,3,0,0"/>
+                <TextBox Text="{Binding GetSubmissionUIDInput, Mode=TwoWay}" Margin="0,3,0,0"/>
             </StackPanel>
         </StackPanel>
 
@@ -32,7 +32,6 @@
                 Content="Retrieve"
                 Style="{StaticResource PrimaryBtn}"
                 Margin="0,15,0,0"
-                Command="{Binding GetSubmissionCommand}"
-                CommandParameter="{Binding ElementName=GetSubmissionUIDInput}"/>
+                Command="{Binding GetSubmissionCommand}"/>
     </Grid>
 </UserControl>

@@ -24,7 +24,7 @@
         <StackPanel Grid.Row="0">
             <StackPanel Style="{StaticResource Input}">
                 <TextBlock Text="UUID" FontSize="16"/>
-                <TextBox Name="GetDocumentDetailsUUIDInput" Margin="0,3,0,0"/>
+                <TextBox Text="{Binding GetDocumentDetailsUUIDInput, Mode=TwoWay}" Margin="0,3,0,0"/>
             </StackPanel>
         </StackPanel>
 
@@ -32,7 +32,6 @@
                 Content="Retrieve"
                 Style="{StaticResource PrimaryBtn}"
                 Margin="0,15,0,0"
-                Command="{Binding GetDocumentDetailsCommand}"
-                CommandParameter="{Binding ElementName=GetDocumentDetailsUUIDInput}"/>
+                Command="{Binding GetDocumentDetailsCommand}"/>
     </Grid>
 </UserControl>

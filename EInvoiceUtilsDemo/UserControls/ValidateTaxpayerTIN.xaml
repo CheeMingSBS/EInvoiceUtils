@@ -14,8 +14,6 @@
                 <ResourceDictionary Source="/Resources/Geist.xaml"/>
                 <ResourceDictionary Source="/Resources/General.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <c:ValidateTaxpayerTINUIConverter x:Key ="ValidateTaxpayerTINUIConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -29,41 +27,28 @@
         <StackPanel Grid.Row="0">
             <StackPanel Style="{StaticResource Input}">
                 <TextBlock Text="TIN" FontSize="16"/>
-                <TextBox Name="ValidateTaxpayerTINInput" Margin="0,3,0,0"/>
+                <TextBox Text="{Binding ValidateTaxpayerTINInput, Mode=TwoWay}" Margin="0,3,0,0"/>
             </StackPanel>
             <StackPanel Margin="0,15,0,15" Style="{StaticResource Input}">
                 <TextBlock Text="ID Type" FontSize="16"/>
-                <ComboBox Name="ValidateTaxpayerIDTypeInput" SelectedIndex="0" Margin="0,3,0,0" Style="{StaticResource DropdownSelection}">
+                <ComboBox SelectedIndex="{Binding ValidateTaxpayerIDTypeInput, Mode=TwoWay}"
+                          Margin="0,3,0,0"
+                          Style="{StaticResource DropdownSelection}">
                     <ComboBoxItem Content="NRIC"/>
                     <ComboBoxItem Content="PASSPORT"/>
                     <ComboBoxItem Content="BRN"/>
                     <ComboBoxItem Content="ARMY"/>
-
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="SelectionChanged">
-                            <b:InvokeCommandAction Command="{Binding CloseDropdownOnSelectCommand}"
-                                                   CommandParameter="{Binding ElementName=ValidateTaxpayerIDTypeInput}"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
                 </ComboBox>
             </StackPanel>
             <StackPanel Style="{StaticResource Input}">
                 <TextBlock Text="ID" FontSize="16"/>
-                <TextBox Name="ValidateTaxpayerIDInput" Margin="0,3,0,0"/>
+                <TextBox Text="{Binding ValidateTaxpayerIDInput, Mode=TwoWay}" Margin="0,3,0,0"/>
             </StackPanel>
         </StackPanel>
 
         <Button Grid.Row="2"
                 Content="Validate"
                 Style="{StaticResource PrimaryBtn}"
-                Command="{Binding ValidateTaxpayerTINCommand}">
-            <Button.CommandParameter>
-                <MultiBinding Converter="{StaticResource ValidateTaxpayerTINUIConverter}">
-                    <Binding ElementName="ValidateTaxpayerTINInput"/>
-                    <Binding ElementName="ValidateTaxpayerIDTypeInput"/>
-                    <Binding ElementName="ValidateTaxpayerIDInput"/>
-                </MultiBinding>
-            </Button.CommandParameter>
-        </Button>
+                Command="{Binding ValidateTaxpayerTINCommand}"/>
     </Grid>
 </UserControl>
