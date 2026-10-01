@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EInvoiceUtilsDemo;
 using Microsoft.Win32;
 using SBS.Core.EInvoiceUtils;
 using SBS.Core.EInvoiceUtils.Models;
@@ -156,58 +157,17 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         [ObservableProperty]
         private string? createDocumentCustomerContactNumberInput;
 
-        public ObservableCollection<InvoiceLineItem> InvoiceLineItems { get; set; }
+        public ObservableCollection<InvoiceLineItem>? InvoiceLineItems { get; set; }
         #endregion
         #endregion
 
         public MainViewModel()
         {
-            this.LoggedInAs = "Test";
-            this.Environment = (int)TaxpayerType.NRIC - 1;
-            this.ValidateTaxpayerIDTypeInput = (int)TaxpayerType.NRIC - 1;
-            this.SubmitDocumentsDocumentFormatInput = (int)DocumentFormat.JSON - 1;
-
-            this.CreateDocumentIDInput = "INV-12345";
-            this.CreateDocumentSupplierNameInput = "Test";
-            this.CreateDocumentSupplierIDTypeInput = (int)TaxpayerType.NRIC - 1;
-            this.CreateDocumentSupplierBusinessDescriptionInput = "Carpark Operator";
-            this.CreateDocumentSupplierAddressLine1Input = "X Unit 07-06, Vertical Tower A";
-            this.CreateDocumentSupplierAddressLine2Input = "No. 8 Jalan Kerinchi, Bangsar South";
-            this.CreateDocumentSupplierCityNameInput = "Kuala Lumpur";
-            this.CreateDocumentSupplierPostalZoneInput = "50490";
-            this.CreateDocumentSupplierStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
-            this.CreateDocumentSupplierEmailInput = "test@test.com";
-            this.CreateDocumentSupplierContactNumberInput = "01234567890";
-
-            this.CreateDocumentCustomerNameInput = "Test";
-            this.CreateDocumentCustomerIDTypeInput = (int)TaxpayerType.NRIC - 1;
-            this.CreateDocumentCustomerAddressLine1Input = "X Unit 07-06, Vertical Tower A";
-            this.CreateDocumentCustomerAddressLine2Input = "No. 8 Jalan Kerinchi, Bangsar South";
-            this.CreateDocumentCustomerCityNameInput = "Kuala Lumpur";
-            this.CreateDocumentCustomerPostalZoneInput = "50490";
-            this.CreateDocumentCustomerStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
-            this.CreateDocumentCustomerEmailInput = "test@test.com";
-            this.CreateDocumentCustomerContactNumberInput = "01234567890";
-
-            this.InvoiceLineItems = new ObservableCollection<InvoiceLineItem>()
-            {
-                new InvoiceLineItem()
-                {
-                    Num = 0,
-                    Header = "Line Item 1",
-                    ID = "INV-12345_1",
-                    ClassificationCode = "004",
-                    Description = "E_1234567_1234",
-                    UnitPrice = "5.66",
-                    Quantity = "1",
-                    TaxableAmount = "5.66",
-                    TaxAmount = "0.34",
-                    TaxType = 1
-                }
-            };
+            this.Logout();
+            this.Reset();
         }
 
-        #region EInvoice
+        #region Library Usage Logic
         #region Login
         [RelayCommand]
         private async Task Login(PasswordBox? clientSecret)
@@ -252,6 +212,14 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         private async Task LoginAsTaxpayer()
         {
             LoginAsTaxpayerResponse response = await this.Client!.LoginAsTaxpayer();
+
+            // TODO: Use a Windows manager/service?
+            LoginResponseWindow window = new LoginResponseWindow()
+            {
+                DataContext = new LoginResponseViewModel(JsonSerializer.Serialize(response, new JsonSerializerOptions() { WriteIndented = true }))
+            };
+            window.Show();
+
             if (response.StatusCode == 200)
             {
                 this.AccessToken = response.AccessToken;
@@ -267,6 +235,14 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         private async Task LoginAsIntermediary()
         {
             LoginAsIntermediaryResponse response = await this.Client!.LoginAsIntermediary(this.OnBehalfOf);
+
+            // TODO: Use a Windows manager/service?
+            LoginResponseWindow window = new LoginResponseWindow()
+            {
+                DataContext = new LoginResponseViewModel(JsonSerializer.Serialize(response, new JsonSerializerOptions() { WriteIndented = true }))
+            };
+            window.Show();
+
             if (response.StatusCode == 200)
             {
                 this.AccessToken = response.AccessToken;
@@ -455,7 +431,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                     Email = this.CreateDocumentCustomerEmailInput
                 });
 
-                foreach (InvoiceLineItem item in this.InvoiceLineItems)
+                foreach (InvoiceLineItem item in this.InvoiceLineItems!)
                 {
                     if (string.IsNullOrWhiteSpace(item.ID))
                         throw new Exception();
@@ -509,7 +485,10 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
             this.ClientId = null;
             this.ClientSecret = null;
             this.OnBehalfOf = null;
+            this.Environment = (int)TaxpayerType.NRIC - 1;
             this.LoggedInAs = null;
+            this.Output = null;
+            this.Reset();
         }
 
         [RelayCommand]
@@ -538,6 +517,8 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
 
             if (((object[])values)[2] is ToggleButton popup)
                 popup.IsChecked = false;
+
+            this.Reset();
         }
 
         [RelayCommand]
@@ -557,7 +538,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         [RelayCommand]
         private void AddInvoiceLineItem()
         {
-            this.InvoiceLineItems.Add(new InvoiceLineItem()
+            this.InvoiceLineItems!.Add(new InvoiceLineItem()
             {
                 Num = this.InvoiceLineItems.Count,
                 Header = $"Line Item {this.InvoiceLineItems.Count + 1}",
@@ -575,7 +556,70 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         [RelayCommand]
         private void RemoveInvoiceLineItem(int num)
         {
-            this.InvoiceLineItems.RemoveAt(num);
+            this.InvoiceLineItems!.RemoveAt(num);
+        }
+
+        private void Reset()
+        {
+            this.ValidateTaxpayerTINInput = null;
+            this.ValidateTaxpayerIDTypeInput = (int)TaxpayerType.NRIC - 1; ;
+            this.ValidateTaxpayerIDInput = null;
+
+            this.SubmitDocumentsCodeNumberInput = null;
+            this.SubmitDocumentsDocumentFormatInput = (int)DocumentFormat.JSON - 1;
+            this.SubmitDocumentsFileInput = null;
+            this.SubmitDocumentDialog = null;
+
+            this.GetSubmissionUIDInput = null;
+
+            this.GetDocumentDetailsUUIDInput = null;
+
+            this.CreateDocumentIDInput = "INV-12345";
+            this.CreateDocumentSupplierNameInput = "Test";
+            this.CreateDocumentSupplierTINInput = null;
+            this.CreateDocumentSupplierIDTypeInput = (int)TaxpayerType.NRIC - 1;
+            this.CreateDocumentSupplierIDInput = null;
+            this.CreateDocumentSupplierBusinessDescriptionInput = "Carpark Operator";
+            this.CreateDocumentSupplierAddressLine1Input = "X Unit 07-06, Vertical Tower A";
+            this.CreateDocumentSupplierAddressLine2Input = "No. 8 Jalan Kerinchi, Bangsar South";
+            this.CreateDocumentSupplierAddressLine3Input = null;
+            this.CreateDocumentSupplierCityNameInput = "Kuala Lumpur";
+            this.CreateDocumentSupplierPostalZoneInput = "50490";
+            this.CreateDocumentSupplierStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
+            this.CreateDocumentSupplierEmailInput = "test@test.com";
+            this.CreateDocumentSupplierContactNumberInput = "01234567890";
+            this.CreateDocumentCustomerNameInput = "Test";
+            this.CreateDocumentCustomerTINInput = null;
+            this.CreateDocumentCustomerIDTypeInput = (int)TaxpayerType.NRIC - 1;
+            this.CreateDocumentCustomerIDInput = null;
+            this.CreateDocumentCustomerAddressLine1Input = "X Unit 07-06, Vertical Tower A";
+            this.CreateDocumentCustomerAddressLine2Input = "No. 8 Jalan Kerinchi, Bangsar South";
+            this.CreateDocumentCustomerAddressLine3Input = null;
+            this.CreateDocumentCustomerCityNameInput = "Kuala Lumpur";
+            this.CreateDocumentCustomerPostalZoneInput = "50490";
+            this.CreateDocumentCustomerStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
+            this.CreateDocumentCustomerEmailInput = "test@test.com";
+            this.CreateDocumentCustomerContactNumberInput = "01234567890";
+
+            if (this.InvoiceLineItems == null || this.InvoiceLineItems.Count > 1)
+            {
+                this.InvoiceLineItems = new ObservableCollection<InvoiceLineItem>()
+                {
+                    new InvoiceLineItem()
+                    {
+                        Num = 0,
+                        Header = "Line Item 1",
+                        ID = "INV-12345_1",
+                        ClassificationCode = "004",
+                        Description = "E_1234567_1234",
+                        UnitPrice = "5.66",
+                        Quantity = "1",
+                        TaxableAmount = "5.66",
+                        TaxAmount = "0.34",
+                        TaxType = 1
+                    }
+                };
+            }
         }
         #endregion
 

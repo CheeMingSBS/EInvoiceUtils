@@ -7,7 +7,8 @@
         xmlns:uc="clr-namespace:SBS.Core.EInvoiceUtilsDemo.UserControls"
         xmlns:c="clr-namespace:SBS.Core.EInvoiceUtilsDemo.Converters"
         mc:Ignorable="d"
-        Title="EInvoiceUtilsDemo" MinHeight="600" MinWidth="900" Background="#E8E8E8">
+        Title="EInvoiceUtilsDemo" MinHeight="600" MinWidth="900" Background="#E8E8E8"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -189,20 +190,18 @@
                     </Grid>
                 </Border>
 
-                <Border Grid.Column="1">
-                    <Border Grid.Column="1" Style="{StaticResource RoundedSection}">
-                        <!-- TODO: Should really use a TextBlock here...? -->
-                        <TextBox BorderBrush="Transparent"
-                                 Background="WhiteSmoke"
-                                 FontFamily="{StaticResource Geist}"
-                                 FontWeight="Medium"
-                                 FontSize="14"
-                                 IsReadOnly="True"
-                                 AcceptsReturn="True"
-                                 AcceptsTab="True"
-                                 TextWrapping="WrapWithOverflow"
-                                 Text="{Binding Output}"/>
-                    </Border>
+                <Border Grid.Column="1" Style="{StaticResource RoundedSection}">
+                    <!-- TODO: Should really use a TextBlock here...? -->
+                    <TextBox BorderBrush="Transparent"
+                             Background="WhiteSmoke"
+                             FontFamily="{StaticResource Geist}"
+                             FontWeight="Medium"
+                             FontSize="14"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             AcceptsTab="True"
+                             TextWrapping="Wrap"
+                             Text="{Binding Output}"/>
                 </Border>
             </Grid>
         </Grid>

@@ -52,6 +52,7 @@
                 <Setter Property="Foreground" Value="#0D0D0D"/>
                 <Setter Property="FontFamily" Value="{StaticResource Geist}"/>
                 <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Normal"/>
                 <Style.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="6"/>
@@ -104,6 +105,7 @@
 
     <Style x:Key="DropdownSelection" TargetType="ComboBox">
         <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
@@ -185,6 +187,7 @@
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Padding" Value="6"/>
                 <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Normal"/>
                 <Setter Property="FontFamily" Value="{StaticResource Geist}"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
 
