@@ -4,7 +4,7 @@
     public sealed class EInvoiceDocumentTest
     {
         [TestMethod]
-        public async Task CreateDocument()
+        public async Task<EInvoiceDocument> CreateDocument()
         {
             EInvoiceDocument document = new EInvoiceDocument(id: "JSON-INV12345");
 
@@ -73,6 +73,7 @@
             document.AddInvoiceLineItem(invoiceLine);
             document.AddInvoiceLineItem(invoiceLine2);
 
+            return document;
             // TODO: Assert necessary elements
         }
     }

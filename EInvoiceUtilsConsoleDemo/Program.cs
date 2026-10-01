@@ -143,19 +143,21 @@ InvoiceLineArgs invoiceLine2 = new InvoiceLineArgs(
 document.AddInvoiceLineItem(invoiceLine);
 document.AddInvoiceLineItem(invoiceLine2);
 
-FileStream output = File.Open("C:\\Users\\SBS\\Desktop\\Projects\\EInvoiceUtils\\EInvoiceUtilsDemo\\Test.json", FileMode.Truncate);
+FileStream output = File.Open("C:\\Users\\SBS\\Desktop\\Projects\\EInvoiceUtils\\EInvoiceUtilsConsoleDemo\\Test.json", FileMode.OpenOrCreate | FileMode.Truncate);
 
 await output.WriteAsync(Encoding.UTF8.GetBytes(document.Export(DocumentFormat.JSON, true)));
 output.Close();
 
+Thread.Sleep(1000);
+
 submitDocumentsResponse = await client.SubmitDocuments(
                             accessToken: loginAsTaxpayerResponse.AccessToken,
-                            format: DocumentFormat.JSON,
-                            documents: new Dictionary<string, string>()
+                            documents: new Dictionary<string, EInvoiceDocument>()
                             {
-                                { "INV00002", document.Export(DocumentFormat.JSON) }
+                                { "INV00002", document }
                             }
                           );
+
 Console.WriteLine(JsonSerializer.Serialize(submitDocumentsResponse) + "\n");
 #endregion
 

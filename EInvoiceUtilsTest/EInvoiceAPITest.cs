@@ -77,7 +77,17 @@ namespace EInvoiceUtilsTest
                                                     { "INV00001", File.ReadAllText(config[INVOICE_XML]!) }
                                                 }
                                                );
+            Assert.AreEqual(response.StatusCode, 202);
 
+            EInvoiceDocument document = await new EInvoiceDocumentTest().CreateDocument();
+
+            response = await client.SubmitDocuments(
+                        this.accessToken,
+                        new Dictionary<string, EInvoiceDocument>()
+                        {
+                            { "INV00002", document }
+                        }
+                       );
             Assert.AreEqual(response.StatusCode, 202);
         }
 

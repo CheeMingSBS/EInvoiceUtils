@@ -202,6 +202,76 @@ namespace SBS.Core.EInvoiceUtils
             }
             return response;
         }
+
+        /// <summary>
+        ///     Converts the given <see cref="EInvoiceDocument"/> and submits to LHDN. The object(s) should form well-formed EInvoice Document(s).
+        ///     <br/>
+        ///     See <see href="https://sdk.myinvois.hasil.gov.my/einvoicingapi/02-submit-documents/">Submit Documents</see>.
+        /// </summary>
+        /// <param name="accessToken">Access token from one of the Login APIs.</param>
+        /// <param name="format">Format of the documents to be submitted.</param>
+        /// <param name="documents">A dictionary of invoice code numbers each mapped to a <see cref="EInvoiceDocument"/> following the format specified.</param>
+        /// <returns>
+        ///     <see cref="SubmitDocumentsResponse"/>
+        /// </returns>
+        /// <exception cref="ArgumentException"/>
+        public async Task<SubmitDocumentsResponse> SubmitDocuments(
+            string accessToken,
+            Dictionary<string, EInvoiceDocument> documents
+        )
+        {
+            if (string.IsNullOrWhiteSpace(accessToken))
+                throw new ArgumentException($"{nameof(accessToken)} cannot be NULL or empty.", nameof(accessToken));
+
+            if (documents.Count == 0)
+                throw new ArgumentException($"{nameof(documents)} cannot be NULL or empty.", nameof(documents));
+
+            SubmitDocumentsResponse response;
+            List<SubmitDocumentsDocument> processedDocuments = new List<SubmitDocumentsDocument>();
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                foreach (string codeNumber in documents.Keys)
+                {
+                    //if (format == DocumentFormat.XML)
+                    //{
+                    //    XmlDocument xml = new XmlDocument();
+                    //    xml.PreserveWhitespace = false;
+                    //    xml.LoadXml(documents[codeNumber]);
+
+                    //    documents[codeNumber] = xml.OuterXml;
+                    //}
+
+                    string document = documents[codeNumber].Export(DocumentFormat.JSON);
+
+                    processedDocuments.Add(new SubmitDocumentsDocument()
+                    {
+                        Format = DocumentFormat.JSON.ToString(),
+                        CodeNumber = codeNumber,
+                        Document = Convert.ToBase64String(Encoding.UTF8.GetBytes(document)),
+                        DocumentHash = ConvertToHexString(sha256.ComputeHash(Encoding.UTF8.GetBytes(document)))
+                    });
+
+                }
+            }
+
+            using (HttpRequestMessage requestMessage = new HttpRequestMessage())
+            {
+                requestMessage.Method = HttpMethod.Post;
+                requestMessage.RequestUri = new Uri("/api/v1.0/documentsubmissions/", UriKind.Relative);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                requestMessage.Content = JsonContent.Create(new SubmitDocumentsRequest() { Documents = processedDocuments });
+
+                HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+
+                JsonSerializerOptions options = new JsonSerializerOptions();
+                options.Converters.Add(new StandardErrorConverter());
+
+                response = JsonSerializer.Deserialize<SubmitDocumentsResponse>(await responseMessage.Content.ReadAsStringAsync(), options);
+                response.StatusCode = (int)responseMessage.StatusCode;
+            }
+            return response;
+        }
         #endregion
 
         #region Validate Taxpayer TIN
