@@ -6,7 +6,6 @@ using SBS.Core.EInvoiceUtils;
 using SBS.Core.EInvoiceUtils.Models;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -165,6 +164,7 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         {
             this.Logout();
             this.Reset();
+            this.LoggedInAs = "Test";
         }
 
         #region Library Usage Logic
@@ -295,29 +295,28 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                 return;
             #endregion
 
-            Stream stream = this.SubmitDocumentDialog.OpenFile();
-            byte[] buffer = new byte[stream.Length];
-            await stream.ReadAsync(buffer);
-
             #region Handling
-            if (DateTime.Now > this.TimeUntilAccessTokenExpiry)
+            using (StreamReader reader = new StreamReader(this.SubmitDocumentDialog.OpenFile()))
             {
-                if (string.IsNullOrWhiteSpace(this.OnBehalfOf))
-                    await this.LoginAsTaxpayer();
-                else
-                    await this.LoginAsIntermediary();
+                if (DateTime.Now > this.TimeUntilAccessTokenExpiry)
+                {
+                    if (string.IsNullOrWhiteSpace(this.OnBehalfOf))
+                        await this.LoginAsTaxpayer();
+                    else
+                        await this.LoginAsIntermediary();
+                }
+
+                SubmitDocumentsResponse response = await this.Client!.SubmitDocuments(
+                                                            this.AccessToken,
+                                                            (DocumentFormat)this.SubmitDocumentsDocumentFormatInput! + 1,
+                                                            new Dictionary<string, string>()
+                                                            {
+                                                                { this.SubmitDocumentsCodeNumberInput, await reader.ReadToEndAsync() }
+                                                            }
+                                                         );
+
+                this.Output = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
             }
-
-            SubmitDocumentsResponse response = await this.Client!.SubmitDocuments(
-                                                        this.AccessToken,
-                                                        (DocumentFormat)this.SubmitDocumentsDocumentFormatInput! + 1,
-                                                        new Dictionary<string, string>()
-                                                        {
-                                                            { this.SubmitDocumentsCodeNumberInput, Encoding.UTF8.GetString(buffer) }
-                                                        }
-                                                     );
-
-            this.Output = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
             #endregion
         }
         #endregion
@@ -557,6 +556,15 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
         private void RemoveInvoiceLineItem(int num)
         {
             this.InvoiceLineItems!.RemoveAt(num);
+
+            for (int i = num; i <  this.InvoiceLineItems.Count; i++)
+            {
+                this.InvoiceLineItems[i].Num = i;
+                this.InvoiceLineItems[i].Header = $"Line Item {num + 1}";
+            }
+
+            this.InvoiceLineItems = new ObservableCollection<InvoiceLineItem>(this.InvoiceLineItems);
+            OnPropertyChanged(nameof(this.InvoiceLineItems));
         }
 
         private void Reset()
@@ -620,6 +628,40 @@ namespace SBS.Core.EInvoiceUtilsDemo.ViewModels
                     }
                 };
             }
+        }
+
+        [RelayCommand]
+        private void UseConsolidatedPreset()
+        {
+            this.CreateDocumentCustomerNameInput = "General Public";
+            this.CreateDocumentCustomerTINInput = "EI00000000010";
+            this.CreateDocumentCustomerIDTypeInput = (int)TaxpayerType.NRIC - 1;
+            this.CreateDocumentCustomerIDInput = "NA";
+            this.CreateDocumentCustomerAddressLine1Input = "NA";
+            this.CreateDocumentCustomerAddressLine2Input = null;
+            this.CreateDocumentCustomerAddressLine3Input = null;
+            this.CreateDocumentCustomerCityNameInput = null;
+            this.CreateDocumentCustomerPostalZoneInput = null;
+            this.CreateDocumentCustomerStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
+            this.CreateDocumentCustomerEmailInput = null;
+            this.CreateDocumentCustomerContactNumberInput = "NA";
+        }
+
+        [RelayCommand]
+        private void UseIndividualPreset()
+        {
+            this.CreateDocumentCustomerNameInput = "Test";
+            this.CreateDocumentCustomerTINInput = null;
+            this.CreateDocumentCustomerIDTypeInput = (int)TaxpayerType.NRIC - 1;
+            this.CreateDocumentCustomerIDInput = null;
+            this.CreateDocumentCustomerAddressLine1Input = "X Unit 07-06, Vertical Tower A";
+            this.CreateDocumentCustomerAddressLine2Input = "No. 8 Jalan Kerinchi, Bangsar South";
+            this.CreateDocumentCustomerAddressLine3Input = null;
+            this.CreateDocumentCustomerCityNameInput = "Kuala Lumpur";
+            this.CreateDocumentCustomerPostalZoneInput = "50490";
+            this.CreateDocumentCustomerStateInput = (int)State.WILAYAH_PERSEKUTUAN_KUALA_LUMPUR - 1;
+            this.CreateDocumentCustomerEmailInput = "test@test.com";
+            this.CreateDocumentCustomerContactNumberInput = "01234567890";
         }
         #endregion
 

@@ -8,7 +8,8 @@
         xmlns:c="clr-namespace:SBS.Core.EInvoiceUtilsDemo.Converters"
         mc:Ignorable="d"
         Title="EInvoiceUtilsDemo" MinHeight="600" MinWidth="900" Background="#E8E8E8"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
 
     <Window.Resources>
         <ResourceDictionary>

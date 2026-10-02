@@ -24,6 +24,23 @@
 
         <ScrollViewer>
             <StackPanel Grid.Row="0" Margin="0,0,10,0">
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            Content="Individual"
+                            Style="{StaticResource PrimaryBtn}"
+                            Command="{Binding UseIndividualPresetCommand}"/>
+                    <Button Grid.Column="2"
+                            Content="Consolidated"
+                            Style="{StaticResource PrimaryBtn}"
+                            Command="{Binding UseConsolidatedPresetCommand}"/>
+                </Grid>
+                
                 <Expander Header="Document Header" Style="{StaticResource Collapsible}">
                     <StackPanel Margin="0,5,0,10" Style="{StaticResource Input}">
                         <TextBlock Text="Document ID" FontSize="16"/>
